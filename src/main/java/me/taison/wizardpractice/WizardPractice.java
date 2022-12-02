@@ -74,6 +74,13 @@ public final class WizardPractice extends JavaPlugin {
 
     private void initializeListeners() {
         getLogger().info("Initializing listeners..");
+
+        PluginManager pluginManager = Bukkit.getPluginManager();
+
+        pluginManager.registerEvents(new PlayerJoinListener(), this);
+        pluginManager.registerEvents(new PlayerQuitListener(), this);
+
+        pluginManager.registerEvents(new InventoryClickList(), this);
     }
 
     private void initializeFactories() {
