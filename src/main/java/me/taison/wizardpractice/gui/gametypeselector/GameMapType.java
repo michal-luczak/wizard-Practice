@@ -11,17 +11,24 @@ import java.util.List;
 
 public enum GameMapType {
 
-    DIAMOND_GAME("&aDiament", Collections.singletonList("&cRodzaj gry: Diamentowe Sety"), new ItemBuilder(Material.DIAMOND_SWORD, 1).addEnchant(Enchantment.KNOCKBACK, 1).toItemStack());
+    DIAMOND_GAME("&aDiament", Collections.singletonList("&cRodzaj gry: Diamentowe Sety"),
+            new ItemBuilder(Material.DIAMOND_SWORD, 1).addEnchant(Enchantment.KNOCKBACK, 1).toItemStack(),
+            new ItemStack[]{}, new ItemStack[]{});
 
     private final String name;
     private final List<String> description;
 
     private final ItemStack itemStack;
+    private final ItemStack[] armor;
 
-    GameMapType(String name, List<String> description, ItemStack itemStack){
+    private final ItemStack[] items;
+
+    GameMapType(String name, List<String> description, ItemStack itemStack, ItemStack[] armor, ItemStack[] items){
         this.name = name;
         this.description = description;
         this.itemStack = itemStack;
+        this.armor = armor;
+        this.items = items;
     }
 
     public ItemStack getItemStack() {
@@ -36,4 +43,11 @@ public enum GameMapType {
         return StringUtils.color(description);
     }
 
+    public ItemStack[] getArmor() {
+        return armor;
+    }
+
+    public ItemStack[] getItems() {
+        return items;
+    }
 }

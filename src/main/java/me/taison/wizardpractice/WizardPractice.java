@@ -18,7 +18,6 @@ import java.util.concurrent.CopyOnWriteArraySet;
 public final class WizardPractice extends JavaPlugin {
 
     private static WizardPractice singleton;
-
     private PracticeUserFactory practiceUserFactory;
     private AddonFactory addonFactory;
     private IDatabase database;

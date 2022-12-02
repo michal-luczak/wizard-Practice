@@ -11,8 +11,6 @@ public class Duel {
     private boolean isDuring;
     private final GameMapType gameMapType;
 
-    private final DuelKit duelKit;
-
     private final Arena arena;
 
     public Player getPlayer1() {
@@ -35,10 +33,6 @@ public class Duel {
         return duelCounter;
     }
 
-    public DuelKit getDuelKit() {
-        return duelKit;
-    }
-
     public void setDuring(boolean during) {
         isDuring = during;
     }
@@ -47,9 +41,8 @@ public class Duel {
         return arena;
     }
 
-    public Duel(GameMapType gameMapType, DuelKit duelKit, Player player1, Player player2, Arena arena) {
+    public Duel(GameMapType gameMapType, Player player1, Player player2, Arena arena) {
         this.gameMapType = gameMapType;
-        this.duelKit = duelKit;
         this.player1 = player1;
         this.player2 = player2;
         this.arena = arena;
@@ -75,10 +68,10 @@ public class Duel {
 
     private void giveItems() {
         player1.getInventory().clear();
-        player1.getInventory().setContents(duelKit.getItems());
-        player1.getInventory().setArmorContents(duelKit.getArmor());
+        player1.getInventory().setContents(gameMapType.getItems());
+        player1.getInventory().setArmorContents(gameMapType.getArmor());
         player2.getInventory().clear();
-        player2.getInventory().setContents(duelKit.getItems());
-        player2.getInventory().setArmorContents(duelKit.getArmor());
+        player2.getInventory().setContents(gameMapType.getItems());
+        player2.getInventory().setArmorContents(gameMapType.getArmor());
     }
 }
