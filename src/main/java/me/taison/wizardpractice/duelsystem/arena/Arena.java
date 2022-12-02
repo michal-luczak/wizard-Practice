@@ -2,19 +2,20 @@ package me.taison.wizardpractice.duelsystem.arena;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 
 public enum Arena {
-    PRZYKLADOWA_ARENA("PRZYKLADOWA_ARENA", new Location(Bukkit.getServer().getWorld("world"), 0, 90 ,0));
+    PRZYKLADOWA_ARENA("PRZYKLADOWA_ARENA", "world", new Location(Bukkit.getServer().getWorld("world"), 0, 90 ,0));
 
     private final String name;
-    private boolean isOccupied = false;
     private final Location location;
 
-
-
-    Arena(String name, Location location) {
+    private final String world;
+    private boolean isOccupied = false;
+    Arena(String name, String world, Location location) {
         this.name = name;
         this.location = location;
+        this.world = world;
     }
 
     public String getName() {
@@ -31,6 +32,10 @@ public enum Arena {
 
     public Location getLocation() {
         return location;
+    }
+
+    public World getWorld() {
+        return Bukkit.getServer().getWorld(this.world);
     }
 
     public void setOccupied(boolean occupied) {
