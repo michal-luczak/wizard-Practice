@@ -8,6 +8,9 @@ import org.bukkit.entity.Player;
 public class Duel {
 
     private final Player player1, player2;
+
+    private final GameMapType gameMapType;
+
     private final DuelCounter duelCounter;
 
     private boolean isDuring = false;
@@ -26,7 +29,8 @@ public class Duel {
         isDuring = true;
         teleportPlayersToArena(arena);
         giveItems();
-        duelCounter.runTaskTimer(WizardPractice.getPlugin(WizardPractice.class), 0L, 20L);
+
+        duelCounter.runTaskTimer(WizardPractice.getSingleton(), 0L, 20L);
     }
 
     public void stopDuel() {
@@ -35,6 +39,7 @@ public class Duel {
 
     private void teleportPlayersToArena(Arena arena) {
         arena.setOccupied(true);
+
         player1.teleport(arena.getLocation());
         player2.teleport(arena.getLocation());
     }
@@ -43,8 +48,43 @@ public class Duel {
         player1.getInventory().clear();
         player1.getInventory().setContents(gameMapType.getItems());
         player1.getInventory().setArmorContents(gameMapType.getArmor());
+
+
         player2.getInventory().clear();
+
         player2.getInventory().setContents(gameMapType.getItems());
         player2.getInventory().setArmorContents(gameMapType.getArmor());
+    }
+
+    public Player getPlayer1() {
+        return player1;
+    }
+
+    public Player getPlayer2() {
+        return player2;
+    }
+
+    public GameMapType getGameMapType() {
+        return gameMapType;
+    }
+
+    public boolean isDuring() {
+        return isDuring;
+    }
+
+    public DuelCounter getDuelCounter() {
+        return duelCounter;
+    }
+
+    public void setDuring(boolean during) {
+        isDuring = during;
+    }
+
+    public Arena getArena() {
+        return arena;
+    }
+
+    public void setArena(Arena arena) {
+        this.arena = arena;
     }
 }

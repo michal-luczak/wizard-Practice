@@ -15,6 +15,13 @@ public class DuelManager {
     private final ConcurrentLinkedDeque<Duel> waitingDuels;
     private final CopyOnWriteArraySet<Arena> arenas;
 
+    public CopyOnWriteArraySet<Duel> getRunningDuels() {
+        return runningDuels;
+    }
+    public ConcurrentLinkedDeque<Duel> getWaitingDuels() {
+        return waitingDuels;
+    }
+
     public DuelManager(CopyOnWriteArraySet<Arena> arenas) {
         this.arenas = arenas;
         this.runningDuels = new CopyOnWriteArraySet<>();
@@ -23,6 +30,10 @@ public class DuelManager {
 
     public int getRunningDuels(GameMapType gameMapType){
         return (int) this.runningDuels.stream().filter(duel -> duel.getGameMapType() == gameMapType).count();
+    }
+
+    public int getWaitingDuels(GameMapType gameMapType){
+        return (int) this.waitingDuels.stream().filter(duel -> duel.getGameMapType() == gameMapType).count();
     }
 
     public Optional<Duel> getDuelByPlayer(Player player) {
@@ -59,6 +70,10 @@ public class DuelManager {
                 waitingDuels.remove(duel);
             }
         });
+    }
+
+    public CopyOnWriteArraySet<Arena> getArenas() {
+        return arenas;
     }
 
     private Optional<Arena> getFreeArena() {

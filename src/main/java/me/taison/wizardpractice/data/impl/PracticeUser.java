@@ -14,7 +14,7 @@ public class PracticeUser implements IDatabaseUser {
 
     private int ranking;
 
-    public PracticeUser(UUID uniqueIdentifier, String name, int ranking){
+    public PracticeUser(UUID uniqueIdentifier, String name){
         this.uniqueIdentifier = uniqueIdentifier;
         this.ranking = ranking;
         this.name = name;

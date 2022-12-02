@@ -12,6 +12,8 @@ import me.taison.wizardpractice.listener.PlayerJoinListener;
 import me.taison.wizardpractice.listener.PlayerQuitListener;
 import me.taison.wizardpractice.service.Service;
 import me.taison.wizardpractice.utilities.AbstractCommand;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.reflections.Reflections;
 
@@ -22,8 +24,10 @@ import java.util.concurrent.CopyOnWriteArraySet;
 public final class WizardPractice extends JavaPlugin {
 
     private static WizardPractice singleton;
+
     private PracticeUserFactory practiceUserFactory;
     private AddonFactory addonFactory;
+
     private IDatabase database;
 
     private DuelManager duelManager;
@@ -36,7 +40,7 @@ public final class WizardPractice extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        getLogger().info("BoxPVP plugin loading...");
+        getLogger().info("Practice plugin loading...");
 
         this.initializeFactories();
         this.initializeListeners();
@@ -48,13 +52,11 @@ public final class WizardPractice extends JavaPlugin {
         this.database = new MySQLStorage();
         database.open();
 
-        getLogger().info("BoxPVP plugin loading successfully.");
+        getLogger().info("Practice plugin loading successfully.");
     }
 
-    private HashSet<Arena> arenas() {
-        HashSet<Arena> arenas = new HashSet<>();
-        arenas.add(Arena.PRZYKLADOWA_ARENA);
-        return arenas;
+    private Set<Arena> initializeArenas() {
+        return Set.of(Arena.PRZYKLADOWA_ARENA);
     }
 
     private void initializeCommands() {
@@ -83,7 +85,7 @@ public final class WizardPractice extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        getLogger().info("BoxPVP plugin disabling...");
+        getLogger().info("Practice plugin disabling...");
 
         this.practiceUserFactory.saveBoxUsers();
         this.addonFactory.deinitializeAddons();
@@ -91,7 +93,7 @@ public final class WizardPractice extends JavaPlugin {
         database.close();
         Service.shutdown();
 
-        getLogger().info("BoxPVP plugin disabled successfully. Goodbye!");
+        getLogger().info("Practice plugin disabled successfully. Goodbye!");
     }
 
     public static WizardPractice getSingleton() {

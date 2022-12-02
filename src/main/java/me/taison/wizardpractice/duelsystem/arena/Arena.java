@@ -10,6 +10,8 @@ public enum Arena {
     private boolean isOccupied = false;
     private final Location location;
 
+
+
     Arena(String name, Location location) {
         this.name = name;
         this.location = location;
