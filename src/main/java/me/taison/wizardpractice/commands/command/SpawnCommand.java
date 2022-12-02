@@ -1,5 +1,6 @@
-package me.taison.wizardpractice.commands;
+package me.taison.wizardpractice.commands.command;
 
+import me.taison.wizardpractice.commands.ICommandInfo;
 import me.taison.wizardpractice.utilities.AbstractCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

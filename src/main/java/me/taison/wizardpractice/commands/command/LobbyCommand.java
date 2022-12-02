@@ -1,6 +1,7 @@
-package me.taison.wizardpractice.commands;
+package me.taison.wizardpractice.commands.command;
 
 import me.taison.wizardpractice.WizardPractice;
+import me.taison.wizardpractice.commands.ICommandInfo;
 import me.taison.wizardpractice.utilities.AbstractCommand;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

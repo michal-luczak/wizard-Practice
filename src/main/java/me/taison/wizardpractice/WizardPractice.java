@@ -4,15 +4,19 @@ import me.taison.wizardpractice.data.factory.AddonFactory;
 import me.taison.wizardpractice.data.factory.PracticeUserFactory;
 import me.taison.wizardpractice.data.storage.IDatabase;
 import me.taison.wizardpractice.data.storage.MySQLStorage;
-import me.taison.wizardpractice.duelsystem.Arena;
 import me.taison.wizardpractice.duelsystem.DuelManager;
+import me.taison.wizardpractice.duelsystem.arena.Arena;
+import me.taison.wizardpractice.duelsystem.queue.QueueDispatcher;
+import me.taison.wizardpractice.listener.InventoryClickList;
+import me.taison.wizardpractice.listener.PlayerJoinListener;
+import me.taison.wizardpractice.listener.PlayerQuitListener;
 import me.taison.wizardpractice.service.Service;
 import me.taison.wizardpractice.utilities.AbstractCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.reflections.Reflections;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 public final class WizardPractice extends JavaPlugin {
@@ -21,7 +25,9 @@ public final class WizardPractice extends JavaPlugin {
     private PracticeUserFactory practiceUserFactory;
     private AddonFactory addonFactory;
     private IDatabase database;
+
     private DuelManager duelManager;
+    private QueueDispatcher queueDispatcher;
 
     @Override
     public void onLoad(){
@@ -36,7 +42,8 @@ public final class WizardPractice extends JavaPlugin {
         this.initializeListeners();
         this.initializeCommands();
 
-        this.duelManager = new DuelManager(new CopyOnWriteArraySet<>(arenas()));
+        this.duelManager = new DuelManager(new CopyOnWriteArraySet<>(this.initializeArenas()));
+        this.queueDispatcher = new QueueDispatcher(duelManager);
 
         this.database = new MySQLStorage();
         database.open();
@@ -52,7 +59,7 @@ public final class WizardPractice extends JavaPlugin {
 
     private void initializeCommands() {
         getLogger().info("Initializing commands..");
-        for (Class<? extends AbstractCommand> clazz : new Reflections(getClass().getPackageName() + ".commands").getSubTypesOf(AbstractCommand.class)) {
+        for (Class<? extends AbstractCommand> clazz : new Reflections(getClass().getPackageName() + ".commands.command").getSubTypesOf(AbstractCommand.class)) {
             try {
                 AbstractCommand playerCommand = clazz.getDeclaredConstructor().newInstance();
                 getCommand(playerCommand.getCommandInfo().command()).setExecutor(playerCommand);
@@ -101,5 +108,8 @@ public final class WizardPractice extends JavaPlugin {
 
     public DuelManager getDuelManager() {
         return duelManager;
+    }
+    public QueueDispatcher getQueueDispatcher() {
+        return queueDispatcher;
     }
 }
