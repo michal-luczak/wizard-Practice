@@ -47,7 +47,12 @@ public class GameSelectorGuiItem extends GuiItem {
 
         List<String> description = gameMapType.getDescription();
 
-        StringUtils.findAndReplace(description, "%queuedPlayer", String.valueOf(duelManager.getWaitingDuels(gameMapType)));
+        int queuePlayers = 0;
+        if(this.queueDispatcher.getQueueByGameType(gameMapType).isPresent()){
+            queuePlayers = this.queueDispatcher.getQueueByGameType(gameMapType).get().getPlayersInQueue().size();
+        }
+
+        StringUtils.findAndReplace(description, "%queuedPlayer", String.valueOf(queuePlayers));
         StringUtils.findAndReplace(description, "%currentPlaying", String.valueOf(duelManager.getRunningDuels(gameMapType)));
 
         meta.setLore(description);

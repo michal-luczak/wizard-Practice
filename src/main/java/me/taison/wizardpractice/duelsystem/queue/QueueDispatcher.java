@@ -22,6 +22,7 @@ public class QueueDispatcher {
         return queuesToDuels;
     }
 
+
     public Optional<QueueToDuel> getQueueByGameType(GameMapType gameMapType) {
         return queuesToDuels.stream().filter(queue -> queue.getGameMapType().equals(gameMapType)).findFirst();
     }

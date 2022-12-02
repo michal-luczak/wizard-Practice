@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
 public enum Arena {
-    PRZYKLADOWA_ARENA("PRZYKLADOWA_ARENA", new Location(Bukkit.getWorlds().get(0), 0, 90 ,0));
+    PRZYKLADOWA_ARENA("PRZYKLADOWA_ARENA", new Location(Bukkit.getServer().getWorld("world"), 0, 90 ,0));
 
     private final String name;
     private boolean isOccupied = false;
@@ -23,6 +23,10 @@ public enum Arena {
 
     public boolean isOccupied() {
         return isOccupied;
+    }
+
+    public boolean isFree(){
+        return !this.isOccupied;
     }
 
     public Location getLocation() {

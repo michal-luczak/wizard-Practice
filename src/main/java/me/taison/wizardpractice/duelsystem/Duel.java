@@ -3,6 +3,10 @@ package me.taison.wizardpractice.duelsystem;
 import me.taison.wizardpractice.WizardPractice;
 import me.taison.wizardpractice.duelsystem.arena.Arena;
 import me.taison.wizardpractice.gui.gametypeselector.GameMapType;
+import org.apache.commons.lang3.Validate;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 public class Duel {
@@ -22,24 +26,28 @@ public class Duel {
         this.player1 = player1;
         this.player2 = player2;
 
-        this.duelCounter = new DuelCounter(player1, player2);
+        this.duelCounter = new DuelCounter(this, player1, player2);
     }
 
     public void startDuel() {
-        isDuring = true;
-        teleportPlayersToArena(arena);
-        giveItems();
+        Validate.notNull(player1, "Player1 cannot be null");
+        Validate.notNull(player2, "Player2 cannot be null");
 
-        duelCounter.runTaskTimer(WizardPractice.getSingleton(), 0L, 20L);
+        isDuring = true;
+
+        arena.setOccupied(true);
+
+        this.teleportPlayers();
+        this.giveItems();
+
+        duelCounter.runTaskTimerAsynchronously(WizardPractice.getSingleton(), 0, 20);
     }
 
     public void stopDuel() {
         isDuring = false;
     }
 
-    private void teleportPlayersToArena(Arena arena) {
-        arena.setOccupied(true);
-
+    private void teleportPlayers() {
         player1.teleport(arena.getLocation());
         player2.teleport(arena.getLocation());
     }
@@ -48,7 +56,6 @@ public class Duel {
         player1.getInventory().clear();
         player1.getInventory().setContents(gameMapType.getItems());
         player1.getInventory().setArmorContents(gameMapType.getArmor());
-
 
         player2.getInventory().clear();
 

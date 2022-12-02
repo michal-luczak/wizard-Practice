@@ -15,13 +15,6 @@ public class DuelManager {
     private final ConcurrentLinkedDeque<Duel> waitingDuels;
     private final CopyOnWriteArraySet<Arena> arenas;
 
-    public CopyOnWriteArraySet<Duel> getRunningDuels() {
-        return runningDuels;
-    }
-    public ConcurrentLinkedDeque<Duel> getWaitingDuels() {
-        return waitingDuels;
-    }
-
     public DuelManager(CopyOnWriteArraySet<Arena> arenas) {
         this.arenas = arenas;
         this.runningDuels = new CopyOnWriteArraySet<>();
@@ -30,10 +23,6 @@ public class DuelManager {
 
     public int getRunningDuels(GameMapType gameMapType){
         return (int) this.runningDuels.stream().filter(duel -> duel.getGameMapType() == gameMapType).count();
-    }
-
-    public int getWaitingDuels(GameMapType gameMapType){
-        return (int) this.waitingDuels.stream().filter(duel -> duel.getGameMapType() == gameMapType).count();
     }
 
     public Optional<Duel> getDuelByPlayer(Player player) {
@@ -45,31 +34,33 @@ public class DuelManager {
     }
 
     public void startDuel(GameMapType gameMapType, Player player1, Player player2) {
-        Service.submit(() -> {
-            Duel duel = new Duel(gameMapType, player1, player2);
-            if (getFreeArena().isPresent()) {
-                runningDuels.add(duel);
-                duel.setArena(getFreeArena().get());
-                duel.startDuel();
-                getFreeArena().get().setOccupied(true);
-            } else {
-                waitingDuels.add(duel);
-            }
-        });
+        Duel duel = new Duel(gameMapType, player1, player2);
+
+        getFreeArena().ifPresentOrElse(arena -> {
+            runningDuels.add(duel);
+
+            duel.setArena(arena);
+            duel.startDuel();
+
+            arena.setOccupied(true);
+        }, () -> waitingDuels.add(duel));
     }
 
     public void stopDuel(Duel duel) {
-        Service.submit(() -> {
-            duel.stopDuel();
-            runningDuels.remove(duel);
-            duel.getArena().setOccupied(false);
-            if (!waitingDuels.isEmpty()) {
-                waitingDuels.peek().startDuel();
-                duel.getArena().setOccupied(true);
-                runningDuels.add(duel);
-                waitingDuels.remove(duel);
-            }
-        });
+        duel.stopDuel();
+
+        runningDuels.remove(duel);
+
+        duel.getArena().setOccupied(false);
+
+        if (!waitingDuels.isEmpty()) {
+            waitingDuels.peek().startDuel();
+
+            duel.getArena().setOccupied(true);
+
+            runningDuels.add(duel);
+            waitingDuels.remove(duel);
+        }
     }
 
     public CopyOnWriteArraySet<Arena> getArenas() {
@@ -77,6 +68,6 @@ public class DuelManager {
     }
 
     private Optional<Arena> getFreeArena() {
-        return arenas.stream().filter(arena -> !arena.isOccupied()).findFirst();
+        return arenas.stream().filter(Arena::isFree).findFirst();
     }
 }

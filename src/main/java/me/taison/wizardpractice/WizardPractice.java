@@ -13,6 +13,7 @@ import me.taison.wizardpractice.listener.PlayerQuitListener;
 import me.taison.wizardpractice.service.Service;
 import me.taison.wizardpractice.utilities.AbstractCommand;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.reflections.Reflections;
@@ -93,6 +94,8 @@ public final class WizardPractice extends JavaPlugin {
     @Override
     public void onDisable() {
         getLogger().info("Practice plugin disabling...");
+
+        Bukkit.getOnlinePlayers().forEach(player -> player.kickPlayer("Restart"));
 
         this.practiceUserFactory.saveBoxUsers();
         this.addonFactory.deinitializeAddons();
