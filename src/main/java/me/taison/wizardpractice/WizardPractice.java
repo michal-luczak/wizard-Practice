@@ -7,13 +7,14 @@ import me.taison.wizardpractice.data.storage.MySQLStorage;
 import me.taison.wizardpractice.duelsystem.DuelManager;
 import me.taison.wizardpractice.duelsystem.arena.Arena;
 import me.taison.wizardpractice.duelsystem.queue.QueueDispatcher;
-import me.taison.wizardpractice.listener.InventoryClickList;
-import me.taison.wizardpractice.listener.PlayerJoinListener;
-import me.taison.wizardpractice.listener.PlayerQuitListener;
+import me.taison.wizardpractice.listeners.PlayerDropItemListener;
+import me.taison.wizardpractice.listeners.InventoryClickListener;
+import me.taison.wizardpractice.listeners.PlayerJoinListener;
+import me.taison.wizardpractice.listeners.PlayerQuitListener;
 import me.taison.wizardpractice.service.Service;
 import me.taison.wizardpractice.utilities.AbstractCommand;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.reflections.Reflections;
@@ -43,12 +44,12 @@ public final class WizardPractice extends JavaPlugin {
     public void onEnable() {
         getLogger().info("Practice plugin loading...");
 
+        this.duelManager = new DuelManager(new CopyOnWriteArraySet<>(this.initializeArenas()));
+        this.queueDispatcher = new QueueDispatcher(duelManager);
+
         this.initializeFactories();
         this.initializeListeners();
         this.initializeCommands();
-
-        this.duelManager = new DuelManager(new CopyOnWriteArraySet<>(this.initializeArenas()));
-        this.queueDispatcher = new QueueDispatcher(duelManager);
 
         this.database = new MySQLStorage();
         database.open();
@@ -75,13 +76,14 @@ public final class WizardPractice extends JavaPlugin {
 
     private void initializeListeners() {
         getLogger().info("Initializing listeners..");
-
-        PluginManager pluginManager = Bukkit.getPluginManager();
-
-        pluginManager.registerEvents(new PlayerJoinListener(), this);
-        pluginManager.registerEvents(new PlayerQuitListener(), this);
-
-        pluginManager.registerEvents(new InventoryClickList(), this);
+        for (Class<?> clazz : new Reflections(getClass().getPackageName() + ".listeners").getSubTypesOf(Listener.class)) {
+            try {
+                Listener listener = (Listener) clazz.getDeclaredConstructor().newInstance();
+                getServer().getPluginManager().registerEvents(listener, this);
+            } catch (InstantiationException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     private void initializeFactories() {

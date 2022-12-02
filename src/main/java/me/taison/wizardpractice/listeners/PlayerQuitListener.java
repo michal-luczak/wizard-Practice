@@ -1,4 +1,4 @@
-package me.taison.wizardpractice.listener;
+package me.taison.wizardpractice.listeners;
 
 import me.taison.wizardpractice.WizardPractice;
 import me.taison.wizardpractice.data.factory.PracticeUserFactory;
@@ -22,5 +22,7 @@ public class PlayerQuitListener implements Listener {
         factory.getUserByUniqueIdentifier(event.getPlayer().getUniqueId()).ifPresent(factory::unregisterUser); //TODO To też na razie jest zeby przy testowaniu nie bylo problemow
 
         event.setQuitMessage(StringUtils.color("&c[-] " + event.getPlayer().getName()));
+
+        event.getPlayer().getInventory().clear();
     }
 }

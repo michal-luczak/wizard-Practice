@@ -58,7 +58,6 @@ public class Duel {
         player1.getInventory().setArmorContents(gameMapType.getArmor());
 
         player2.getInventory().clear();
-
         player2.getInventory().setContents(gameMapType.getItems());
         player2.getInventory().setArmorContents(gameMapType.getArmor());
     }

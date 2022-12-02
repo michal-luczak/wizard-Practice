@@ -1,19 +1,17 @@
-package me.taison.wizardpractice.listener;
+package me.taison.wizardpractice.listeners;
 
 import me.taison.wizardpractice.gui.GuiHolder;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryInteractEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 
-public class InventoryClickList implements Listener {
+public class InventoryClickListener implements Listener {
 
     @EventHandler
-    public void handle(InventoryClickEvent e){
+    public void handle(InventoryClickEvent e) {
+        e.setCancelled(true);
         if (e.getWhoClicked() instanceof Player && e.getInventory().getHolder() instanceof GuiHolder) {
-            e.setCancelled(true);
             ((GuiHolder) e.getInventory().getHolder()).getMenu().onInventoryClick(e);
         }
     }

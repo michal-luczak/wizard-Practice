@@ -49,6 +49,17 @@ public class QueueDispatcher {
             duelManager.startDuel(gameMapType, player1, player2);
 
         }
+        player.getInventory().remove(duelManager.getFeather());
+        player.getInventory().setItem(8, duelManager.getBarrier());
+        return true;
+    }
+
+    public boolean removePlayerFromQueue(Player player) {
+        if (getPlayerQueue(player).isEmpty())
+            return false;
+        getPlayerQueue(player).get().removePlayerFromQueue(player);
+        player.getInventory().setItem(4, duelManager.getFeather());
+        player.getInventory().remove(duelManager.getBarrier());
         return true;
     }
 

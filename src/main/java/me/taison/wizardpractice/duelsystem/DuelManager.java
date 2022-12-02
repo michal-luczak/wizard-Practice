@@ -2,8 +2,13 @@ package me.taison.wizardpractice.duelsystem;
 
 import me.taison.wizardpractice.duelsystem.arena.Arena;
 import me.taison.wizardpractice.gui.gametypeselector.GameMapType;
-import me.taison.wizardpractice.service.Service;
+import me.taison.wizardpractice.utilities.chat.StringUtils;
+import me.taison.wizardpractice.utilities.items.ItemBuilder;
+import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedDeque;
@@ -15,10 +20,25 @@ public class DuelManager {
     private final ConcurrentLinkedDeque<Duel> waitingDuels;
     private final CopyOnWriteArraySet<Arena> arenas;
 
+    private final ItemStack feather = new ItemBuilder(Material.FEATHER).addItemFlag(ItemFlag.HIDE_ENCHANTS)
+                .addEnchant(Enchantment.ARROW_DAMAGE, 1).setName(StringUtils.color("&5&lWybór duela")).
+            addLoreLine(StringUtils.color("&dKliknij aby zagrać!")).toItemStack();
+    private final ItemStack barrier = new ItemBuilder(Material.BARRIER).addItemFlag(ItemFlag.HIDE_ENCHANTS)
+            .addEnchant(Enchantment.ARROW_DAMAGE, 1).setName(StringUtils.color("&4&lAnulowanie duela")).
+            addLoreLine(StringUtils.color("&cKliknij aby anulować!")).toItemStack();
+
     public DuelManager(CopyOnWriteArraySet<Arena> arenas) {
         this.arenas = arenas;
         this.runningDuels = new CopyOnWriteArraySet<>();
         this.waitingDuels = new ConcurrentLinkedDeque<>();
+    }
+
+
+    public ItemStack getFeather() {
+        return feather;
+    }
+    public ItemStack getBarrier() {
+        return barrier;
     }
 
     public int getRunningDuels(GameMapType gameMapType){
