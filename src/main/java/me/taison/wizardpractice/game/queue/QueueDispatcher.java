@@ -44,6 +44,10 @@ public class QueueDispatcher {
             return false;
 
         getQueueByGameType(gameMapType).get().addTeamToQueue(user.getTeam());
+
+        user.getAsPlayer().getInventory().remove(duelManager.getFeather());
+        user.getAsPlayer().getInventory().setItem(8, duelManager.getBarrier());
+
         if (getQueueByGameType(gameMapType).get().getTeamsInQueue().size() >= 2) {
 
             Team team1 = getQueueByGameType(gameMapType).get().getTeamsInQueue().peek();
@@ -55,8 +59,6 @@ public class QueueDispatcher {
             duelManager.startDuel(gameMapType, team1, team2);
 
         }
-        user.getAsPlayer().getInventory().remove(duelManager.getFeather());
-        user.getAsPlayer().getInventory().setItem(8, duelManager.getBarrier());
         return true;
     }
 

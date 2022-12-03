@@ -50,6 +50,7 @@ public class GameSelectorGuiItem extends GuiItem {
         StringUtils.findAndReplace(description, "%queuedPlayer", String.valueOf(queuePlayers));
         StringUtils.findAndReplace(description, "%currentPlaying", String.valueOf(duelManager.getRunningDuels(gameMapType)));
 
+        meta.setDisplayName(gameMapType.getName());
         meta.setLore(description);
 
         icon.setItemMeta(meta);

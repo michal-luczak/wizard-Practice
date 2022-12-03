@@ -1,11 +1,14 @@
 package me.taison.wizardpractice.game;
 
 import me.taison.wizardpractice.data.user.Team;
+import me.taison.wizardpractice.data.user.User;
 import me.taison.wizardpractice.data.user.impl.TeamImpl;
 import me.taison.wizardpractice.game.arena.Arena;
 import me.taison.wizardpractice.game.arena.ArenaState;
 import me.taison.wizardpractice.gui.gametypeselector.GameMapType;
 import org.apache.commons.lang3.Validate;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 public class Duel {
 
@@ -64,12 +67,22 @@ public class Duel {
 
     private void giveItems() {
         team1.getTeam().forEach(user -> {
-            user.getAsPlayer().getInventory().clear();
+            Player teamPlayer = user.getAsPlayer();
+
+            teamPlayer.getInventory().clear();
+            teamPlayer.updateInventory();
+
             user.getAsPlayer().getInventory().setContents(gameMapType.getItems());
             user.getAsPlayer().getInventory().setArmorContents(gameMapType.getArmor());
+
         });
+
         team2.getTeam().forEach(user -> {
-            user.getAsPlayer().getInventory().clear();
+            Player teamPlayer = user.getAsPlayer();
+
+            teamPlayer.getInventory().clear();
+            teamPlayer.updateInventory();
+
             user.getAsPlayer().getInventory().setContents(gameMapType.getItems());
             user.getAsPlayer().getInventory().setArmorContents(gameMapType.getArmor());
         });

@@ -12,6 +12,8 @@ public interface Team {
 
     User getLeader();
 
+    void setLeader(User leader);
+
     void invitePlayer(User user);
 
     void kickPlayer(User user);

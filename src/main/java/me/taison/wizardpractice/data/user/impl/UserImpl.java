@@ -31,8 +31,6 @@ public class UserImpl implements User {
         this.name = resultSet.getString("name");
     }
 
-
-
     @Override
     public UUID getUniqueIdentifier() {
         return this.uniqueIdentifier;

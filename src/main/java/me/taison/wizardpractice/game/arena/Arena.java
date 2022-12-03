@@ -18,6 +18,8 @@ public enum Arena {
         this.name = name;
         this.location = location;
         this.world = world;
+
+        this.arenaState = ArenaState.FREE;
     }
 
     public String getName() {

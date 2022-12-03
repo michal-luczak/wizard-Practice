@@ -4,6 +4,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import me.taison.wizardpractice.data.user.Team;
 import me.taison.wizardpractice.data.user.User;
+import me.taison.wizardpractice.utilities.chat.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,13 @@ public class TeamImpl implements Team {
     @Override
     public User getLeader() {
         return this.leader;
+    }
+
+    @Override
+    public void setLeader(User leader) {
+        this.leader = leader;
+
+        leader.sendMessage(StringUtils.color("&aStworzono ci druzyne oraz zostales jej liderem. Mozesz zarzadzac osobami w druzynie pod komenda /druzyna."));
     }
 
     @Override

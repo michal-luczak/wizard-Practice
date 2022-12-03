@@ -45,14 +45,15 @@ public class DuelManager {
         return barrier;
     }
 
-    public int getRunningDuels(GameMapType gameMapType){
+    public int getRunningDuels(GameMapType gameMapType) {
         return (int) this.runningDuels.stream().filter(duel -> duel.getGameMapType() == gameMapType).count();
     }
 
     public Optional<Duel> getDuelByUser(User user) {
         for (Duel duel : this.runningDuels) {
-            if (duel.getTeam1().getTeam().contains(user))
+            if (duel.getTeam1().getTeam().contains(user) || duel.getTeam2().getTeam().contains(user)) {
                 return Optional.of(duel);
+            }
         }
         return Optional.empty();
     }
@@ -87,6 +88,6 @@ public class DuelManager {
     }
 
     private Optional<Arena> getFreeArena() {
-        return arenas.stream().filter(arena -> arena.getArenaState().equals(ArenaState.FREE)).findFirst();
+        return arenas.stream().filter(arena -> arena.getArenaState() == ArenaState.FREE).findFirst();
     }
 }

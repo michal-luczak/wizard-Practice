@@ -22,13 +22,16 @@ public class InventoryClickListener implements Listener {
 
         DuelManager duelManager = WizardPractice.getSingleton().getDuelManager();
         UserFactory userFactory = WizardPractice.getSingleton().getUserFactory();
-        if (userFactory.getUserByUniqueIdentifier(e.getWhoClicked().getUniqueId()).isEmpty())
+
+        if (userFactory.getUserByUniqueIdentifier(e.getWhoClicked().getUniqueId()).isEmpty()) {
             return;
+        }
 
         User user = userFactory.getUserByUniqueIdentifier(e.getWhoClicked().getUniqueId()).get();
 
-        if (duelManager.getDuelByUser(user).isEmpty())
+        if (duelManager.getDuelByUser(user).isEmpty() && !e.getWhoClicked().isOp()) {
             e.setCancelled(true);
+        }
 
         if (e.getInventory().getHolder() instanceof GuiHolder) {
             e.setCancelled(true);

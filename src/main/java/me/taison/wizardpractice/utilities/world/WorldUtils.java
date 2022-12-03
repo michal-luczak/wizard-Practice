@@ -10,7 +10,10 @@ import java.util.stream.Collectors;
 public class WorldUtils {
 
     public static List<Player> getNearby(Location location, double radius){
-        return Objects.requireNonNull(location.getWorld()).getNearbyEntities(location, radius, radius, radius).stream().filter(Player.class::isInstance).map(e -> (Player) e).collect(Collectors.toList());
+        return Objects.requireNonNull(location.getWorld()).getNearbyEntities(location, radius, radius, radius).stream()
+                .filter(Player.class::isInstance)
+                .map(Player.class::cast)
+                .collect(Collectors.toList());
     }
 
 }

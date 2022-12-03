@@ -6,7 +6,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 public abstract class AbstractCommand implements CommandExecutor {
 
@@ -21,7 +20,7 @@ public abstract class AbstractCommand implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if(!(sender.hasPermission(commandInfo.permission()))){
             sender.sendMessage(StringUtils.color("&cNie posiadasz uprawnien do tej komendy! (" + commandInfo.permission() + ")"));
             return true;
