@@ -6,6 +6,7 @@ import me.taison.wizardpractice.data.factory.UserFactory;
 import me.taison.wizardpractice.data.user.User;
 import me.taison.wizardpractice.game.DuelManager;
 import me.taison.wizardpractice.utilities.chat.StringUtils;
+import net.kyori.adventure.text.Component;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -22,8 +23,8 @@ public class PlayerQuitListener implements Listener {
         if (userFactory.getUserByUniqueIdentifier(event.getPlayer().getUniqueId()).isPresent()) {
             User user = userFactory.getUserByUniqueIdentifier(event.getPlayer().getUniqueId()).get();
 
-            if (duelManager.getDuelByUser(user).isPresent())
-                duelManager.stopDuel(duelManager.getDuelByUser(user).get());
+            duelManager.getDuelByUser(user).ifPresent(duelManager::stopDuel);
+
         }
 
         userFactory.getUserByUniqueIdentifier(event.getPlayer().getUniqueId()).ifPresent(user -> {
@@ -31,8 +32,8 @@ public class PlayerQuitListener implements Listener {
 
             userFactory.unregisterUser(user);
 
-        }); //TODO To też na razie jest zeby przy testowaniu nie bylo problemow
+        });
 
-        event.setQuitMessage(StringUtils.color("&c[-] " + event.getPlayer().getName()));
+        event.quitMessage(Component.text(StringUtils.color("&c[-] " + event.getPlayer().getName())));
     }
 }

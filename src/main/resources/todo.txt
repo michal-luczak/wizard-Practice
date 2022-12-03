@@ -1,0 +1,12 @@
+tajson:
+- przerobic na listy
+-
+-
+-
+
+
+lux:
+- factory areny, interfejs
+-
+-
+-

@@ -10,11 +10,13 @@ import me.taison.wizardpractice.data.storage.IDatabase;
 import me.taison.wizardpractice.data.storage.MySQLStorage;
 import me.taison.wizardpractice.game.DuelManager;
 import me.taison.wizardpractice.game.arena.Arena;
+import me.taison.wizardpractice.game.arena.impl.ArenaImpl;
 import me.taison.wizardpractice.game.queue.QueueDispatcher;
 import me.taison.wizardpractice.service.Service;
 import me.taison.wizardpractice.utilities.AbstractCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.GameRule;
+import org.bukkit.Location;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.reflections.Reflections;
@@ -36,6 +38,8 @@ public final class WizardPractice extends JavaPlugin {
 
     private DuelManager duelManager;
     private QueueDispatcher queueDispatcher;
+
+    private Location SPAWN_LOCATION;
 
     @Override
     public void onLoad(){
@@ -60,11 +64,9 @@ public final class WizardPractice extends JavaPlugin {
         getServer().getWorlds().forEach(world -> world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false));
         getServer().getWorlds().forEach(world -> world.setGameRule(GameRule.DO_WEATHER_CYCLE, false));
 
-        getLogger().info("Practice plugin loading successfully.");
-    }
+        this.SPAWN_LOCATION = new Location(Bukkit.getServer().getWorld("world"), -2.5, 124, -53.5);
 
-    private Set<Arena> initializeArenas() {
-        return Set.of(Arena.PRZYKLADOWA_ARENA);
+        getLogger().info("Practice plugin loading successfully.");
     }
 
     private void initializeCommands() {
@@ -77,7 +79,6 @@ public final class WizardPractice extends JavaPlugin {
                 e.printStackTrace();
             }
         }
-        //TODO Potrzeba wygodniejszego API do komend niz aktualnie jest.
     }
 
     private void initializeListeners() {
@@ -101,6 +102,16 @@ public final class WizardPractice extends JavaPlugin {
         this.teamFactory = new TeamFactoryImpl(this);
     }
 
+    private void initializeArenas(){
+        Arena frostArena = new ArenaImpl("FrostArena")
+                .setWorld(Bukkit.getWorld("world"))
+                .addSpawnLocation(-2.5, 90, -22.5, 0, 0)
+                .addSpawnLocation(-3.5, 90, 20.5, 180, 0)
+                .build();
+
+
+    }
+
     @Override
     public void onDisable() {
         getLogger().info("Practice plugin disabling...");
@@ -118,6 +129,10 @@ public final class WizardPractice extends JavaPlugin {
 
     public static WizardPractice getSingleton() {
         return singleton;
+    }
+
+    public Location getSpawnLocation() {
+        return this.SPAWN_LOCATION;
     }
 
     public UserFactory getUserFactory() {

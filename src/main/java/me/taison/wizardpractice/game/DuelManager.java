@@ -2,15 +2,13 @@ package me.taison.wizardpractice.game;
 
 import me.taison.wizardpractice.data.user.Team;
 import me.taison.wizardpractice.data.user.User;
-import me.taison.wizardpractice.data.user.impl.TeamImpl;
-import me.taison.wizardpractice.game.arena.Arena;
+import me.taison.wizardpractice.game.arena.impl.ArenaImpl;
 import me.taison.wizardpractice.game.arena.ArenaState;
 import me.taison.wizardpractice.gui.gametypeselector.GameMapType;
 import me.taison.wizardpractice.utilities.chat.StringUtils;
 import me.taison.wizardpractice.utilities.items.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
@@ -22,7 +20,7 @@ public class DuelManager {
 
     private final CopyOnWriteArraySet<Duel> runningDuels;
     private final ConcurrentLinkedDeque<Duel> waitingDuels;
-    private final CopyOnWriteArraySet<Arena> arenas;
+    private final CopyOnWriteArraySet<ArenaImpl> arenas;
 
     private final ItemStack feather = new ItemBuilder(Material.FEATHER).addItemFlag(ItemFlag.HIDE_ENCHANTS)
                 .addEnchant(Enchantment.ARROW_DAMAGE, 1).setName(StringUtils.color("&5&lWybór duela")).
@@ -31,7 +29,7 @@ public class DuelManager {
             .addEnchant(Enchantment.ARROW_DAMAGE, 1).setName(StringUtils.color("&4&lAnulowanie duela")).
             addLoreLine(StringUtils.color("&cKliknij aby anulować!")).toItemStack();
 
-    public DuelManager(CopyOnWriteArraySet<Arena> arenas) {
+    public DuelManager(CopyOnWriteArraySet<ArenaImpl> arenas) {
         this.arenas = arenas;
         this.runningDuels = new CopyOnWriteArraySet<>();
         this.waitingDuels = new ConcurrentLinkedDeque<>();
@@ -83,11 +81,11 @@ public class DuelManager {
         }
     }
 
-    public CopyOnWriteArraySet<Arena> getArenas() {
+    public CopyOnWriteArraySet<ArenaImpl> getArenas() {
         return arenas;
     }
 
-    private Optional<Arena> getFreeArena() {
+    private Optional<ArenaImpl> getFreeArena() {
         return arenas.stream().filter(arena -> arena.getArenaState() == ArenaState.FREE).findFirst();
     }
 }
