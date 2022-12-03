@@ -20,14 +20,14 @@ public class PlayerQuitListener implements Listener {
 
         DuelManager duelManager = WizardPractice.getSingleton().getDuelManager();
 
-        if (userFactory.getUserByUniqueIdentifier(event.getPlayer().getUniqueId()).isPresent()) {
-            User user = userFactory.getUserByUniqueIdentifier(event.getPlayer().getUniqueId()).get();
+        if (userFactory.getByUniqueId(event.getPlayer().getUniqueId()).isPresent()) {
+            User user = userFactory.getByUniqueId(event.getPlayer().getUniqueId()).get();
 
             duelManager.getDuelByUser(user).ifPresent(duelManager::stopDuel);
 
         }
 
-        userFactory.getUserByUniqueIdentifier(event.getPlayer().getUniqueId()).ifPresent(user -> {
+        userFactory.getByUniqueId(event.getPlayer().getUniqueId()).ifPresent(user -> {
             teamFactory.unregister(user.getTeam());
 
             userFactory.unregisterUser(user);

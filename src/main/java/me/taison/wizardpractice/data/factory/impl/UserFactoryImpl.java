@@ -41,7 +41,7 @@ public class UserFactoryImpl implements UserFactory {
     }
 
     @Override
-    public Optional<User> getUserByUniqueIdentifier(UUID uniqueIdentifier){
+    public Optional<User> getByUniqueId(UUID uniqueIdentifier){
         return Optional.ofNullable(this.practiceUserMap.get(uniqueIdentifier));
     }
 

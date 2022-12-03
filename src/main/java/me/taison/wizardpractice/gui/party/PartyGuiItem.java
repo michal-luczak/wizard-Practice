@@ -2,20 +2,13 @@ package me.taison.wizardpractice.gui.party;
 
 import me.taison.wizardpractice.WizardPractice;
 import me.taison.wizardpractice.data.factory.UserFactory;
-import me.taison.wizardpractice.data.user.User;
-import me.taison.wizardpractice.game.DuelManager;
-import me.taison.wizardpractice.game.queue.QueueDispatcher;
 import me.taison.wizardpractice.gui.GuiItem;
 import me.taison.wizardpractice.gui.event.GuiItemClickEvent;
-import me.taison.wizardpractice.gui.gametypeselector.GameMapType;
-import me.taison.wizardpractice.gui.gametypeselector.GameSelectorGui;
-import me.taison.wizardpractice.utilities.chat.StringUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Collections;
-import java.util.List;
 
 public class PartyGuiItem extends GuiItem {
 
@@ -51,7 +44,7 @@ public class PartyGuiItem extends GuiItem {
 
         UserFactory userFactory = WizardPractice.getSingleton().getUserFactory();
 
-        userFactory.getUserByUniqueIdentifier(player.getUniqueId()).ifPresent(user -> {
+        userFactory.getByUniqueId(player.getUniqueId()).ifPresent(user -> {
             switch(this.partyItem){
                 case ADD_FRIEND -> {
 

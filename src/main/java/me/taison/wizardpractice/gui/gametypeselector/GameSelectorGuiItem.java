@@ -63,10 +63,10 @@ public class GameSelectorGuiItem extends GuiItem {
         Player player = event.getPlayer();
 
         UserFactory userFactory = WizardPractice.getSingleton().getUserFactory();
-        if (userFactory.getUserByUniqueIdentifier(event.getPlayer().getUniqueId()).isEmpty())
+        if (userFactory.getByUniqueId(event.getPlayer().getUniqueId()).isEmpty())
             return;
 
-        User user = userFactory.getUserByUniqueIdentifier(event.getPlayer().getUniqueId()).get();
+        User user = userFactory.getByUniqueId(event.getPlayer().getUniqueId()).get();
 
         switch (this.gameMapType) {
             case DIAMOND_GAME -> {

@@ -24,8 +24,8 @@ public class PlayerInteractListener implements Listener {
         } else if (event.getItem().getType().equals(Material.BARRIER)) {
             event.setCancelled(true);
             UserFactory userFactory = WizardPractice.getSingleton().getUserFactory();
-            if (userFactory.getUserByUniqueIdentifier(event.getPlayer().getUniqueId()).isPresent())
-                queueDispatcher.removePlayerFromQueue(userFactory.getUserByUniqueIdentifier(event.getPlayer().getUniqueId()).get());
+            if (userFactory.getByUniqueId(event.getPlayer().getUniqueId()).isPresent())
+                queueDispatcher.removePlayerFromQueue(userFactory.getByUniqueId(event.getPlayer().getUniqueId()).get());
         }
     }
 }

@@ -1,4 +1,7 @@
 package me.taison.wizardpractice.data.factory;
 
-public class ArenaFactory {
+public interface ArenaFactory {
+
+
+
 }

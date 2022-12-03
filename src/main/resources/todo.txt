@@ -7,6 +7,6 @@ tajson:
 
 lux:
 - factory areny, interfejs
--
+- zamiana getUniqueIdentifier na getUniqueId [DONE]
 -
 -

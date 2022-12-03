@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public interface UserFactory {
 
-    Optional<User> getUserByUniqueIdentifier(UUID uniqueIdentifier);
+    Optional<User> getByUniqueId(UUID uniqueIdentifier);
 
     Optional<User> getUserByName(String name);
 
