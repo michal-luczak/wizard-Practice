@@ -7,6 +7,7 @@ import me.taison.wizardpractice.data.storage.MySQLStorage;
 import me.taison.wizardpractice.duelsystem.DuelManager;
 import me.taison.wizardpractice.duelsystem.arena.Arena;
 import me.taison.wizardpractice.duelsystem.queue.QueueDispatcher;
+import me.taison.wizardpractice.gui.factory.StaticGuiFactory;
 import me.taison.wizardpractice.listeners.PlayerDropItemListener;
 import me.taison.wizardpractice.listeners.InventoryClickListener;
 import me.taison.wizardpractice.listeners.PlayerJoinListener;
@@ -28,6 +29,8 @@ public final class WizardPractice extends JavaPlugin {
     private static WizardPractice singleton;
 
     private PracticeUserFactory practiceUserFactory;
+
+    private StaticGuiFactory staticGuiFactory;
     private AddonFactory addonFactory;
 
     private IDatabase database;
@@ -91,6 +94,7 @@ public final class WizardPractice extends JavaPlugin {
 
         this.practiceUserFactory = new PracticeUserFactory(this);
         this.addonFactory = new AddonFactory(this);
+        this.staticGuiFactory = new StaticGuiFactory();
     }
 
     @Override
@@ -106,6 +110,10 @@ public final class WizardPractice extends JavaPlugin {
         Service.shutdown();
 
         getLogger().info("Practice plugin disabled successfully. Goodbye!");
+    }
+
+    public StaticGuiFactory getStaticGuiFactory() {
+        return staticGuiFactory;
     }
 
     public static WizardPractice getSingleton() {

@@ -11,14 +11,10 @@ import org.bukkit.entity.Player;
 @ICommandInfo(command = "gui")
 public class GuiTestCommand extends AbstractCommand {
 
-    private final PracticeUserFactory practiceUserFactory = WizardPractice.getSingleton().getBoxUserFactory();
-
     @Override
     public void onExecute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
 
-        var practiceUser = practiceUserFactory.getUserByUniqueIdentifier(player.getUniqueId()).orElseThrow(IllegalStateException::new);
-
-        new GameSelectorGui(practiceUser).open(player);
+        WizardPractice.getSingleton().getStaticGuiFactory().getGameSelectorGui().open(player);
     }
 }

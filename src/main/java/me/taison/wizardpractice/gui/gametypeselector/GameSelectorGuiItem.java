@@ -16,9 +16,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class GameSelectorGuiItem extends GuiItem {
-
-    private final PracticeUser practiceUser;
-
     private final GameMapType gameMapType;
 
     private final GameSelectorGui correspondigGui;
@@ -27,10 +24,8 @@ public class GameSelectorGuiItem extends GuiItem {
 
     private final QueueDispatcher queueDispatcher;
 
-    public GameSelectorGuiItem(PracticeUser practiceUser, GameMapType gameMapType, GameSelectorGui correspondigGui){
+    public GameSelectorGuiItem(GameMapType gameMapType, GameSelectorGui correspondigGui){
         super(gameMapType.getName(), gameMapType.getItemStack());
-
-        this.practiceUser = practiceUser;
 
         this.gameMapType = gameMapType;
 

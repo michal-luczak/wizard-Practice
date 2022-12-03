@@ -30,8 +30,6 @@ public enum GameMapType {
 
     private final ItemStack itemStack;
 
-
-
     private final ItemStack[] armor;
 
     private final ItemStack[] items;

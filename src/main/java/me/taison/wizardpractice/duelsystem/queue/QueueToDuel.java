@@ -12,6 +12,7 @@ public class QueueToDuel {
 
     public QueueToDuel(GameMapType gameMapType) {
         this.gameMapType = gameMapType;
+
         this.playersInQueue = new ConcurrentLinkedQueue<>();
     }
 

@@ -11,7 +11,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 public class PlayerInteractListener implements Listener {
 
-    private final PracticeUserFactory practiceUserFactory = WizardPractice.getSingleton().getBoxUserFactory();
     private final QueueDispatcher queueDispatcher = WizardPractice.getSingleton().getQueueDispatcher();
 
     @EventHandler
@@ -20,9 +19,8 @@ public class PlayerInteractListener implements Listener {
             return;
         if (event.getItem().getType().equals(Material.FEATHER)) {
             event.setCancelled(true);
-            var practiceUser = practiceUserFactory.getUserByUniqueIdentifier(event.getPlayer().getUniqueId()).orElseThrow(IllegalStateException::new);
 
-            new GameSelectorGui(practiceUser).open(event.getPlayer());
+            WizardPractice.getSingleton().getStaticGuiFactory().getGameSelectorGui().open(event.getPlayer());
         } else if (event.getItem().getType().equals(Material.BARRIER)) {
             event.setCancelled(true);
 

@@ -74,6 +74,10 @@ public abstract class GuiMenu {
         player.openInventory(inventory);
     }
 
+    public void updateViewers(){
+
+    }
+
     public void update(Player player) {
         Inventory inventory = player.getOpenInventory().getTopInventory();
 

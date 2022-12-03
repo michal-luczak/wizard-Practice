@@ -16,7 +16,7 @@ public class GameSelectorGui extends GuiMenu {
     private final EmptySlotFillerGuiItem GRAY_GLASS = new EmptySlotFillerGuiItem(" ", new ItemStack(Material.GRAY_STAINED_GLASS_PANE, 1));
 
 
-    public GameSelectorGui(PracticeUser targetUser) {
+    public GameSelectorGui() {
         super(StringUtils.color("&aWybierz rodzaj pojedynku"), Size.SIX_LINE);
 
         IntStream.range(0, 54).forEach(blackGrayColor -> {
@@ -27,6 +27,6 @@ public class GameSelectorGui extends GuiMenu {
             setItem(blackGrayColor, this.GRAY_GLASS);
         });
         Arrays.stream(GameMapType.values()).forEach(gameMapType ->
-                setItem(gameMapType.getSlotId(), new GameSelectorGuiItem(targetUser, gameMapType, this)));
+                setItem(gameMapType.getSlotId(), new GameSelectorGuiItem(gameMapType, this)));
     }
 }
