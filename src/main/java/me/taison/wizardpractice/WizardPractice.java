@@ -1,22 +1,20 @@
 package me.taison.wizardpractice;
 
 import me.taison.wizardpractice.data.factory.AddonFactory;
-import me.taison.wizardpractice.data.factory.PracticeUserFactory;
+import me.taison.wizardpractice.data.factory.TeamFactory;
+import me.taison.wizardpractice.data.factory.UserFactory;
+import me.taison.wizardpractice.data.factory.impl.AddonFactoryImpl;
+import me.taison.wizardpractice.data.factory.impl.TeamFactoryImpl;
+import me.taison.wizardpractice.data.factory.impl.UserFactoryImpl;
 import me.taison.wizardpractice.data.storage.IDatabase;
 import me.taison.wizardpractice.data.storage.MySQLStorage;
-import me.taison.wizardpractice.duelsystem.DuelManager;
-import me.taison.wizardpractice.duelsystem.arena.Arena;
-import me.taison.wizardpractice.duelsystem.queue.QueueDispatcher;
-import me.taison.wizardpractice.gui.factory.StaticGuiFactory;
-import me.taison.wizardpractice.listeners.PlayerDropItemListener;
-import me.taison.wizardpractice.listeners.InventoryClickListener;
-import me.taison.wizardpractice.listeners.PlayerJoinListener;
-import me.taison.wizardpractice.listeners.PlayerQuitListener;
+import me.taison.wizardpractice.game.DuelManager;
+import me.taison.wizardpractice.game.arena.Arena;
+import me.taison.wizardpractice.game.queue.QueueDispatcher;
 import me.taison.wizardpractice.service.Service;
 import me.taison.wizardpractice.utilities.AbstractCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.reflections.Reflections;
 
@@ -28,9 +26,9 @@ public final class WizardPractice extends JavaPlugin {
 
     private static WizardPractice singleton;
 
-    private PracticeUserFactory practiceUserFactory;
+    private UserFactory userFactory;
 
-    private StaticGuiFactory staticGuiFactory;
+    private TeamFactory teamFactory;
     private AddonFactory addonFactory;
 
     private IDatabase database;
@@ -92,9 +90,10 @@ public final class WizardPractice extends JavaPlugin {
     private void initializeFactories() {
         getLogger().info("Initializing factories..");
 
-        this.practiceUserFactory = new PracticeUserFactory(this);
-        this.addonFactory = new AddonFactory(this);
-        this.staticGuiFactory = new StaticGuiFactory();
+        this.userFactory = new UserFactoryImpl(this);
+        this.addonFactory = new AddonFactoryImpl(this);
+
+        this.teamFactory = new TeamFactoryImpl(this);
     }
 
     @Override
@@ -103,7 +102,7 @@ public final class WizardPractice extends JavaPlugin {
 
         Bukkit.getOnlinePlayers().forEach(player -> player.kickPlayer("Restart"));
 
-        this.practiceUserFactory.saveBoxUsers();
+        this.userFactory.saveBoxUsers();
         this.addonFactory.deinitializeAddons();
 
         database.close();
@@ -112,16 +111,12 @@ public final class WizardPractice extends JavaPlugin {
         getLogger().info("Practice plugin disabled successfully. Goodbye!");
     }
 
-    public StaticGuiFactory getStaticGuiFactory() {
-        return staticGuiFactory;
-    }
-
     public static WizardPractice getSingleton() {
         return singleton;
     }
 
-    public PracticeUserFactory getBoxUserFactory() {
-        return practiceUserFactory;
+    public UserFactory getUserFactory() {
+        return userFactory;
     }
 
     public AddonFactory getAddonFactory() {

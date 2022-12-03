@@ -1,18 +1,15 @@
 package me.taison.wizardpractice.gui.gametypeselector;
 
 import me.taison.wizardpractice.WizardPractice;
-import me.taison.wizardpractice.data.impl.PracticeUser;
-import me.taison.wizardpractice.duelsystem.DuelManager;
-import me.taison.wizardpractice.duelsystem.queue.QueueDispatcher;
+import me.taison.wizardpractice.game.DuelManager;
+import me.taison.wizardpractice.game.queue.QueueDispatcher;
 import me.taison.wizardpractice.gui.GuiItem;
-import me.taison.wizardpractice.gui.GuiMenu;
 import me.taison.wizardpractice.gui.event.GuiItemClickEvent;
 import me.taison.wizardpractice.utilities.chat.StringUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class GameSelectorGuiItem extends GuiItem {

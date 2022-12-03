@@ -1,6 +1,5 @@
 package me.taison.wizardpractice.gui.gametypeselector;
 
-import me.taison.wizardpractice.data.impl.PracticeUser;
 import me.taison.wizardpractice.gui.EmptySlotFillerGuiItem;
 import me.taison.wizardpractice.gui.GuiMenu;
 import me.taison.wizardpractice.utilities.chat.StringUtils;

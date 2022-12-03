@@ -1,6 +1,6 @@
 package me.taison.wizardpractice.addons.impl;
 
-import me.taison.wizardpractice.addons.IAddonController;
+import me.taison.wizardpractice.addons.AddonController;
 import me.taison.wizardpractice.utilities.chat.StringUtils;
 import me.taison.wizardpractice.utilities.items.ItemBuilder;
 import me.taison.wizardpractice.utilities.items.ItemStackUtils;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class MagicChestAddon implements IAddonController {
+public class MagicChestAddon implements AddonController {
 
     private List<MagicChest> randomItems;
 

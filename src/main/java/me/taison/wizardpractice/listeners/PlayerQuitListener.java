@@ -1,8 +1,8 @@
 package me.taison.wizardpractice.listeners;
 
 import me.taison.wizardpractice.WizardPractice;
-import me.taison.wizardpractice.data.factory.PracticeUserFactory;
-import me.taison.wizardpractice.duelsystem.DuelManager;
+import me.taison.wizardpractice.data.factory.UserFactory;
+import me.taison.wizardpractice.game.DuelManager;
 import me.taison.wizardpractice.utilities.chat.StringUtils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,7 +17,7 @@ public class PlayerQuitListener implements Listener {
             duelManager.stopDuel(duelManager.getDuelByPlayer(event.getPlayer()).get());
         }
 
-        PracticeUserFactory factory = WizardPractice.getSingleton().getBoxUserFactory();
+        UserFactory factory = WizardPractice.getSingleton().getUserFactory();
 
         factory.getUserByUniqueIdentifier(event.getPlayer().getUniqueId()).ifPresent(factory::unregisterUser); //TODO To też na razie jest zeby przy testowaniu nie bylo problemow
 

@@ -19,8 +19,8 @@ public abstract class GuiItem {
     private final ItemStack icon;
 
     public GuiItem(String name, List<String> lores, ItemStack icon) {
-        Validate.isTrue(name != null, "Name cannot be null!");
-        Validate.isTrue(icon != null, "Icon cannot be null!");
+        Validate.notNull(name, "Name cannot be null!");
+        Validate.notNull(icon, "Icon cannot be null!");
 
         this.name = StringUtils.color(name);
         this.lores = StringUtils.color(lores);

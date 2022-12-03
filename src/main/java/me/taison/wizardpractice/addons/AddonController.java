@@ -1,6 +1,6 @@
 package me.taison.wizardpractice.addons;
 
-public interface IAddonController {
+public interface AddonController {
 
     void initialize();
 

@@ -1,4 +1,4 @@
-package me.taison.wizardpractice.duelsystem.arena;
+package me.taison.wizardpractice.game.arena;
 
 import me.taison.wizardpractice.utilities.chat.StringUtils;
 

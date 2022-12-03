@@ -1,4 +1,4 @@
-package me.taison.wizardpractice.duelsystem.queue;
+package me.taison.wizardpractice.game.queue;
 
 import me.taison.wizardpractice.gui.gametypeselector.GameMapType;
 import org.bukkit.entity.Player;

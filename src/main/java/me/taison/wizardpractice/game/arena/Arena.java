@@ -1,4 +1,4 @@
-package me.taison.wizardpractice.duelsystem.arena;
+package me.taison.wizardpractice.game.arena;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

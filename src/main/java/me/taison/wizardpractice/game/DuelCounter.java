@@ -1,9 +1,7 @@
-package me.taison.wizardpractice.duelsystem;
+package me.taison.wizardpractice.game;
 
 import me.taison.wizardpractice.WizardPractice;
 import me.taison.wizardpractice.utilities.chat.StringUtils;
-import net.md_5.bungee.api.ChatMessageType;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 

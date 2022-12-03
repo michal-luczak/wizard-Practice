@@ -1,8 +1,7 @@
 package me.taison.wizardpractice.listeners;
 
 import me.taison.wizardpractice.WizardPractice;
-import me.taison.wizardpractice.data.factory.PracticeUserFactory;
-import me.taison.wizardpractice.duelsystem.queue.QueueDispatcher;
+import me.taison.wizardpractice.game.queue.QueueDispatcher;
 import me.taison.wizardpractice.gui.gametypeselector.GameSelectorGui;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -20,7 +19,7 @@ public class PlayerInteractListener implements Listener {
         if (event.getItem().getType().equals(Material.FEATHER)) {
             event.setCancelled(true);
 
-            WizardPractice.getSingleton().getStaticGuiFactory().getGameSelectorGui().open(event.getPlayer());
+            new GameSelectorGui().open(event.getPlayer());
         } else if (event.getItem().getType().equals(Material.BARRIER)) {
             event.setCancelled(true);
 

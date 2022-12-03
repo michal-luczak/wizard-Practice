@@ -2,7 +2,6 @@ package me.taison.wizardpractice.commands.command;
 
 import me.taison.wizardpractice.WizardPractice;
 import me.taison.wizardpractice.commands.ICommandInfo;
-import me.taison.wizardpractice.data.factory.PracticeUserFactory;
 import me.taison.wizardpractice.gui.gametypeselector.GameSelectorGui;
 import me.taison.wizardpractice.utilities.AbstractCommand;
 import org.bukkit.command.CommandSender;
@@ -15,6 +14,6 @@ public class GuiTestCommand extends AbstractCommand {
     public void onExecute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
 
-        WizardPractice.getSingleton().getStaticGuiFactory().getGameSelectorGui().open(player);
+        new GameSelectorGui().open(player);
     }
 }

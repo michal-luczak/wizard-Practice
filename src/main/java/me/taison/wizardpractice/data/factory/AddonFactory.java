@@ -1,31 +1,9 @@
 package me.taison.wizardpractice.data.factory;
 
+public interface AddonFactory {
 
-import me.taison.wizardpractice.WizardPractice;
-import me.taison.wizardpractice.addons.IAddonController;
+    void initializeAddons();
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class AddonFactory {
-
-    private List<IAddonController> addonControllers;
-    private final WizardPractice wizardPractice;
-
-    public AddonFactory(WizardPractice wizardPractice){
-        this.wizardPractice = wizardPractice;
-
-        this.addonControllers = new ArrayList<>();
-
-        this.initializeAddons();
-    }
-
-    public void initializeAddons(){
-        this.addonControllers.forEach(IAddonController::initialize);
-    }
-
-    public void deinitializeAddons(){
-        this.addonControllers.forEach(IAddonController::deinitialize);
-    }
+    void deinitializeAddons();
 
 }

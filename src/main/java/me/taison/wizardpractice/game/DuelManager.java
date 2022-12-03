@@ -1,6 +1,6 @@
-package me.taison.wizardpractice.duelsystem;
+package me.taison.wizardpractice.game;
 
-import me.taison.wizardpractice.duelsystem.arena.Arena;
+import me.taison.wizardpractice.game.arena.Arena;
 import me.taison.wizardpractice.gui.gametypeselector.GameMapType;
 import me.taison.wizardpractice.utilities.chat.StringUtils;
 import me.taison.wizardpractice.utilities.items.ItemBuilder;
