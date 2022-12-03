@@ -1,6 +1,8 @@
 package me.taison.wizardpractice.gui.gametypeselector;
 
 import me.taison.wizardpractice.WizardPractice;
+import me.taison.wizardpractice.data.factory.UserFactory;
+import me.taison.wizardpractice.data.user.User;
 import me.taison.wizardpractice.game.DuelManager;
 import me.taison.wizardpractice.game.queue.QueueDispatcher;
 import me.taison.wizardpractice.gui.GuiItem;
@@ -42,7 +44,7 @@ public class GameSelectorGuiItem extends GuiItem {
 
         int queuePlayers = 0;
         if(this.queueDispatcher.getQueueByGameType(gameMapType).isPresent()){
-            queuePlayers = this.queueDispatcher.getQueueByGameType(gameMapType).get().getPlayersInQueue().size();
+            queuePlayers = this.queueDispatcher.getQueueByGameType(gameMapType).get().getTeamsInQueue().size();
         }
 
         StringUtils.findAndReplace(description, "%queuedPlayer", String.valueOf(queuePlayers));
@@ -59,20 +61,26 @@ public class GameSelectorGuiItem extends GuiItem {
     public void onItemClick(GuiItemClickEvent event) {
         Player player = event.getPlayer();
 
+        UserFactory userFactory = WizardPractice.getSingleton().getUserFactory();
+        if (userFactory.getUserByUniqueIdentifier(event.getPlayer().getUniqueId()).isEmpty())
+            return;
+
+        User user = userFactory.getUserByUniqueIdentifier(event.getPlayer().getUniqueId()).get();
+
         switch (this.gameMapType) {
             case DIAMOND_GAME -> {
                 player.sendMessage(StringUtils.color("&cTest1"));
-                queueDispatcher.addPlayerToQueue(player, gameMapType);
+                queueDispatcher.addPlayerToQueue(user, gameMapType);
                 event.setWillClose(true);
             }
             case NORMAL_GAME -> {
                 player.sendMessage(StringUtils.color("&cTest2"));
-                queueDispatcher.addPlayerToQueue(player, gameMapType);
+                queueDispatcher.addPlayerToQueue(user, gameMapType);
                 event.setWillClose(true);
             }
             case SPEED_GAME -> {
                 player.sendMessage(StringUtils.color("&cTest3"));
-                queueDispatcher.addPlayerToQueue(player, gameMapType);
+                queueDispatcher.addPlayerToQueue(user, gameMapType);
                 event.setWillClose(true);
             }
         }

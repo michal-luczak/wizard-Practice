@@ -1,6 +1,10 @@
 package me.taison.wizardpractice.game;
 
+import me.taison.wizardpractice.data.user.Team;
+import me.taison.wizardpractice.data.user.User;
+import me.taison.wizardpractice.data.user.impl.TeamImpl;
 import me.taison.wizardpractice.game.arena.Arena;
+import me.taison.wizardpractice.game.arena.ArenaState;
 import me.taison.wizardpractice.gui.gametypeselector.GameMapType;
 import me.taison.wizardpractice.utilities.chat.StringUtils;
 import me.taison.wizardpractice.utilities.items.ItemBuilder;
@@ -45,16 +49,16 @@ public class DuelManager {
         return (int) this.runningDuels.stream().filter(duel -> duel.getGameMapType() == gameMapType).count();
     }
 
-    public Optional<Duel> getDuelByPlayer(Player player) {
+    public Optional<Duel> getDuelByUser(User user) {
         for (Duel duel : this.runningDuels) {
-            if (duel.getPlayer1().equals(player) || duel.getPlayer2().equals(player))
+            if (duel.getTeam1().getTeam().contains(user))
                 return Optional.of(duel);
         }
         return Optional.empty();
     }
 
-    public void startDuel(GameMapType gameMapType, Player player1, Player player2) {
-        Duel duel = new Duel(gameMapType, player1, player2);
+    public void startDuel(GameMapType gameMapType, Team team1, Team team2) {
+        Duel duel = new Duel(team1, team2, gameMapType);
 
         this.getFreeArena().ifPresentOrElse(arena -> {
             this.runningDuels.add(duel);
@@ -62,7 +66,6 @@ public class DuelManager {
             duel.setArena(arena);
             duel.startDuel();
 
-            arena.setOccupied(true);
         }, () -> waitingDuels.add(duel));
     }
 
@@ -71,12 +74,8 @@ public class DuelManager {
 
         this.runningDuels.remove(duel);
 
-        duel.getArena().setOccupied(false);
-
         if (!waitingDuels.isEmpty()) {
             this.waitingDuels.peek().startDuel();
-
-            duel.getArena().setOccupied(true);
 
             this.runningDuels.add(duel);
             this.waitingDuels.remove(duel);
@@ -88,6 +87,6 @@ public class DuelManager {
     }
 
     private Optional<Arena> getFreeArena() {
-        return arenas.stream().filter(Arena::isFree).findFirst();
+        return arenas.stream().filter(arena -> arena.getArenaState().equals(ArenaState.FREE)).findFirst();
     }
 }

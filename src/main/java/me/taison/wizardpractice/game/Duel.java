@@ -1,14 +1,17 @@
 package me.taison.wizardpractice.game;
 
+import me.taison.wizardpractice.data.user.Team;
+import me.taison.wizardpractice.data.user.impl.TeamImpl;
 import me.taison.wizardpractice.game.arena.Arena;
+import me.taison.wizardpractice.game.arena.ArenaState;
 import me.taison.wizardpractice.gui.gametypeselector.GameMapType;
 import org.apache.commons.lang3.Validate;
-import org.bukkit.entity.Player;
 
 public class Duel {
 
-    private final Player player1;
-    private final Player player2;
+    private final Team team1;
+
+    private final Team team2;
 
     private final GameMapType gameMapType;
 
@@ -18,24 +21,23 @@ public class Duel {
 
     private Arena arena;
 
-    public Duel(GameMapType gameMapType, Player player1, Player player2) {
-        Validate.notNull(player1, "Player1 cannot be null");
-        Validate.notNull(player2, "Player2 cannot be null");
+    public Duel(Team team1, Team team2, GameMapType gameMapType) {
+        this.team1 = team1;
+        this.team2 = team2;
+        Validate.notNull(team1, "Team cannot be null");
+        Validate.notNull(team2, "Team cannot be null");
 
         this.gameMapType = gameMapType;
 
-        this.player1 = player1;
-        this.player2 = player2;
-
-        this.duelCounter = new DuelCounter(this, player1, player2);
+        this.duelCounter = new DuelCounter(this, team1, team2);
     }
 
     public void startDuel() {
         isDuring = true;
 
-        arena.setOccupied(true);
+        arena.setArenaState(ArenaState.IN_GAME);
 
-        this.teleportPlayers();
+        this.teleportPlayersToArena();
         this.giveItems();
 
         this.duelCounter.startCounting();
@@ -43,29 +45,34 @@ public class Duel {
 
     public void stopDuel() {
         isDuring = false;
+
+        arena.setArenaState(ArenaState.RESTARTING);
+        //TODO restartowanie areny
+        arena.setArenaState(ArenaState.FREE);
+
+        duelCounter.cancel();
     }
 
-    private void teleportPlayers() {
-        player1.teleport(arena.getLocation());
-        player2.teleport(arena.getLocation());
+    private void teleportPlayersToArena() {
+        team1.getTeam().forEach(user -> user.getAsPlayer().teleport(arena.getLocation()));
+        team2.getTeam().forEach(user -> user.getAsPlayer().teleport(arena.getLocation()));
+    }
+
+    private void teleportPlayersToSpawn() {
+        //TODO teleportowanie graczy z powrotem na spawna
     }
 
     private void giveItems() {
-        player1.getInventory().clear();
-        player1.getInventory().setContents(gameMapType.getItems());
-        player1.getInventory().setArmorContents(gameMapType.getArmor());
-
-        player2.getInventory().clear();
-        player2.getInventory().setContents(gameMapType.getItems());
-        player2.getInventory().setArmorContents(gameMapType.getArmor());
-    }
-
-    public Player getPlayer1() {
-        return player1;
-    }
-
-    public Player getPlayer2() {
-        return player2;
+        team1.getTeam().forEach(user -> {
+            user.getAsPlayer().getInventory().clear();
+            user.getAsPlayer().getInventory().setContents(gameMapType.getItems());
+            user.getAsPlayer().getInventory().setArmorContents(gameMapType.getArmor());
+        });
+        team2.getTeam().forEach(user -> {
+            user.getAsPlayer().getInventory().clear();
+            user.getAsPlayer().getInventory().setContents(gameMapType.getItems());
+            user.getAsPlayer().getInventory().setArmorContents(gameMapType.getArmor());
+        });
     }
 
     public GameMapType getGameMapType() {
@@ -90,5 +97,13 @@ public class Duel {
 
     public void setArena(Arena arena) {
         this.arena = arena;
+    }
+
+    public Team getTeam1() {
+        return team1;
+    }
+
+    public Team getTeam2() {
+        return team2;
     }
 }

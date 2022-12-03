@@ -14,6 +14,7 @@ import me.taison.wizardpractice.game.queue.QueueDispatcher;
 import me.taison.wizardpractice.service.Service;
 import me.taison.wizardpractice.utilities.AbstractCommand;
 import org.bukkit.Bukkit;
+import org.bukkit.GameRule;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.reflections.Reflections;
@@ -54,6 +55,10 @@ public final class WizardPractice extends JavaPlugin {
 
         this.database = new MySQLStorage();
         database.open();
+
+        //freeze time and weather
+        getServer().getWorlds().forEach(world -> world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false));
+        getServer().getWorlds().forEach(world -> world.setGameRule(GameRule.DO_WEATHER_CYCLE, false));
 
         getLogger().info("Practice plugin loading successfully.");
     }
@@ -129,4 +134,10 @@ public final class WizardPractice extends JavaPlugin {
     public QueueDispatcher getQueueDispatcher() {
         return queueDispatcher;
     }
+
+    public TeamFactory getTeamFactory() {
+        return teamFactory;
+    }
+
+
 }

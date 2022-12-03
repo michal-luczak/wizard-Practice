@@ -11,8 +11,6 @@ public enum Arena {
     private final Location location;
 
     private final String world;
-    private boolean isOccupied = false;
-    //zamienic na ArenaState ^^
 
     private ArenaState arenaState;
 
@@ -24,14 +22,6 @@ public enum Arena {
 
     public String getName() {
         return name;
-    }
-
-    public boolean isOccupied() {
-        return isOccupied;
-    }
-
-    public boolean isFree(){
-        return !this.isOccupied;
     }
 
     public Location getLocation() {
@@ -49,9 +39,4 @@ public enum Arena {
     public World getWorld() {
         return Bukkit.getServer().getWorld(this.world);
     }
-
-    public void setOccupied(boolean occupied) {
-        isOccupied = occupied;
-    }
-
 }

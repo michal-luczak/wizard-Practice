@@ -1,5 +1,8 @@
 package me.taison.wizardpractice.game.queue;
 
+import me.taison.wizardpractice.data.user.Team;
+import me.taison.wizardpractice.data.user.User;
+import me.taison.wizardpractice.data.user.impl.TeamImpl;
 import me.taison.wizardpractice.game.DuelManager;
 import me.taison.wizardpractice.gui.gametypeselector.GameMapType;
 import org.bukkit.entity.Player;
@@ -28,40 +31,42 @@ public class QueueDispatcher {
         return queuesToDuels.stream().filter(queue -> queue.getGameMapType().equals(gameMapType)).findFirst();
     }
 
-    public Optional<QueueToDuel> getPlayerQueue(Player player) {
-        return queuesToDuels.stream().filter(queue -> queue.getPlayersInQueue().contains(player)).findFirst();
+    public Optional<QueueToDuel> getUserQueue(User user) {
+        return queuesToDuels.stream().filter(queue ->
+                queue.getTeamsInQueue().stream().anyMatch(team -> team.getTeam().contains(user))).findFirst();
     }
 
     //returns false if something went wrong
-    public boolean addPlayerToQueue(Player player, GameMapType gameMapType) {
-        if (getPlayerQueue(player).isPresent())
+    public boolean addPlayerToQueue(User user, GameMapType gameMapType) {
+        if (getUserQueue(user).isPresent())
             return false;
         if (getQueueByGameType(gameMapType).isEmpty())
             return false;
 
-        getQueueByGameType(gameMapType).get().addPlayerToQueue(player);
-        if (getQueueByGameType(gameMapType).get().getPlayersInQueue().size() >= 2) {
+        getQueueByGameType(gameMapType).get().addTeamToQueue(user.getTeam());
+        if (getQueueByGameType(gameMapType).get().getTeamsInQueue().size() >= 2) {
 
-            Player player1 = getQueueByGameType(gameMapType).get().getPlayersInQueue().peek();
-            getQueueByGameType(gameMapType).get().getPlayersInQueue().remove();
-            Player player2 = getQueueByGameType(gameMapType).get().getPlayersInQueue().peek();
-            getQueueByGameType(gameMapType).get().getPlayersInQueue().remove();
+            Team team1 = getQueueByGameType(gameMapType).get().getTeamsInQueue().peek();
+            getQueueByGameType(gameMapType).get().getTeamsInQueue().remove();
+            Team team2 = getQueueByGameType(gameMapType).get().getTeamsInQueue().peek();
+            getQueueByGameType(gameMapType).get().getTeamsInQueue().remove();
 
-            duelManager.startDuel(gameMapType, player1, player2);
+
+            duelManager.startDuel(gameMapType, team1, team2);
 
         }
-        player.getInventory().remove(duelManager.getFeather());
-        player.getInventory().setItem(8, duelManager.getBarrier());
+        user.getAsPlayer().getInventory().remove(duelManager.getFeather());
+        user.getAsPlayer().getInventory().setItem(8, duelManager.getBarrier());
         return true;
     }
 
-    public boolean removePlayerFromQueue(Player player) {
-        if (getPlayerQueue(player).isEmpty())
+    public boolean removePlayerFromQueue(User user) {
+        if (getUserQueue(user).isEmpty())
             return false;
-        getPlayerQueue(player).get().removePlayerFromQueue(player);
+        getUserQueue(user).get().removeTeamFromQueue(user.getTeam());
 
-        player.getInventory().setItem(4, duelManager.getFeather());
-        player.getInventory().remove(duelManager.getBarrier());
+        user.getAsPlayer().getInventory().setItem(4, duelManager.getFeather());
+        user.getAsPlayer().getInventory().remove(duelManager.getBarrier());
 
         return true;
     }

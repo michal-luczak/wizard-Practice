@@ -1,23 +1,24 @@
 package me.taison.wizardpractice.game;
 
 import me.taison.wizardpractice.WizardPractice;
+import me.taison.wizardpractice.data.user.Team;
+import me.taison.wizardpractice.data.user.impl.TeamImpl;
 import me.taison.wizardpractice.utilities.chat.StringUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class DuelCounter extends BukkitRunnable {
 
-    private final Player player1;
-    private final Player player2;
+    private final Team team1;
+    private final Team team2;
 
     private final Duel duel;
-    private int counter = 10;
+    private int counter = 5;
 
-    public DuelCounter(Duel duel, Player player1, Player player2) {
-        this.player1 = player1;
-        this.player2 = player2;
-
+    public DuelCounter(Duel duel, Team team1, Team team2) {
         this.duel = duel;
+        this.team1 = team1;
+        this.team2 = team2;
     }
 
     public void startCounting(){
@@ -26,20 +27,30 @@ public class DuelCounter extends BukkitRunnable {
 
     @Override
     public void run() {
-        player1.sendTitle(StringUtils.color("&6Pojedynek"), StringUtils.color("&aRozpocznie sie za: " + counter), 0, 20, 25);
-        player2.sendTitle(StringUtils.color("&6Pojedynek"), StringUtils.color("&aRozpocznie sie za: " + counter), 0, 20, 25);
+        team1.getTeam().forEach(user ->
+                user.sendTitle(StringUtils.color("&6Pojedynek"), StringUtils.color("&aRozpocznie sie za: " + counter), 0, 20, 25));
+        team2.getTeam().forEach(user ->
+                user.sendTitle(StringUtils.color("&6Pojedynek"), StringUtils.color("&aRozpocznie sie za: " + counter), 0, 20, 25));
         if(counter < 1){
-            player1.sendTitle(StringUtils.color("&6Pojedynek"), StringUtils.color("&cRozpoczęty! "), 0, 20, 160);
-            player2.sendTitle(StringUtils.color("&6Pojedynek"), StringUtils.color("&cRozpoczęty! "), 0, 20, 160);
-
+            team1.getTeam().forEach(user ->
+                    user.sendTitle(StringUtils.color("&6Pojedynek"), StringUtils.color("&cRozpoczęty! "), 0, 20, 35));
+            team2.getTeam().forEach(user ->
+                    user.sendTitle(StringUtils.color("&6Pojedynek"), StringUtils.color("&cRozpoczęty! "), 0, 20, 35));
             this.cancel();
         }
 
         counter --;
-
     }
 
     public Duel getDuel() {
         return duel;
+    }
+
+    public Team getTeam1() {
+        return team1;
+    }
+
+    public Team getTeam2() {
+        return team2;
     }
 }

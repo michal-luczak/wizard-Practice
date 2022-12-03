@@ -2,6 +2,8 @@ package me.taison.wizardpractice.listeners;
 
 import me.taison.wizardpractice.WizardPractice;
 import me.taison.wizardpractice.data.factory.UserFactory;
+import me.taison.wizardpractice.data.user.Team;
+import me.taison.wizardpractice.data.user.impl.TeamImpl;
 import me.taison.wizardpractice.data.user.impl.UserImpl;
 import me.taison.wizardpractice.game.DuelManager;
 import me.taison.wizardpractice.utilities.chat.StringUtils;
@@ -17,6 +19,8 @@ public class PlayerJoinListener implements Listener {
     public void handle(PlayerJoinEvent e){
 
         e.getPlayer().getInventory().setItem(4, duelManager.getFeather());
+
+        WizardPractice.getSingleton().getTeamFactory().register(new TeamImpl(new UserImpl(e.getPlayer().getUniqueId(), e.getPlayer().getName())));
 
         System.out.println(1);
 

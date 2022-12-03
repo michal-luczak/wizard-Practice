@@ -1,6 +1,5 @@
 package me.taison.wizardpractice.commands.command;
 
-import me.taison.wizardpractice.WizardPractice;
 import me.taison.wizardpractice.commands.ICommandInfo;
 import me.taison.wizardpractice.gui.gametypeselector.GameSelectorGui;
 import me.taison.wizardpractice.utilities.AbstractCommand;

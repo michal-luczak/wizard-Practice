@@ -1,6 +1,7 @@
 package me.taison.wizardpractice.listeners;
 
 import me.taison.wizardpractice.WizardPractice;
+import me.taison.wizardpractice.data.factory.UserFactory;
 import me.taison.wizardpractice.game.queue.QueueDispatcher;
 import me.taison.wizardpractice.gui.gametypeselector.GameSelectorGui;
 import org.bukkit.Material;
@@ -22,8 +23,9 @@ public class PlayerInteractListener implements Listener {
             new GameSelectorGui().open(event.getPlayer());
         } else if (event.getItem().getType().equals(Material.BARRIER)) {
             event.setCancelled(true);
-
-            queueDispatcher.removePlayerFromQueue(event.getPlayer());
+            UserFactory userFactory = WizardPractice.getSingleton().getUserFactory();
+            if (userFactory.getUserByUniqueIdentifier(event.getPlayer().getUniqueId()).isPresent())
+                queueDispatcher.removePlayerFromQueue(userFactory.getUserByUniqueIdentifier(event.getPlayer().getUniqueId()).get());
         }
     }
 }
