@@ -5,6 +5,7 @@ import me.taison.wizardpractice.data.impl.PracticeUser;
 import me.taison.wizardpractice.duelsystem.DuelManager;
 import me.taison.wizardpractice.duelsystem.queue.QueueDispatcher;
 import me.taison.wizardpractice.gui.GuiItem;
+import me.taison.wizardpractice.gui.GuiMenu;
 import me.taison.wizardpractice.gui.event.GuiItemClickEvent;
 import me.taison.wizardpractice.utilities.chat.StringUtils;
 import org.bukkit.entity.Player;

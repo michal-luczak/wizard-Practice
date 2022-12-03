@@ -12,6 +12,10 @@ public enum Arena {
 
     private final String world;
     private boolean isOccupied = false;
+    //zamienic na ArenaState ^^
+
+    private ArenaState arenaState;
+
     Arena(String name, String world, Location location) {
         this.name = name;
         this.location = location;
@@ -32,6 +36,14 @@ public enum Arena {
 
     public Location getLocation() {
         return location;
+    }
+
+    public void setArenaState(ArenaState arenaState) {
+        this.arenaState = arenaState;
+    }
+
+    public ArenaState getArenaState() {
+        return arenaState;
     }
 
     public World getWorld() {

@@ -46,7 +46,7 @@ public class DuelManager {
     }
 
     public Optional<Duel> getDuelByPlayer(Player player) {
-        for (Duel duel : runningDuels) {
+        for (Duel duel : this.runningDuels) {
             if (duel.getPlayer1().equals(player) || duel.getPlayer2().equals(player))
                 return Optional.of(duel);
         }
@@ -56,8 +56,8 @@ public class DuelManager {
     public void startDuel(GameMapType gameMapType, Player player1, Player player2) {
         Duel duel = new Duel(gameMapType, player1, player2);
 
-        getFreeArena().ifPresentOrElse(arena -> {
-            runningDuels.add(duel);
+        this.getFreeArena().ifPresentOrElse(arena -> {
+            this.runningDuels.add(duel);
 
             duel.setArena(arena);
             duel.startDuel();
@@ -69,17 +69,17 @@ public class DuelManager {
     public void stopDuel(Duel duel) {
         duel.stopDuel();
 
-        runningDuels.remove(duel);
+        this.runningDuels.remove(duel);
 
         duel.getArena().setOccupied(false);
 
         if (!waitingDuels.isEmpty()) {
-            waitingDuels.peek().startDuel();
+            this.waitingDuels.peek().startDuel();
 
             duel.getArena().setOccupied(true);
 
-            runningDuels.add(duel);
-            waitingDuels.remove(duel);
+            this.runningDuels.add(duel);
+            this.waitingDuels.remove(duel);
         }
     }
 

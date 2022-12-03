@@ -11,7 +11,8 @@ import org.bukkit.entity.Player;
 
 public class Duel {
 
-    private final Player player1, player2;
+    private final Player player1;
+    private final Player player2;
 
     private final GameMapType gameMapType;
 
@@ -22,7 +23,11 @@ public class Duel {
     private Arena arena;
 
     public Duel(GameMapType gameMapType, Player player1, Player player2) {
+        Validate.notNull(player1, "Player1 cannot be null");
+        Validate.notNull(player2, "Player2 cannot be null");
+
         this.gameMapType = gameMapType;
+
         this.player1 = player1;
         this.player2 = player2;
 
@@ -30,9 +35,6 @@ public class Duel {
     }
 
     public void startDuel() {
-        Validate.notNull(player1, "Player1 cannot be null");
-        Validate.notNull(player2, "Player2 cannot be null");
-
         isDuring = true;
 
         arena.setOccupied(true);
@@ -40,7 +42,7 @@ public class Duel {
         this.teleportPlayers();
         this.giveItems();
 
-        duelCounter.runTaskTimerAsynchronously(WizardPractice.getSingleton(), 0, 20);
+        this.duelCounter.startCounting();
     }
 
     public void stopDuel() {

@@ -1,12 +1,15 @@
 package me.taison.wizardpractice.gui;
 
+import me.taison.wizardpractice.WizardPractice;
 import me.taison.wizardpractice.gui.event.GuiItemClickEvent;
+import me.taison.wizardpractice.service.Service;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
-public class GuiMenu {
+public abstract class GuiMenu {
 
     protected final String name;
     protected final Size size;
@@ -65,10 +68,11 @@ public class GuiMenu {
 
     public void open(Player player) {
         Inventory inventory = Bukkit.createInventory(new GuiHolder(this), size.getSize(), name);
-        apply(inventory, player);
+
+        this.apply(inventory, player);
+
         player.openInventory(inventory);
     }
-
 
     public void update(Player player) {
         Inventory inventory = player.getOpenInventory().getTopInventory();

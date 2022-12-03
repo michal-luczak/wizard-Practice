@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 
 import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 public class QueueDispatcher {
@@ -58,13 +59,15 @@ public class QueueDispatcher {
         if (getPlayerQueue(player).isEmpty())
             return false;
         getPlayerQueue(player).get().removePlayerFromQueue(player);
+
         player.getInventory().setItem(4, duelManager.getFeather());
         player.getInventory().remove(duelManager.getBarrier());
+
         return true;
     }
 
-    private HashSet<QueueToDuel> getQueuesToDuel() {
-        HashSet<QueueToDuel> queuesToDuel = new HashSet<>();
+    private Set<QueueToDuel> getQueuesToDuel() {
+        Set<QueueToDuel> queuesToDuel = new HashSet<>();
 
         queuesToDuel.add(new QueueToDuel(GameMapType.NORMAL_GAME));
         queuesToDuel.add(new QueueToDuel(GameMapType.DIAMOND_GAME));

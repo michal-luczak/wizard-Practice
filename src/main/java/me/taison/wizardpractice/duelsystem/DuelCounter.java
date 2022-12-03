@@ -1,5 +1,6 @@
 package me.taison.wizardpractice.duelsystem;
 
+import me.taison.wizardpractice.WizardPractice;
 import me.taison.wizardpractice.utilities.chat.StringUtils;
 import net.md_5.bungee.api.ChatMessageType;
 import org.bukkit.Bukkit;
@@ -21,11 +22,12 @@ public class DuelCounter extends BukkitRunnable {
         this.duel = duel;
     }
 
+    public void startCounting(){
+        this.runTaskTimerAsynchronously(WizardPractice.getSingleton(), 0, 20);
+    }
+
     @Override
     public void run() {
-
-        //TODO player1.sendTitle(3, 2, 1... GO);
-        //TODO player2.sendTitle(3, 2, 1... GO);
         player1.sendTitle(StringUtils.color("&6Pojedynek"), StringUtils.color("&aRozpocznie sie za: " + counter), 0, 20, 25);
         player2.sendTitle(StringUtils.color("&6Pojedynek"), StringUtils.color("&aRozpocznie sie za: " + counter), 0, 20, 25);
         if(counter < 1){
@@ -37,5 +39,9 @@ public class DuelCounter extends BukkitRunnable {
 
         counter --;
 
+    }
+
+    public Duel getDuel() {
+        return duel;
     }
 }
