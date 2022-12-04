@@ -54,34 +54,30 @@ public final class ItemStackUtils {
 
     }
 
-    public static void removeItem(final Player p, final ItemStack i, int a, final boolean checkname, final boolean ignoreenchanted) {
+    public static void removeItem(Player p, ItemStack i, int a, boolean checkname, boolean ignoreenchanted) {
         if (p == null || i == null || a == 0) {
             return;
         }
-        final ItemStack[] contents = p.getInventory().getContents();
+        ItemStack[] contents = p.getInventory().getContents();
         for (int j = contents.length - 1; j >= 0; --j) {
-            if (i.getType() != null && contents[j] != null) {
-                if (i.getType() == contents[j].getType()) {
-                    if (i.getDurability() == contents[j].getDurability()) {
-                        if (i.getItemMeta() != null && i.getItemMeta().getDisplayName() != null) {
-                            if (contents[j].getItemMeta() == null) {
-                                continue;
-                            }
-                            if (contents[j].getItemMeta().getDisplayName() == null) {
-                                continue;
-                            }
+            i.getType();
+            if (contents[j] != null && i.getType() == contents[j].getType()) {
+                if (i.getDurability() == contents[j].getDurability()) {
+                    if (i.getItemMeta() != null) {
+                        i.getItemMeta().getDisplayName();
+                        if (contents[j].getItemMeta() == null) {
+                            continue;
                         }
-                        if (!checkname || contents[j].getItemMeta() == null || contents[j].getItemMeta().getDisplayName() == null || i.getItemMeta() == null || i.getItemMeta().getDisplayName() == null || i.getItemMeta().getDisplayName().equals(contents[j].getItemMeta().getDisplayName())) {
-                            if (!ignoreenchanted || i.getItemMeta() == null || i.getItemMeta().getEnchants().size() <= 0) {
-                                if (a < contents[j].getAmount()) {
-                                    contents[j].setAmount(contents[j].getAmount() - a);
-                                    p.updateInventory();
-                                    return;
-                                }
-                                a -= contents[j].getAmount();
-                                p.getInventory().setItem(j, null);
-                            }
+                        contents[j].getItemMeta().getDisplayName();
+                    }
+                    if ((!checkname || contents[j].getItemMeta() == null || i.getItemMeta() == null || i.getItemMeta().getDisplayName().equals(contents[j].getItemMeta().getDisplayName())) && (!ignoreenchanted || i.getItemMeta() == null || i.getItemMeta().getEnchants().size() <= 0)) {
+                        if (a < contents[j].getAmount()) {
+                            contents[j].setAmount(contents[j].getAmount() - a);
+                            p.updateInventory();
+                            return;
                         }
+                        a -= contents[j].getAmount();
+                        p.getInventory().setItem(j, null);
                     }
                 }
             }

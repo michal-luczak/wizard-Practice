@@ -25,6 +25,8 @@ public class DuelCounter extends BukkitRunnable {
 
     @Override
     public void run() {
+
+        //TODO zamienic na team.sendTitle
         teams.forEach(team -> team.getTeam().forEach(user ->
                 user.sendTitle(StringUtils.color("&6Pojedynek"), StringUtils.color("&aRozpocznie sie za: " + counter), 0, 20, 25)));
         if(counter < 1){
