@@ -9,10 +9,11 @@ import me.taison.wizardpractice.data.user.impl.TeamImpl;
 import me.taison.wizardpractice.data.user.impl.UserImpl;
 import me.taison.wizardpractice.game.DuelManager;
 import me.taison.wizardpractice.utilities.chat.StringUtils;
-import net.kyori.adventure.text.Component;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+
+import java.awt.*;
 
 public class PlayerJoinListener implements Listener {
 
@@ -33,7 +34,7 @@ public class PlayerJoinListener implements Listener {
         user.setTeam(team);
         team.setLeader(user);
 
-        e.joinMessage(Component.text(StringUtils.color("&a[+] " + e.getPlayer().getName())));
+        e.joinMessage(Componen.text(StringUtils.color("&a[+] " + e.getPlayer().getName())));
     }
 
 }
