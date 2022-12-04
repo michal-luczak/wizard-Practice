@@ -9,6 +9,8 @@ import me.taison.wizardpractice.game.arena.ArenaState;
 import me.taison.wizardpractice.gui.gametypeselector.GameMapType;
 import me.taison.wizardpractice.utilities.chat.StringUtils;
 import me.taison.wizardpractice.utilities.items.ItemBuilder;
+import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
@@ -72,7 +74,10 @@ public class DuelManager {
             duel.setArena(arena);
             duel.startDuel();
 
-        }, () -> waitingDuels.add(duel));
+        }, () -> {
+            waitingDuels.add(duel);
+            Bukkit.broadcast(Component.text("Zjebales cos nie ma arenki"));
+        });
     }
 
     public void stopDuel(Duel duel) {
@@ -80,7 +85,8 @@ public class DuelManager {
 
         this.runningDuels.remove(duel);
 
-        if (!waitingDuels.isEmpty()) {
+        if (!waitingDuels.isEmpty() && wizardPractice.getArenaFactory().getAvailableArena().isPresent()) {
+            this.waitingDuels.peek().setArena(wizardPractice.getArenaFactory().getAvailableArena().get());
             this.waitingDuels.peek().startDuel();
 
             this.runningDuels.add(duel);

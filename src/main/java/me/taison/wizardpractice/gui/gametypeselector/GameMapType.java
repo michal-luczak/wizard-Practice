@@ -23,15 +23,15 @@ public enum GameMapType {
             new ItemBuilder(Material.POTION, 1).toItemStack(),
             new ItemStack[]{}, new ItemStack[]{}, 2),
 
-    DIAMOND_GAME_MUTLI_TEAM(10, "&aDiament", Arrays.asList("&cRodzaj gry: Diamentowe Sety", " ", "&7Graczy w kolejce: %queuedPlayer", "&7Graczy grających: %currentPlaying"),
+    DIAMOND_GAME_MUTLI_TEAM(20, "&aDiament XvsXvsX", Arrays.asList("&cRodzaj gry: Diamentowe Sety", " ", "&7Graczy w kolejce: %queuedPlayer", "&7Graczy grających: %currentPlaying"),
             new ItemBuilder(Material.DIAMOND_SWORD, 1).addEnchant(Enchantment.KNOCKBACK, 1).toItemStack(),
             new ItemStack[]{}, new ItemStack[]{}, 3),
 
-    NORMAL_GAME_MUTLI_TEAM(13, "&aNormal", Arrays.asList("&cRodzaj gry: Zwykla gra.", " ", "&7Graczy w kolejce: %queuedPlayer", "&7Graczy grających: %currentPlaying"),
+    NORMAL_GAME_MUTLI_TEAM(22, "&aNormal XvsXvsX", Arrays.asList("&cRodzaj gry: Zwykla gra.", " ", "&7Graczy w kolejce: %queuedPlayer", "&7Graczy grających: %currentPlaying"),
             new ItemBuilder(Material.DIAMOND_SWORD, 1).toItemStack(),
             new ItemStack[]{}, new ItemStack[]{}, 3),
 
-    SPEED_GAME_MUTLI_TEAM(16, "&aSpeed", Arrays.asList("&cRodzaj gry: Speed.", " ", "&7Graczy w kolejce: %queuedPlayer", "&7Graczy grających: %currentPlaying"),
+    SPEED_GAME_MUTLI_TEAM(24, "&aSpeed XvsXvsX", Arrays.asList("&cRodzaj gry: Speed.", " ", "&7Graczy w kolejce: %queuedPlayer", "&7Graczy grających: %currentPlaying"),
             new ItemBuilder(Material.POTION, 1).toItemStack(),
             new ItemStack[]{}, new ItemStack[]{}, 3);
 

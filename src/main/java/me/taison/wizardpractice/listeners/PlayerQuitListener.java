@@ -6,11 +6,10 @@ import me.taison.wizardpractice.data.factory.UserFactory;
 import me.taison.wizardpractice.data.user.User;
 import me.taison.wizardpractice.game.DuelManager;
 import me.taison.wizardpractice.utilities.chat.StringUtils;
+import net.kyori.adventure.text.Component;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
-
-import java.awt.*;
 
 public class PlayerQuitListener implements Listener {
 

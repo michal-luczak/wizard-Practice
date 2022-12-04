@@ -27,6 +27,7 @@ public class Duel {
 
     public Duel(List<Team> teams, GameMapType gameMapType) {
         Validate.notNull(teams, "Teams cannot be null");
+        Validate.notEmpty(teams, "Teams cannot be empty!");
 
         this.teams = new ArrayList<>(teams);
 

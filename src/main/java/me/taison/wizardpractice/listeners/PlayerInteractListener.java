@@ -12,8 +12,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 public class PlayerInteractListener implements Listener {
 
-    private final QueueDispatcher queueDispatcher = WizardPractice.getSingleton().getQueueDispatcher();
-
     @EventHandler
     public void handle(PlayerInteractEvent event) {
         if (event.getItem() == null)
@@ -26,7 +24,7 @@ public class PlayerInteractListener implements Listener {
             event.setCancelled(true);
             UserFactory userFactory = WizardPractice.getSingleton().getUserFactory();
             if (userFactory.getByUniqueId(event.getPlayer().getUniqueId()).isPresent()) {
-                queueDispatcher.removeUserFromQueue(userFactory.getByUniqueId(event.getPlayer().getUniqueId()).get());
+                WizardPractice.getSingleton().getQueueDispatcher().removeUserFromQueue(userFactory.getByUniqueId(event.getPlayer().getUniqueId()).get());
             }
         }
     }

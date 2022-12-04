@@ -4,6 +4,7 @@ import me.taison.wizardpractice.WizardPractice;
 import me.taison.wizardpractice.data.factory.ArenaFactory;
 import me.taison.wizardpractice.game.arena.Arena;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ArenaFactoryImpl implements ArenaFactory {
@@ -13,6 +14,8 @@ public class ArenaFactoryImpl implements ArenaFactory {
     private List<Arena> arenaList;
 
     public ArenaFactoryImpl(WizardPractice wizardPractice){
+        this.arenaList = new ArrayList<>();
+
         this.wizardPractice = wizardPractice;
     }
 

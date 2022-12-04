@@ -16,12 +16,10 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class PlayerJoinListener implements Listener {
 
-    private final DuelManager duelManager = WizardPractice.getSingleton().getDuelManager();
-
     @EventHandler
     public void handle(PlayerJoinEvent e){
         e.getPlayer().getInventory().clear();
-        e.getPlayer().getInventory().setItem(4, duelManager.getFeather());
+        e.getPlayer().getInventory().setItem(4, WizardPractice.getSingleton().getDuelManager().getFeather());
 
         UserFactory userFactory = WizardPractice.getSingleton().getUserFactory();
         TeamFactory teamFactory = WizardPractice.getSingleton().getTeamFactory();
