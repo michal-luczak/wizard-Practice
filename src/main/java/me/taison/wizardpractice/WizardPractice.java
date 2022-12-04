@@ -1,9 +1,11 @@
 package me.taison.wizardpractice;
 
 import me.taison.wizardpractice.data.factory.AddonFactory;
+import me.taison.wizardpractice.data.factory.ArenaFactory;
 import me.taison.wizardpractice.data.factory.TeamFactory;
 import me.taison.wizardpractice.data.factory.UserFactory;
 import me.taison.wizardpractice.data.factory.impl.AddonFactoryImpl;
+import me.taison.wizardpractice.data.factory.impl.ArenaFactoryImpl;
 import me.taison.wizardpractice.data.factory.impl.TeamFactoryImpl;
 import me.taison.wizardpractice.data.factory.impl.UserFactoryImpl;
 import me.taison.wizardpractice.data.storage.IDatabase;
@@ -32,6 +34,9 @@ public final class WizardPractice extends JavaPlugin {
     private UserFactory userFactory;
 
     private TeamFactory teamFactory;
+
+    private ArenaFactory arenaFactory;
+
     private AddonFactory addonFactory;
 
     private IDatabase database;
@@ -50,12 +55,12 @@ public final class WizardPractice extends JavaPlugin {
     public void onEnable() {
         getLogger().info("Practice plugin loading...");
 
-        this.duelManager = new DuelManager(new CopyOnWriteArraySet<>(this.initializeArenas()));
-        this.queueDispatcher = new QueueDispatcher(duelManager);
-
         this.initializeFactories();
         this.initializeListeners();
         this.initializeCommands();
+
+        this.duelManager = new DuelManager(new CopyOnWriteArraySet<>(this.arenaFactory.getArenas()));
+        this.queueDispatcher = new QueueDispatcher(duelManager);
 
         this.database = new MySQLStorage();
         database.open();
@@ -100,6 +105,7 @@ public final class WizardPractice extends JavaPlugin {
         this.addonFactory = new AddonFactoryImpl(this);
 
         this.teamFactory = new TeamFactoryImpl(this);
+        this.arenaFactory = new ArenaFactoryImpl(this);
     }
 
     private void initializeArenas(){
@@ -109,6 +115,7 @@ public final class WizardPractice extends JavaPlugin {
                 .addSpawnLocation(-3.5, 90, 20.5, 180, 0)
                 .build();
 
+        this.arenaFactory.register(frostArena);
 
     }
 
@@ -129,6 +136,10 @@ public final class WizardPractice extends JavaPlugin {
 
     public static WizardPractice getSingleton() {
         return singleton;
+    }
+
+    public ArenaFactory getArenaFactory() {
+        return arenaFactory;
     }
 
     public Location getSpawnLocation() {

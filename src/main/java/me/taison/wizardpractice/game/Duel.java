@@ -3,6 +3,7 @@ package me.taison.wizardpractice.game;
 import me.taison.wizardpractice.WizardPractice;
 import me.taison.wizardpractice.data.user.Team;
 import me.taison.wizardpractice.data.user.User;
+import me.taison.wizardpractice.game.arena.Arena;
 import me.taison.wizardpractice.game.arena.impl.ArenaImpl;
 import me.taison.wizardpractice.game.arena.ArenaState;
 import me.taison.wizardpractice.gui.gametypeselector.GameMapType;
@@ -25,7 +26,7 @@ public class Duel {
 
     private boolean isDuring = false;
 
-    private ArenaImpl arena;
+    private Arena arena;
 
     public Duel(List<Team> teams, GameMapType gameMapType) {
         Validate.notNull(teams, "Teams cannot be null");
@@ -122,15 +123,11 @@ public class Duel {
         return arena;
     }
 
-    public void setArena(ArenaImpl arena) {
+    public void setArena(Arena arena) {
         this.arena = arena;
     }
 
-    public Team getTeam1() {
-        return team1;
-    }
-
-    public Team getTeam2() {
-        return team2;
+    public List<Team> getTeams() {
+        return teams;
     }
 }

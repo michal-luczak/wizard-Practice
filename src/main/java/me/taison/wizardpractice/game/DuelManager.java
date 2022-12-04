@@ -1,7 +1,9 @@
 package me.taison.wizardpractice.game;
 
+import me.taison.wizardpractice.WizardPractice;
 import me.taison.wizardpractice.data.user.Team;
 import me.taison.wizardpractice.data.user.User;
+import me.taison.wizardpractice.game.arena.Arena;
 import me.taison.wizardpractice.game.arena.impl.ArenaImpl;
 import me.taison.wizardpractice.game.arena.ArenaState;
 import me.taison.wizardpractice.gui.gametypeselector.GameMapType;
@@ -20,7 +22,9 @@ public class DuelManager {
 
     private final CopyOnWriteArraySet<Duel> runningDuels;
     private final ConcurrentLinkedDeque<Duel> waitingDuels;
-    private final CopyOnWriteArraySet<ArenaImpl> arenas;
+    private final CopyOnWriteArraySet<Arena> arenas;
+
+    private final WizardPractice wizardPractice;
 
     private final ItemStack feather = new ItemBuilder(Material.FEATHER).addItemFlag(ItemFlag.HIDE_ENCHANTS)
                 .addEnchant(Enchantment.ARROW_DAMAGE, 1).setName(StringUtils.color("&5&lWybór duela")).
@@ -29,10 +33,12 @@ public class DuelManager {
             .addEnchant(Enchantment.ARROW_DAMAGE, 1).setName(StringUtils.color("&4&lAnulowanie duela")).
             addLoreLine(StringUtils.color("&cKliknij aby anulować!")).toItemStack();
 
-    public DuelManager(CopyOnWriteArraySet<ArenaImpl> arenas) {
+    public DuelManager(WizardPractice wizardPractice, CopyOnWriteArraySet<Arena> arenas) {
         this.arenas = arenas;
         this.runningDuels = new CopyOnWriteArraySet<>();
         this.waitingDuels = new ConcurrentLinkedDeque<>();
+
+        this.wizardPractice = wizardPractice;
     }
 
 
@@ -59,7 +65,7 @@ public class DuelManager {
     public void startDuel(GameMapType gameMapType, Team team1, Team team2) {
         Duel duel = new Duel(team1, team2, gameMapType);
 
-        this.getFreeArena().ifPresentOrElse(arena -> {
+        wizardPractice.getArenaFactory().getAvailableArena().ifPresentOrElse(arena -> {
             this.runningDuels.add(duel);
 
             duel.setArena(arena);
@@ -81,11 +87,7 @@ public class DuelManager {
         }
     }
 
-    public CopyOnWriteArraySet<ArenaImpl> getArenas() {
+    public CopyOnWriteArraySet<Arena> getArenas() {
         return arenas;
-    }
-
-    private Optional<ArenaImpl> getFreeArena() {
-        return arenas.stream().filter(arena -> arena.getArenaState() == ArenaState.FREE).findFirst();
     }
 }
