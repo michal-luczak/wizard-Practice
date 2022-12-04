@@ -1,13 +1,19 @@
 package me.taison.wizardpractice.game.arena;
 
+import org.bukkit.Location;
+
+import java.util.List;
+
 public interface Arena {
 
     ArenaState getState();
 
     void setState(ArenaState arenaState);
 
-    default boolean canPlay(int teamsAmount){
-        return false;
+    List<Location> getSpawnLocations();
+
+    default boolean isEnoughSpace(int teamsAmount){
+        return this.getSpawnLocations().size() >= teamsAmount;
     }
 
 }

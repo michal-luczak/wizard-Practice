@@ -13,6 +13,7 @@ public class SpawnCommand extends AbstractCommand {
     @Override
     public void onExecute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
+
         player.teleport(new Location(Bukkit.getWorlds().get(0), 0, 90, 0));
     }
 }

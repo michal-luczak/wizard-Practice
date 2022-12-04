@@ -41,7 +41,7 @@ public class Duel {
     public void startDuel() {
         this.isDuring = true;
 
-        this.arena.setArenaState(ArenaState.IN_GAME);
+        this.arena.setState(ArenaState.IN_GAME);
 
         this.teleportPlayersToArena();
         this.giveItems();
@@ -52,9 +52,9 @@ public class Duel {
     public void stopDuel() {
         isDuring = false;
 
-        arena.setArenaState(ArenaState.RESTARTING);
+        arena.setState(ArenaState.RESTARTING);
         //TODO restartowanie areny
-        arena.setArenaState(ArenaState.FREE);
+        arena.setState(ArenaState.FREE);
 
         duelCounter.cancel();
 
@@ -119,7 +119,7 @@ public class Duel {
         isDuring = during;
     }
 
-    public ArenaImpl getArena() {
+    public Arena getArena() {
         return arena;
     }
 

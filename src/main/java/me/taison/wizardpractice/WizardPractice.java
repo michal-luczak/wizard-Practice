@@ -59,7 +59,7 @@ public final class WizardPractice extends JavaPlugin {
         this.initializeListeners();
         this.initializeCommands();
 
-        this.duelManager = new DuelManager(new CopyOnWriteArraySet<>(this.arenaFactory.getArenas()));
+        this.duelManager = new DuelManager(this, new CopyOnWriteArraySet<>(this.arenaFactory.getArenas()));
         this.queueDispatcher = new QueueDispatcher(duelManager);
 
         this.database = new MySQLStorage();

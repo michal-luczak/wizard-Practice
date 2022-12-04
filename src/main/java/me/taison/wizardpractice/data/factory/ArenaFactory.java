@@ -16,6 +16,7 @@ public interface ArenaFactory {
 
     default Optional<Arena> getAvailableArena(){
         return this.getArenas().stream().filter(arena -> arena.getState() == ArenaState.FREE).findAny();
+        //TODO orElse -> dynamiczne tworzenie areny ???
     }
 
 }

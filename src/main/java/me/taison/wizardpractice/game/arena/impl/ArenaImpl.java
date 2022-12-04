@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ArenaImpl implements Arena {
-    //PRZYKLADOWA_ARENA("PRZYKLADOWA_ARENA", "world", new Location(Bukkit.getServer().getWorld("world"), 0, 90 ,0));
 
     private final String name;
 
@@ -36,6 +35,16 @@ public class ArenaImpl implements Arena {
     public ArenaImpl setWorld(World world){
         this.world = world;
         return this;
+    }
+
+    @Override
+    public ArenaState getState() {
+        return this.arenaState;
+    }
+
+    @Override
+    public void setState(ArenaState arenaState) {
+        this.arenaState = arenaState;
     }
 
     public List<Location> getSpawnLocations() {
