@@ -59,7 +59,7 @@ public class QueueDispatcher {
             getQueueByGameType(gameMapType).get().getTeamsInQueue().remove();
 
             duelManager.startDuel(gameMapType, new ArrayList<>(){{add(team1); add(team2); add(team3);}});
-        } else if (gameMapType.getSlots() == 2 && getQueueByGameType(gameMapType).get().getTeamsInQueue().size() >= 2) {
+        } else if (getQueueByGameType(gameMapType).get().getTeamsInQueue().size() >= 2) {
 
             //get team1
             Team team1 = getQueueByGameType(gameMapType).get().getTeamsInQueue().peek();

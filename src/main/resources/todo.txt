@@ -1,12 +1,12 @@
 tajson:
-- przerobic na listy
+- przerobic na listy [DONE]
 -
 -
 -
 
 
 lux:
-- factory areny, interfejs
+- factory areny, interfejs [DONE]
 - zamiana getUniqueIdentifier na getUniqueId [DONE]
 -
 -

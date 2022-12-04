@@ -20,7 +20,13 @@ public interface Team {
 
     void disband();
 
+    void sendTitle(String title, String subtitle, int fadeIn, int fadeOut, int time);
+
+    void sendActionBar(String message);
+
     void leave(User user);
+
+    void sendMessage(String message);
 
     void join(User user);
 

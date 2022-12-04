@@ -14,8 +14,8 @@ public interface ArenaFactory {
 
     void unregister(Arena arena);
 
-    default Optional<Arena> getAvailableArena(){
-        return this.getArenas().stream().filter(arena -> arena.getState() == ArenaState.FREE).findAny();
+    default Optional<Arena> getAvailableArena(int teamsAmount){
+        return this.getArenas().stream().filter(arena -> arena.getState() == ArenaState.FREE && arena.isEnoughSpace(teamsAmount)).findAny();
         //TODO orElse -> dynamiczne tworzenie areny ???
     }
 

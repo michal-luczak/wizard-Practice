@@ -116,7 +116,15 @@ public final class WizardPractice extends JavaPlugin {
                 .addSpawnLocation(-3.5, 90, 20.5, 180, 0)
                 .build();
 
+        Arena fullWinterArena = new ArenaImpl("FullWinterArena")
+                .setWorld(Bukkit.getWorld("world"))
+                .addSpawnLocation(-103.5, 109, -69.5, 0, 0)
+                .addSpawnLocation(-84.5, 109, -46.5, 90, 0)
+                .addSpawnLocation(-103.5, 109, -21.5, 180, 0)
+                .build();
+
         this.arenaFactory.register(frostArena);
+        this.arenaFactory.register(fullWinterArena);
 
     }
 

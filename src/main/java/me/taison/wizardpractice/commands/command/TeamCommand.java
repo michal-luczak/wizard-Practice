@@ -31,45 +31,36 @@ public class TeamCommand extends AbstractCommand {
                 player.sendMessage(StringUtils.color("&cPodaj nick gracza!"));
                 return;
             }
-            else {
-                if (Bukkit.getPlayer(args[1]) == null) {
-                    player.sendMessage(StringUtils.color("&cNie ma takiego gracza na serwerze!"));
-                    return;
-                }
-                else {
-                    Player playerToInvite = Bukkit.getPlayer(args[1]);
-                    UserFactory userFactory = WizardPractice.getSingleton().getUserFactory();
-                    if (userFactory.getByUniqueId(playerToInvite.getUniqueId()).isPresent()) {
-                        User user = userFactory.getByUniqueId(playerToInvite.getUniqueId()).get();
-                        user.getTeam().invitePlayer(user);
-                    }
-                }
+            if (Bukkit.getPlayer(args[1]) == null) {
+                player.sendMessage(StringUtils.color("&cNie ma takiego gracza na serwerze!"));
+                return;
             }
-        }
-        else if (args[0].equals("dolacz")) {
+            Player playerToInvite = Bukkit.getPlayer(args[1]);
+            UserFactory userFactory = WizardPractice.getSingleton().getUserFactory();
+            if (userFactory.getByUniqueId(playerToInvite.getUniqueId()).isPresent()) {
+                User user = userFactory.getByUniqueId(playerToInvite.getUniqueId()).get();
+                user.getTeam().invitePlayer(user);
+            }
+        } else if (args[0].equals("dolacz")) {
             if (args.length == 1) {
                 player.sendMessage(StringUtils.color("&cPodaj nazwe teamu!"));
                 return;
             }
-            else {
-                if (Bukkit.getPlayer(args[1]) == null) {
-                    player.sendMessage(StringUtils.color("&cNie masz zaproszenia do tego teamu!"));
-                    return;
-                }
-                else {
-                    Player leader = Bukkit.getPlayer(args[1]);
-                    UserFactory userFactory = WizardPractice.getSingleton().getUserFactory();
-                    if (userFactory.getByUniqueId(leader.getUniqueId()).isPresent()) {
-                        Team team = userFactory.getByUniqueId(leader.getUniqueId()).get().getTeam();
-                        if (userFactory.getByUniqueId(player.getUniqueId()).isPresent()) {
-                            User user = userFactory.getByUniqueId(player.getUniqueId()).get();
-                            team.join(user);
-                        }
-                    }
+            if (Bukkit.getPlayer(args[1]) == null) {
+                player.sendMessage(StringUtils.color("&cNie masz zaproszenia do tego teamu!"));
+                return;
+            }
+            Player leader = Bukkit.getPlayer(args[1]);
+            UserFactory userFactory = WizardPractice.getSingleton().getUserFactory();
+            if (userFactory.getByUniqueId(leader.getUniqueId()).isPresent()) {
+                Team team = userFactory.getByUniqueId(leader.getUniqueId()).get().getTeam();
+                if (userFactory.getByUniqueId(player.getUniqueId()).isPresent()) {
+                    User user = userFactory.getByUniqueId(player.getUniqueId()).get();
+                    team.join(user);
                 }
             }
         }
 
-        new PartyGui().open(player);
+        //new PartyGui().open(player);
     }
 }

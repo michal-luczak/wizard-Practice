@@ -84,6 +84,22 @@ public class GameSelectorGuiItem extends GuiItem {
                 queueDispatcher.addPlayerToQueue(user, gameMapType);
                 event.setWillClose(true);
             }
+            case SPEED_GAME_MUTLI_TEAM -> {
+                player.sendMessage(StringUtils.color("&cTest4"));
+                queueDispatcher.addPlayerToQueue(user, gameMapType);
+                event.setWillClose(true);
+            }
+            case NORMAL_GAME_MUTLI_TEAM -> {
+                player.sendMessage(StringUtils.color("&cTest5"));
+                queueDispatcher.addPlayerToQueue(user, gameMapType);
+                event.setWillClose(true);
+            }
+
+            case DIAMOND_GAME_MUTLI_TEAM -> {
+                player.sendMessage(StringUtils.color("&cTest6"));
+                queueDispatcher.addPlayerToQueue(user, gameMapType);
+                event.setWillClose(true);
+            }
         }
     }
 }

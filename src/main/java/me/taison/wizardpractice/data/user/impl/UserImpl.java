@@ -3,6 +3,7 @@ package me.taison.wizardpractice.data.user.impl;
 import me.taison.wizardpractice.data.user.Team;
 import me.taison.wizardpractice.data.user.User;
 import me.taison.wizardpractice.utilities.chat.StringUtils;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -71,6 +72,11 @@ public class UserImpl implements User {
     @Override
     public void sendTitle(String title, String subtitle, int fadeIn, int fadeOut, int time) {
         this.getAsPlayer().sendTitle(StringUtils.color(title), StringUtils.color(subtitle), fadeIn, fadeOut, time);
+    }
+
+    @Override
+    public void sendActionBar(String message){
+        this.getAsPlayer().sendActionBar(Component.text(StringUtils.color(message)));
     }
 
     @Override

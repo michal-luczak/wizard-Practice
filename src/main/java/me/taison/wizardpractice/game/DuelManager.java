@@ -68,7 +68,7 @@ public class DuelManager {
     public void startDuel(GameMapType gameMapType, List<Team> teams) {
         Duel duel = new Duel(teams, gameMapType);
 
-        wizardPractice.getArenaFactory().getAvailableArena().ifPresentOrElse(arena -> {
+        wizardPractice.getArenaFactory().getAvailableArena(gameMapType.getSlots()).ifPresentOrElse(arena -> {
             this.runningDuels.add(duel);
 
             duel.setArena(arena);
@@ -85,8 +85,8 @@ public class DuelManager {
 
         this.runningDuels.remove(duel);
 
-        if (!waitingDuels.isEmpty() && wizardPractice.getArenaFactory().getAvailableArena().isPresent()) {
-            this.waitingDuels.peek().setArena(wizardPractice.getArenaFactory().getAvailableArena().get());
+        if (!waitingDuels.isEmpty() && wizardPractice.getArenaFactory().getAvailableArena(duel.getGameMapType().getSlots()).isPresent()) {
+            this.waitingDuels.peek().setArena(wizardPractice.getArenaFactory().getAvailableArena(duel.getGameMapType().getSlots()).get());
             this.waitingDuels.peek().startDuel();
 
             this.runningDuels.add(duel);

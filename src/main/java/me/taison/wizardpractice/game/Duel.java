@@ -48,8 +48,6 @@ public class Duel {
     }
 
     public void stopDuel() {
-        isDuring = false;
-
         arena.setState(ArenaState.RESTARTING);
         //TODO restartowanie areny
         arena.setState(ArenaState.FREE);
@@ -62,18 +60,21 @@ public class Duel {
     private void teleportPlayersToArena() {
 
         AtomicInteger i = new AtomicInteger(0);
-        this.teams.forEach(team -> team.getTeam().stream().map(User::getAsPlayer).forEach(player -> {
-            player.sendMessage(StringUtils.color("&aArenka sie zaczyna kurwyyy."));
+        this.teams.forEach(team -> {
+            team.getTeam().stream().map(User::getAsPlayer).forEach(player -> {
+                player.teleport(arena.getSpawnLocations().get(i.get()));
 
-            player.teleport(arena.getSpawnLocations().get(i.get()));
+                team.sendActionBar("&aRozpoczyna sie gra! Powodzenia!");
+                team.sendMessage("&aGra za chwile sie rozpocznie. Powodzenia!");
+            });
 
             i.getAndIncrement();
-        }));
+        });
     }
 
     private void teleportPlayersToSpawn() {
         this.teams.forEach(team -> team.getTeam().stream().map(User::getAsPlayer).forEach(player -> {
-            player.sendMessage(StringUtils.color("&aArenka sie konczy kurwyyy."));
+            player.sendMessage(StringUtils.color("&aArena sie zakonczyla."));
 
             player.teleport(WizardPractice.getSingleton().getSpawnLocation());
 
@@ -97,16 +98,8 @@ public class Duel {
         return gameMapType;
     }
 
-    public boolean isDuring() {
-        return isDuring;
-    }
-
     public DuelCounter getDuelCounter() {
         return duelCounter;
-    }
-
-    public void setDuring(boolean during) {
-        isDuring = during;
     }
 
     public Arena getArena() {

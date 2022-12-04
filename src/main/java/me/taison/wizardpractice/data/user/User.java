@@ -22,5 +22,7 @@ public interface User {
 
     void sendTitle(String title, String subtitle, int fadeIn, int fadeOut, int time);
 
+    void sendActionBar(String message);
+
     void setTeam(Team team);
 }
