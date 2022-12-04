@@ -38,7 +38,7 @@ public final class ItemStackUtils {
         } else if (d == item.getType().getMaxDurability()) {
             player.getInventory().clear(player.getInventory().getHeldItemSlot());
             player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0F, 1.0F);
-        } else {
+        }  else {
             item.setDurability((short) (d + 1));
         }
     }

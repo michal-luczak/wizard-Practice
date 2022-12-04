@@ -22,43 +22,88 @@ public class TeamCommand extends AbstractCommand {
         Player player = (Player) sender;
 
         if (args.length == 0) {
-            player.sendMessage(StringUtils.color("&a/zapros {nick} -> zaprasza gracza do teamu"));
-            player.sendMessage(StringUtils.color("&a/dolacz {nick} -> dołącza do teamu (jeżeli posiadasz zaproszenie)"));
+            player.sendMessage(StringUtils.color("&a/zapros <nick> - zaprasza gracza do teamu"));
+            player.sendMessage(StringUtils.color("&a/dolacz <nick> - dołącza do teamu (jeżeli posiadasz zaproszenie)"));
+            player.sendMessage(StringUtils.color("&a/wyrzuc <nick> - wyrzuca gracza z teamu."));
+            player.sendMessage(StringUtils.color("&a/usun - czyści twoją drużynę"));
             return;
         }
+
+        UserFactory userFactory = WizardPractice.getSingleton().getUserFactory();
+
         if (args[0].equals("zapros")) {
             if (args.length == 1) {
                 player.sendMessage(StringUtils.color("&cPodaj nick gracza!"));
                 return;
             }
-            if (Bukkit.getPlayer(args[1]) == null) {
+
+            Player playerToInvite = Bukkit.getPlayer(args[1]);
+            if (playerToInvite == null) {
                 player.sendMessage(StringUtils.color("&cNie ma takiego gracza na serwerze!"));
                 return;
             }
-            Player playerToInvite = Bukkit.getPlayer(args[1]);
-            UserFactory userFactory = WizardPractice.getSingleton().getUserFactory();
-            if (userFactory.getByUniqueId(playerToInvite.getUniqueId()).isPresent()) {
-                User user = userFactory.getByUniqueId(playerToInvite.getUniqueId()).get();
-                user.getTeam().invitePlayer(user);
-            }
+
+            userFactory.getByUniqueId(playerToInvite.getUniqueId()).ifPresent(user -> {
+                userFactory.getByUniqueId(player.getUniqueId()).ifPresent(playerUser -> {
+                    if(!playerUser.getTeam().getLeader().equals(playerUser)){
+                        player.sendMessage(StringUtils.color("&cNie mozesz zarzadzac druzyna nie bedac liderem."));
+                        return;
+                    }
+                    user.getTeam().invitePlayer(user);
+                });
+            });
         } else if (args[0].equals("dolacz")) {
             if (args.length == 1) {
                 player.sendMessage(StringUtils.color("&cPodaj nazwe teamu!"));
                 return;
             }
-            if (Bukkit.getPlayer(args[1]) == null) {
-                player.sendMessage(StringUtils.color("&cNie masz zaproszenia do tego teamu!"));
+            Player leader = Bukkit.getPlayer(args[1]);
+            if(leader == null) {
+                player.sendMessage(StringUtils.color("&cNie ma takiego teamu!"));
                 return;
             }
-            Player leader = Bukkit.getPlayer(args[1]);
-            UserFactory userFactory = WizardPractice.getSingleton().getUserFactory();
-            if (userFactory.getByUniqueId(leader.getUniqueId()).isPresent()) {
-                Team team = userFactory.getByUniqueId(leader.getUniqueId()).get().getTeam();
-                if (userFactory.getByUniqueId(player.getUniqueId()).isPresent()) {
-                    User user = userFactory.getByUniqueId(player.getUniqueId()).get();
-                    team.join(user);
-                }
+
+            userFactory.getByUniqueId(leader.getUniqueId()).ifPresent(leaderUser -> {
+                Team team = leaderUser.getTeam();
+
+                userFactory.getByUniqueId(player.getUniqueId()).ifPresent(invitedUser -> {
+                    if(!team.getInvitations().asMap().containsKey(invitedUser)){
+                        player.sendMessage(StringUtils.color("&cNie masz zaproszenia do tego teamu!"));
+                        return;
+                    }
+                    team.join(invitedUser);
+                });
+
+            });
+        } else if (args[0].equals("wyrzuc")){
+            if (args.length == 1) {
+                player.sendMessage(StringUtils.color("&cPodaj nazwe gracza do wyrzucenia"));
+                return;
             }
+            Player playerToKick = Bukkit.getPlayer(args[1]);
+            if(playerToKick == null) {
+                player.sendMessage(StringUtils.color("&cGracz do wyrzucenia nie jest na serwerze."));
+                return;
+            }
+            userFactory.getByUniqueId(playerToKick.getUniqueId()).ifPresent(user -> userFactory.getByUniqueId(player.getUniqueId()).ifPresent(playerUser -> {
+                if(!playerUser.getTeam().getLeader().equals(playerUser)){
+                    player.sendMessage(StringUtils.color("&cNie mozesz zarzadzac druzyna nie bedac liderem."));
+                    return;
+                }
+                if(!user.getTeam().equals(playerUser.getTeam())){
+                    player.sendMessage(StringUtils.color("&cTen gracz nie jest w twoim teamie."));
+                    return;
+                }
+                user.getTeam().kickPlayer(user);
+            }));
+        } else if (args[0].equals("usun")) {
+            userFactory.getByUniqueId(player.getUniqueId()).ifPresent(playerUser -> {
+                if (!playerUser.getTeam().getLeader().equals(playerUser)) {
+                    player.sendMessage(StringUtils.color("&cNie mozesz zarzadzac druzyna nie bedac liderem."));
+                    return;
+                }
+                playerUser.getTeam().disband();
+            });
         }
 
         //new PartyGui().open(player);

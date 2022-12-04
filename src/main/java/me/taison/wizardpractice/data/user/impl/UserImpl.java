@@ -1,5 +1,6 @@
 package me.taison.wizardpractice.data.user.impl;
 
+import me.taison.wizardpractice.WizardPractice;
 import me.taison.wizardpractice.data.user.Team;
 import me.taison.wizardpractice.data.user.User;
 import me.taison.wizardpractice.utilities.chat.StringUtils;
@@ -81,6 +82,14 @@ public class UserImpl implements User {
 
     @Override
     public void setTeam(Team team) {
+        if(team == null){
+            Team newTeam = new TeamImpl(this);
+
+            WizardPractice.getSingleton().getTeamFactory().register(newTeam);
+
+            this.team = newTeam;
+            return;
+        }
         this.team = team;
     }
 

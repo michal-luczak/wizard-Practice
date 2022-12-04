@@ -82,8 +82,13 @@ public class TeamImpl implements Team {
         this.teamPlayers.forEach(teamUser -> teamUser.sendMessage("&7" + this.leader.getName() + " &6&nrozwiazal druzyne."));
 
         this.teamPlayers.forEach(user -> user.setTeam(null));
-        this.leader = null;
+
         this.teamPlayers.clear();
+
+        this.teamPlayers.add(this.leader);
+        this.leader.setTeam(this);
+
+        this.leader.sendMessage(StringUtils.color("&aDruzyna zostala zresetowana."));
     }
 
     @Override
@@ -99,6 +104,7 @@ public class TeamImpl implements Team {
     @Override
     public void leave(User user) {
         user.setTeam(null);
+
         this.teamPlayers.remove(user);
         this.teamPlayers.forEach(teamUser -> teamUser.sendMessage("&7" + user.getName() + " &6&nopuscil druzyne."));
     }
@@ -113,6 +119,7 @@ public class TeamImpl implements Team {
         if(this.cachedInvitations.asMap().get(user) != null){
             this.cachedInvitations.asMap().remove(user);
         }
+        user.getTeam().leave(user);
 
         user.setTeam(this);
         this.teamPlayers.add(user);
