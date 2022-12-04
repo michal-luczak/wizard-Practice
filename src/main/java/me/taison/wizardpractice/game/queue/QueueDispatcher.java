@@ -44,7 +44,7 @@ public class QueueDispatcher {
         user.getAsPlayer().getInventory().remove(duelManager.getFeather());
         user.getAsPlayer().getInventory().setItem(8, duelManager.getBarrier());
 
-        if (gameMapType.toString().endsWith("_MUTLI_TEAM") && getQueueByGameType(gameMapType).get().getTeamsInQueue().size() >= 3) {
+        if (gameMapType.getSlots() == 3 && getQueueByGameType(gameMapType).get().getTeamsInQueue().size() >= 3) {
 
             //get team1
             Team team1 = getQueueByGameType(gameMapType).get().getTeamsInQueue().peek();

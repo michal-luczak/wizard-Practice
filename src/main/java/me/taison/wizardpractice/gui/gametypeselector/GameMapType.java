@@ -82,4 +82,8 @@ public enum GameMapType {
     public ItemStack[] getItems() {
         return items;
     }
+
+    public int getSlots() {
+        return slots;
+    }
 }
