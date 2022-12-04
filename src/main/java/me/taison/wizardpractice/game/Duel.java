@@ -4,7 +4,6 @@ import me.taison.wizardpractice.WizardPractice;
 import me.taison.wizardpractice.data.user.Team;
 import me.taison.wizardpractice.data.user.User;
 import me.taison.wizardpractice.game.arena.Arena;
-import me.taison.wizardpractice.game.arena.impl.ArenaImpl;
 import me.taison.wizardpractice.game.arena.ArenaState;
 import me.taison.wizardpractice.gui.gametypeselector.GameMapType;
 import me.taison.wizardpractice.utilities.chat.StringUtils;
@@ -12,9 +11,7 @@ import org.apache.commons.lang3.Validate;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Duel {
@@ -62,45 +59,37 @@ public class Duel {
     }
 
     private void teleportPlayersToArena() {
-        //team1.getTeam().forEach(user -> user.getAsPlayer().teleport(arena.getLocation()));
-        //team2.getTeam().forEach(user -> user.getAsPlayer().teleport(arena.getLocation()));
 
         AtomicInteger i = new AtomicInteger(0);
-        this.teams.forEach(team -> {
-            team.getTeam().stream().map(User::getAsPlayer).forEach(player -> {
-                player.sendMessage(StringUtils.color("&aArenka sie zaczyna kurwyyy."));
+        this.teams.forEach(team -> team.getTeam().stream().map(User::getAsPlayer).forEach(player -> {
+            player.sendMessage(StringUtils.color("&aArenka sie zaczyna kurwyyy."));
 
-                player.teleport(arena.getSpawnLocations().get(i.get()));
+            player.teleport(arena.getSpawnLocations().get(i.get()));
 
-                i.getAndIncrement();
-            });
-        });
+            i.getAndIncrement();
+        }));
     }
 
     private void teleportPlayersToSpawn() {
-        this.teams.forEach(team -> {
-            team.getTeam().stream().map(User::getAsPlayer).forEach(player -> {
-                player.sendMessage(StringUtils.color("&aArenka sie konczy kurwyyy."));
+        this.teams.forEach(team -> team.getTeam().stream().map(User::getAsPlayer).forEach(player -> {
+            player.sendMessage(StringUtils.color("&aArenka sie konczy kurwyyy."));
 
-                player.teleport(WizardPractice.getSingleton().getSpawnLocation());
+            player.teleport(WizardPractice.getSingleton().getSpawnLocation());
 
-                player.getInventory().clear();
-            });
-        });
+            player.getInventory().clear();
+        }));
     }
 
     private void giveItems() {
-        this.teams.forEach(team -> {
-            team.getTeam().forEach(user -> {
-                Player teamPlayer = user.getAsPlayer();
+        this.teams.forEach(team -> team.getTeam().forEach(user -> {
+            Player teamPlayer = user.getAsPlayer();
 
-                teamPlayer.getInventory().clear();
-                teamPlayer.updateInventory();
+            teamPlayer.getInventory().clear();
+            teamPlayer.updateInventory();
 
-                teamPlayer.getInventory().setContents(gameMapType.getItems());
-                teamPlayer.getInventory().setArmorContents(gameMapType.getArmor());
-            });
-        });
+            teamPlayer.getInventory().setContents(gameMapType.getItems());
+            teamPlayer.getInventory().setArmorContents(gameMapType.getArmor());
+        }));
     }
 
     public GameMapType getGameMapType() {

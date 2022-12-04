@@ -13,15 +13,27 @@ public enum GameMapType {
 
     DIAMOND_GAME(10, "&aDiament", Arrays.asList("&cRodzaj gry: Diamentowe Sety", " ", "&7Graczy w kolejce: %queuedPlayer", "&7Graczy grających: %currentPlaying"),
             new ItemBuilder(Material.DIAMOND_SWORD, 1).addEnchant(Enchantment.KNOCKBACK, 1).toItemStack(),
-            new ItemStack[]{}, new ItemStack[]{}),
+            new ItemStack[]{}, new ItemStack[]{}, 2),
 
     NORMAL_GAME(13, "&aNormal", Arrays.asList("&cRodzaj gry: Zwykla gra.", " ", "&7Graczy w kolejce: %queuedPlayer", "&7Graczy grających: %currentPlaying"),
             new ItemBuilder(Material.DIAMOND_SWORD, 1).toItemStack(),
-            new ItemStack[]{}, new ItemStack[]{}),
+            new ItemStack[]{}, new ItemStack[]{}, 2),
 
     SPEED_GAME(16, "&aSpeed", Arrays.asList("&cRodzaj gry: Speed.", " ", "&7Graczy w kolejce: %queuedPlayer", "&7Graczy grających: %currentPlaying"),
             new ItemBuilder(Material.POTION, 1).toItemStack(),
-            new ItemStack[]{}, new ItemStack[]{});
+            new ItemStack[]{}, new ItemStack[]{}, 2),
+
+    DIAMOND_GAME_MUTLI_TEAM(10, "&aDiament", Arrays.asList("&cRodzaj gry: Diamentowe Sety", " ", "&7Graczy w kolejce: %queuedPlayer", "&7Graczy grających: %currentPlaying"),
+            new ItemBuilder(Material.DIAMOND_SWORD, 1).addEnchant(Enchantment.KNOCKBACK, 1).toItemStack(),
+            new ItemStack[]{}, new ItemStack[]{}, 3),
+
+    NORMAL_GAME_MUTLI_TEAM(13, "&aNormal", Arrays.asList("&cRodzaj gry: Zwykla gra.", " ", "&7Graczy w kolejce: %queuedPlayer", "&7Graczy grających: %currentPlaying"),
+            new ItemBuilder(Material.DIAMOND_SWORD, 1).toItemStack(),
+            new ItemStack[]{}, new ItemStack[]{}, 3),
+
+    SPEED_GAME_MUTLI_TEAM(16, "&aSpeed", Arrays.asList("&cRodzaj gry: Speed.", " ", "&7Graczy w kolejce: %queuedPlayer", "&7Graczy grających: %currentPlaying"),
+            new ItemBuilder(Material.POTION, 1).toItemStack(),
+            new ItemStack[]{}, new ItemStack[]{}, 3);
 
     private final int slotId;
 
@@ -34,7 +46,9 @@ public enum GameMapType {
 
     private final ItemStack[] items;
 
-    GameMapType(int slotId, String name, List<String> description, ItemStack itemStack, ItemStack[] armor, ItemStack[] items){
+    private final int slots;
+
+    GameMapType(int slotId, String name, List<String> description, ItemStack itemStack, ItemStack[] armor, ItemStack[] items, int slots){
         this.slotId = slotId;
 
         this.name = name;
@@ -42,6 +56,7 @@ public enum GameMapType {
         this.itemStack = itemStack;
         this.armor = armor;
         this.items = items;
+        this.slots = slots;
     }
 
     public int getSlotId() {

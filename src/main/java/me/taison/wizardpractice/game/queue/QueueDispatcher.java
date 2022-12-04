@@ -2,14 +2,10 @@ package me.taison.wizardpractice.game.queue;
 
 import me.taison.wizardpractice.data.user.Team;
 import me.taison.wizardpractice.data.user.User;
-import me.taison.wizardpractice.data.user.impl.TeamImpl;
 import me.taison.wizardpractice.game.DuelManager;
 import me.taison.wizardpractice.gui.gametypeselector.GameMapType;
-import org.bukkit.entity.Player;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 public class QueueDispatcher {
@@ -48,21 +44,37 @@ public class QueueDispatcher {
         user.getAsPlayer().getInventory().remove(duelManager.getFeather());
         user.getAsPlayer().getInventory().setItem(8, duelManager.getBarrier());
 
-        if (getQueueByGameType(gameMapType).get().getTeamsInQueue().size() >= 2) {
+        if (gameMapType.toString().endsWith("_MUTLI_TEAM") && getQueueByGameType(gameMapType).get().getTeamsInQueue().size() >= 3) {
 
+            //get team1
             Team team1 = getQueueByGameType(gameMapType).get().getTeamsInQueue().peek();
             getQueueByGameType(gameMapType).get().getTeamsInQueue().remove();
+
+            //get team2
             Team team2 = getQueueByGameType(gameMapType).get().getTeamsInQueue().peek();
             getQueueByGameType(gameMapType).get().getTeamsInQueue().remove();
 
+            //get team3
+            Team team3 = getQueueByGameType(gameMapType).get().getTeamsInQueue().peek();
+            getQueueByGameType(gameMapType).get().getTeamsInQueue().remove();
 
-            duelManager.startDuel(gameMapType, team1, team2);
+            duelManager.startDuel(gameMapType, new ArrayList<>(){{add(team1); add(team2); add(team3);}});
+        } else if (getQueueByGameType(gameMapType).get().getTeamsInQueue().size() >= 2) {
 
+            //get team1
+            Team team1 = getQueueByGameType(gameMapType).get().getTeamsInQueue().peek();
+            getQueueByGameType(gameMapType).get().getTeamsInQueue().remove();
+
+            //get team2
+            Team team2 = getQueueByGameType(gameMapType).get().getTeamsInQueue().peek();
+            getQueueByGameType(gameMapType).get().getTeamsInQueue().remove();
+
+            duelManager.startDuel(gameMapType, new ArrayList<>(){{add(team1); add(team2);}});
         }
         return true;
     }
 
-    public boolean removePlayerFromQueue(User user) {
+    public boolean removeUserFromQueue(User user) {
         if (getUserQueue(user).isEmpty())
             return false;
         getUserQueue(user).get().removeTeamFromQueue(user.getTeam());
@@ -79,6 +91,9 @@ public class QueueDispatcher {
         queuesToDuel.add(new QueueToDuel(GameMapType.NORMAL_GAME));
         queuesToDuel.add(new QueueToDuel(GameMapType.DIAMOND_GAME));
         queuesToDuel.add(new QueueToDuel(GameMapType.SPEED_GAME));
+        queuesToDuel.add(new QueueToDuel(GameMapType.NORMAL_GAME_MUTLI_TEAM));
+        queuesToDuel.add(new QueueToDuel(GameMapType.DIAMOND_GAME_MUTLI_TEAM));
+        queuesToDuel.add(new QueueToDuel(GameMapType.SPEED_GAME_MUTLI_TEAM));
 
         return queuesToDuel;
     }

@@ -14,6 +14,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -55,15 +56,15 @@ public class DuelManager {
 
     public Optional<Duel> getDuelByUser(User user) {
         for (Duel duel : this.runningDuels) {
-            if (duel.getTeam1().getTeam().contains(user) || duel.getTeam2().getTeam().contains(user)) {
+            if (duel.getTeams().stream().anyMatch(team -> team.getTeam().contains(user))) {
                 return Optional.of(duel);
             }
         }
         return Optional.empty();
     }
 
-    public void startDuel(GameMapType gameMapType, Team team1, Team team2) {
-        Duel duel = new Duel(team1, team2, gameMapType);
+    public void startDuel(GameMapType gameMapType, List<Team> teams) {
+        Duel duel = new Duel(teams, gameMapType);
 
         wizardPractice.getArenaFactory().getAvailableArena().ifPresentOrElse(arena -> {
             this.runningDuels.add(duel);
