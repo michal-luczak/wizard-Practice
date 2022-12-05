@@ -7,7 +7,6 @@ import me.taison.wizardpractice.data.user.Team;
 import me.taison.wizardpractice.data.user.User;
 import me.taison.wizardpractice.data.user.impl.TeamImpl;
 import me.taison.wizardpractice.data.user.impl.UserImpl;
-import me.taison.wizardpractice.game.DuelManager;
 import me.taison.wizardpractice.utilities.chat.StringUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.event.EventHandler;
@@ -20,7 +19,7 @@ public class PlayerJoinListener implements Listener {
     @EventHandler
     public void handle(PlayerJoinEvent e){
         e.getPlayer().getInventory().clear();
-        e.getPlayer().getInventory().setItem(4, WizardPractice.getSingleton().getDuelManager().getFeather());
+        e.getPlayer().getInventory().setItem(4, WizardPractice.getSingleton().getFeatherItem());
 
         UserFactory userFactory = WizardPractice.getSingleton().getUserFactory();
         TeamFactory teamFactory = WizardPractice.getSingleton().getTeamFactory();

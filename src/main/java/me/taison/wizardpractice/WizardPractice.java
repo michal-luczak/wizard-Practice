@@ -10,22 +10,25 @@ import me.taison.wizardpractice.data.factory.impl.TeamFactoryImpl;
 import me.taison.wizardpractice.data.factory.impl.UserFactoryImpl;
 import me.taison.wizardpractice.data.storage.IDatabase;
 import me.taison.wizardpractice.data.storage.MySQLStorage;
-import me.taison.wizardpractice.game.DuelManager;
 import me.taison.wizardpractice.game.arena.Arena;
 import me.taison.wizardpractice.game.arena.impl.ArenaImpl;
-import me.taison.wizardpractice.game.queue.QueueDispatcher;
+import me.taison.wizardpractice.game.matchmakingsystem.Matchmaker;
 import me.taison.wizardpractice.service.Service;
 import me.taison.wizardpractice.utilities.AbstractCommand;
+import me.taison.wizardpractice.utilities.chat.StringUtils;
+import me.taison.wizardpractice.utilities.items.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.GameRule;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.reflections.Reflections;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Set;
-import java.util.concurrent.CopyOnWriteArraySet;
 
 public final class WizardPractice extends JavaPlugin {
 
@@ -41,10 +44,16 @@ public final class WizardPractice extends JavaPlugin {
 
     private IDatabase database;
 
-    private DuelManager duelManager;
-    private QueueDispatcher queueDispatcher;
+    private Matchmaker matchmaker;
 
     private Location SPAWN_LOCATION;
+
+    private final ItemStack featherItem = new ItemBuilder(Material.FEATHER).addItemFlag(ItemFlag.HIDE_ENCHANTS)
+            .addEnchant(Enchantment.ARROW_DAMAGE, 1).setName(StringUtils.color("&5&lWybór duela")).
+            addLoreLine(StringUtils.color("&dKliknij aby zagrać!")).toItemStack();
+    private final ItemStack barrierItem = new ItemBuilder(Material.BARRIER).addItemFlag(ItemFlag.HIDE_ENCHANTS)
+            .addEnchant(Enchantment.ARROW_DAMAGE, 1).setName(StringUtils.color("&4&lAnulowanie duela")).
+            addLoreLine(StringUtils.color("&cKliknij aby anulować!")).toItemStack();
 
     @Override
     public void onLoad(){
@@ -60,8 +69,7 @@ public final class WizardPractice extends JavaPlugin {
         this.initializeCommands();
         this.initializeArenas();
 
-        this.duelManager = new DuelManager(this, new CopyOnWriteArraySet<>(this.arenaFactory.getArenas()));
-        this.queueDispatcher = new QueueDispatcher(duelManager);
+        this.matchmaker = new Matchmaker(arenaFactory);
 
         this.database = new MySQLStorage();
         database.open();
@@ -146,33 +154,28 @@ public final class WizardPractice extends JavaPlugin {
     public static WizardPractice getSingleton() {
         return singleton;
     }
-
     public ArenaFactory getArenaFactory() {
         return arenaFactory;
     }
-
     public Location getSpawnLocation() {
         return this.SPAWN_LOCATION;
     }
-
     public UserFactory getUserFactory() {
         return userFactory;
     }
-
     public AddonFactory getAddonFactory() {
         return addonFactory;
     }
-
-    public DuelManager getDuelManager() {
-        return duelManager;
+    public Matchmaker getMatchmaker() {
+        return matchmaker;
     }
-    public QueueDispatcher getQueueDispatcher() {
-        return queueDispatcher;
-    }
-
     public TeamFactory getTeamFactory() {
         return teamFactory;
     }
-
-
+    public ItemStack getFeatherItem() {
+        return featherItem;
+    }
+    public ItemStack getBarrierItem() {
+        return barrierItem;
+    }
 }

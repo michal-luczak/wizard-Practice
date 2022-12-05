@@ -3,7 +3,7 @@ package me.taison.wizardpractice.listeners;
 import me.taison.wizardpractice.WizardPractice;
 import me.taison.wizardpractice.data.factory.UserFactory;
 import me.taison.wizardpractice.data.user.User;
-import me.taison.wizardpractice.game.DuelManager;
+import me.taison.wizardpractice.game.matchmakingsystem.Matchmaker;
 import me.taison.wizardpractice.gui.GuiHolder;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,7 +18,7 @@ public class InventoryClickListener implements Listener {
         if (!(e.getWhoClicked() instanceof Player))
             return;
 
-        DuelManager duelManager = WizardPractice.getSingleton().getDuelManager();
+        Matchmaker matchmaker = WizardPractice.getSingleton().getMatchmaker();
         UserFactory userFactory = WizardPractice.getSingleton().getUserFactory();
 
         if (userFactory.getByUniqueId(e.getWhoClicked().getUniqueId()).isEmpty()) {
@@ -27,7 +27,7 @@ public class InventoryClickListener implements Listener {
 
         User user = userFactory.getByUniqueId(e.getWhoClicked().getUniqueId()).get();
 
-        if (duelManager.getDuelByUser(user).isEmpty() && !e.getWhoClicked().isOp()) {
+        if (matchmaker.getDuelByUser(user).isEmpty() && !e.getWhoClicked().isOp()) {
             e.setCancelled(true);
         }
 

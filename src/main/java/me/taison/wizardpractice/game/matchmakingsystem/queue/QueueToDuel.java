@@ -1,27 +1,28 @@
-package me.taison.wizardpractice.game.queue;
+package me.taison.wizardpractice.game.matchmakingsystem.queue;
 
 import me.taison.wizardpractice.data.user.Team;
 import me.taison.wizardpractice.data.user.impl.TeamImpl;
 import me.taison.wizardpractice.gui.gametypeselector.GameMapType;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class QueueToDuel {
 
     private final GameMapType gameMapType;
-    private final ConcurrentLinkedQueue<Team> teamsInQueue;
+    private final CopyOnWriteArrayList<Team> teamsInQueue;
 
     public QueueToDuel(GameMapType gameMapType) {
         this.gameMapType = gameMapType;
 
-        this.teamsInQueue = new ConcurrentLinkedQueue<>();
+        this.teamsInQueue = new CopyOnWriteArrayList<>();
     }
 
     public GameMapType getGameMapType() {
         return gameMapType;
     }
 
-    public ConcurrentLinkedQueue<Team> getTeamsInQueue() {
+    public CopyOnWriteArrayList<Team> getTeamsInQueue() {
         return teamsInQueue;
     }
 

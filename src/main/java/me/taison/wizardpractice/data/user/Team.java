@@ -1,6 +1,7 @@
 package me.taison.wizardpractice.data.user;
 
 import com.google.common.cache.Cache;
+import org.bukkit.Location;
 
 import java.util.List;
 
@@ -29,5 +30,9 @@ public interface Team {
     void sendMessage(String message);
 
     void join(User user);
+
+    void teleport(Location location);
+
+    void clearInventory();
 
 }

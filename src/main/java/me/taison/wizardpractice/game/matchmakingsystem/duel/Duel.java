@@ -1,8 +1,7 @@
-package me.taison.wizardpractice.game;
+package me.taison.wizardpractice.game.matchmakingsystem.duel;
 
 import me.taison.wizardpractice.WizardPractice;
 import me.taison.wizardpractice.data.user.Team;
-import me.taison.wizardpractice.data.user.User;
 import me.taison.wizardpractice.game.arena.Arena;
 import me.taison.wizardpractice.game.arena.ArenaState;
 import me.taison.wizardpractice.gui.gametypeselector.GameMapType;
@@ -19,11 +18,13 @@ public class Duel {
     private final List<Team> teams;
     private final GameMapType gameMapType;
 
-    private final DuelCounter duelCounter;
+    private final DuelCounter duel;
 
     private boolean isDuring = false;
 
     private Arena arena;
+
+
 
     public Duel(List<Team> teams, GameMapType gameMapType) {
         Validate.notNull(teams, "Teams cannot be null");
@@ -33,55 +34,55 @@ public class Duel {
 
         this.gameMapType = gameMapType;
 
-        this.duelCounter = new DuelCounter(this, this.teams);
+        this.duel = new DuelCounter(this, this.teams);
     }
 
+
+
+    //      START/STOP DUEL      \\
     public void startDuel() {
         this.isDuring = true;
 
         this.arena.setState(ArenaState.IN_GAME);
 
-        this.teleportPlayersToArena();
+        this.teleportTeamsToArena();
         this.giveItems();
 
-        this.duelCounter.startCounting();
+        this.duel.startCounting();
     }
-
     public void stopDuel() {
-        arena.setState(ArenaState.RESTARTING);
-        //TODO restartowanie areny
-        arena.setState(ArenaState.FREE);
+        this.isDuring = false;
 
-        duelCounter.cancel();
+        this.arena.restartArena();
 
-        this.teleportPlayersToSpawn();
+        this.teleportTeamsToSpawn();
+
+        this.duel.cancel();
     }
 
-    private void teleportPlayersToArena() {
+
+
+    //      PRIVATE METHODS      \\
+    private void teleportTeamsToArena() {
 
         AtomicInteger i = new AtomicInteger(0);
-        this.teams.forEach(team -> {
-            team.getTeam().stream().map(User::getAsPlayer).forEach(player -> {
-                player.teleport(arena.getSpawnLocations().get(i.get()));
 
-                team.sendActionBar("&aRozpoczyna sie gra! Powodzenia!");
-                team.sendMessage("&aGra za chwile sie rozpocznie. Powodzenia!");
-            });
+        this.teams.forEach(team -> {
+            team.sendActionBar("&aRozpoczyna sie gra! Powodzenia!");
+            team.sendMessage("&aGra za chwile sie rozpocznie. Powodzenia!");
+            team.teleport(arena.getSpawnLocations().get(i.get()));
 
             i.getAndIncrement();
         });
     }
+    private void teleportTeamsToSpawn() {
 
-    private void teleportPlayersToSpawn() {
-        this.teams.forEach(team -> team.getTeam().stream().map(User::getAsPlayer).forEach(player -> {
-            player.sendMessage(StringUtils.color("&aArena sie zakonczyla."));
-
-            player.teleport(WizardPractice.getSingleton().getSpawnLocation());
-
-            player.getInventory().clear();
-        }));
+        this.teams.forEach(team -> {
+            team.sendMessage(StringUtils.color("&aArena sie zakonczyla."));
+            team.teleport(WizardPractice.getSingleton().getSpawnLocation());
+            team.clearInventory();
+        });
     }
-
     private void giveItems() {
         this.teams.forEach(team -> team.getTeam().forEach(user -> {
             Player teamPlayer = user.getAsPlayer();
@@ -94,23 +95,24 @@ public class Duel {
         }));
     }
 
+
+    //      GETTERS      \\
     public GameMapType getGameMapType() {
         return gameMapType;
     }
-
     public DuelCounter getDuelCounter() {
-        return duelCounter;
+        return duel;
     }
-
     public Arena getArena() {
         return arena;
     }
-
     public void setArena(Arena arena) {
         this.arena = arena;
     }
-
     public List<Team> getTeams() {
         return teams;
+    }
+    public boolean isDuring() {
+        return isDuring;
     }
 }

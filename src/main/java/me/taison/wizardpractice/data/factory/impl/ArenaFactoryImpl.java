@@ -11,7 +11,7 @@ public class ArenaFactoryImpl implements ArenaFactory {
 
     private final WizardPractice wizardPractice;
 
-    private List<Arena> arenaList;
+    private final List<Arena> arenaList;
 
     public ArenaFactoryImpl(WizardPractice wizardPractice){
         this.arenaList = new ArrayList<>();

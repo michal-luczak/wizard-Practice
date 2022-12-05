@@ -4,7 +4,7 @@ import me.taison.wizardpractice.WizardPractice;
 import me.taison.wizardpractice.data.factory.TeamFactory;
 import me.taison.wizardpractice.data.factory.UserFactory;
 import me.taison.wizardpractice.data.user.User;
-import me.taison.wizardpractice.game.DuelManager;
+import me.taison.wizardpractice.game.matchmakingsystem.Matchmaker;
 import me.taison.wizardpractice.utilities.chat.StringUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.event.EventHandler;
@@ -18,12 +18,12 @@ public class PlayerQuitListener implements Listener {
         UserFactory userFactory = WizardPractice.getSingleton().getUserFactory();
         TeamFactory teamFactory = WizardPractice.getSingleton().getTeamFactory();
 
-        DuelManager duelManager = WizardPractice.getSingleton().getDuelManager();
+        Matchmaker matchmaker = WizardPractice.getSingleton().getMatchmaker();
 
         if (userFactory.getByUniqueId(event.getPlayer().getUniqueId()).isPresent()) {
             User user = userFactory.getByUniqueId(event.getPlayer().getUniqueId()).get();
 
-            duelManager.getDuelByUser(user).ifPresent(duelManager::stopDuel);
+            matchmaker.getDuelByUser(user).ifPresent(matchmaker::finishDuelRequest);
 
         }
 

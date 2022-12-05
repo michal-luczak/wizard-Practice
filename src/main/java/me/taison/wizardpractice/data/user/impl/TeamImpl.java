@@ -6,6 +6,7 @@ import com.google.common.cache.RemovalListener;
 import me.taison.wizardpractice.data.user.Team;
 import me.taison.wizardpractice.data.user.User;
 import me.taison.wizardpractice.utilities.chat.StringUtils;
+import org.bukkit.Location;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -124,6 +125,16 @@ public class TeamImpl implements Team {
         user.setTeam(this);
         this.teamPlayers.add(user);
         this.teamPlayers.forEach(teamUser -> teamUser.sendMessage("&7" + user.getName() + " &6&ndolaczyl do druzyny."));
+    }
+
+    @Override
+    public void teleport(Location location) {
+        teamPlayers.forEach(user -> user.getAsPlayer().teleport(location));
+    }
+
+    @Override
+    public void clearInventory() {
+        teamPlayers.forEach(user -> user.getAsPlayer().getInventory().clear());
     }
 
 }
