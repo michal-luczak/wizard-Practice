@@ -2,6 +2,7 @@ package me.taison.wizardpractice.gui.gametypeselector;
 
 import me.taison.wizardpractice.WizardPractice;
 import me.taison.wizardpractice.data.factory.UserFactory;
+import me.taison.wizardpractice.data.user.Team;
 import me.taison.wizardpractice.data.user.User;
 import me.taison.wizardpractice.game.matchmakingsystem.Matchmaker;
 import me.taison.wizardpractice.gui.GuiItem;
@@ -40,7 +41,6 @@ public class GameSelectorGuiItem extends GuiItem {
         int queuePlayers = 0;
         if(this.matchmaker.getQueueByGameType(gameMapType).isPresent()) {
             queuePlayers = this.matchmaker.getQueueByGameType(gameMapType).get().getTeamsInQueue().size();
-            queuePlayers += this.matchmaker.getAmountOfWaitingDuels(gameMapType);
         }
 
         StringUtils.findAndReplace(description, "%queuedPlayer", String.valueOf(queuePlayers));
@@ -63,37 +63,38 @@ public class GameSelectorGuiItem extends GuiItem {
             return;
 
         User user = userFactory.getByUniqueId(event.getPlayer().getUniqueId()).get();
+        Team team = user.getTeam();
 
         switch (this.gameMapType) {
             case DIAMOND_GAME -> {
                 player.sendMessage(StringUtils.color("&cTest1"));
-                matchmaker.addPlayerToQueue(user, gameMapType);
+                matchmaker.addTeamToQueue(team, gameMapType);
                 event.setWillClose(true);
             }
             case NORMAL_GAME -> {
                 player.sendMessage(StringUtils.color("&cTest2"));
-                matchmaker.addPlayerToQueue(user, gameMapType);
+                matchmaker.addTeamToQueue(team, gameMapType);
                 event.setWillClose(true);
             }
             case SPEED_GAME -> {
                 player.sendMessage(StringUtils.color("&cTest3"));
-                matchmaker.addPlayerToQueue(user, gameMapType);
+                matchmaker.addTeamToQueue(team, gameMapType);
                 event.setWillClose(true);
             }
             case SPEED_GAME_MUTLI_TEAM -> {
                 player.sendMessage(StringUtils.color("&cTest4"));
-                matchmaker.addPlayerToQueue(user, gameMapType);
+                matchmaker.addTeamToQueue(team, gameMapType);
                 event.setWillClose(true);
             }
             case NORMAL_GAME_MUTLI_TEAM -> {
                 player.sendMessage(StringUtils.color("&cTest5"));
-                matchmaker.addPlayerToQueue(user, gameMapType);
+                matchmaker.addTeamToQueue(team, gameMapType);
                 event.setWillClose(true);
             }
 
             case DIAMOND_GAME_MUTLI_TEAM -> {
                 player.sendMessage(StringUtils.color("&cTest6"));
-                matchmaker.addPlayerToQueue(user, gameMapType);
+                matchmaker.addTeamToQueue(team, gameMapType);
                 event.setWillClose(true);
             }
         }

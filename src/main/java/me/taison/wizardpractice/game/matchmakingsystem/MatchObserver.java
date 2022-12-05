@@ -4,5 +4,5 @@ import me.taison.wizardpractice.game.arena.Arena;
 
 public interface MatchObserver {
 
-    void update(Arena arena);
+    void update();
 }

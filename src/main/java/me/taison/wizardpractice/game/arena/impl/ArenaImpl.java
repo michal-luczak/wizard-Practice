@@ -31,6 +31,7 @@ public class ArenaImpl implements Arena {
 
     @Override
     public void restartArena() {
+        setArenaState(ArenaState.RESTARTING);
         //TODO restartowanie areny
         setArenaState(ArenaState.FREE);
     }
@@ -66,7 +67,7 @@ public class ArenaImpl implements Arena {
     public void setState(ArenaState arenaState) {
         this.arenaState = arenaState;
         if (arenaState == ArenaState.FREE) {
-            matchmaker.update(this);
+            matchmaker.update();
         }
     }
 

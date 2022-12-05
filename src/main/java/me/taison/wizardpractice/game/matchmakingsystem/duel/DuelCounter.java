@@ -47,7 +47,7 @@ public class DuelCounter extends BukkitRunnable {
     public Duel getDuel() {
         return duelImpl;
     }
-    public List<Team> getTeam1() {
+    public List<Team> getTeam() {
         return teams;
     }
 

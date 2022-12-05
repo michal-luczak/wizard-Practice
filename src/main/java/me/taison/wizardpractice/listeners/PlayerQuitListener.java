@@ -23,7 +23,7 @@ public class PlayerQuitListener implements Listener {
         if (userFactory.getByUniqueId(event.getPlayer().getUniqueId()).isPresent()) {
             User user = userFactory.getByUniqueId(event.getPlayer().getUniqueId()).get();
 
-            matchmaker.getDuelByUser(user).ifPresent(matchmaker::finishDuelRequest);
+            matchmaker.getDuelByUser(user).ifPresent(matchmaker::finishDuel);
 
         }
 

@@ -2,6 +2,7 @@ package me.taison.wizardpractice.listeners;
 
 import me.taison.wizardpractice.WizardPractice;
 import me.taison.wizardpractice.data.factory.UserFactory;
+import me.taison.wizardpractice.data.user.Team;
 import me.taison.wizardpractice.gui.gametypeselector.GameSelectorGui;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -21,9 +22,10 @@ public class PlayerInteractListener implements Listener {
         } else if (event.getItem().getType().equals(Material.BARRIER)) {
             event.setCancelled(true);
             UserFactory userFactory = WizardPractice.getSingleton().getUserFactory();
-            if (userFactory.getByUniqueId(event.getPlayer().getUniqueId()).isPresent()) {
-                WizardPractice.getSingleton().getMatchmaker().removeUserFromQueue(userFactory.getByUniqueId(event.getPlayer().getUniqueId()).get());
-            }
+            userFactory.getByUniqueId(event.getPlayer().getUniqueId()).ifPresent(user -> {
+                Team team = user.getTeam();
+                WizardPractice.getSingleton().getMatchmaker().removeTeamFromQueue(team);
+            });
         }
     }
 }

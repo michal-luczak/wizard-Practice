@@ -8,6 +8,7 @@ import me.taison.wizardpractice.gui.gametypeselector.GameMapType;
 import me.taison.wizardpractice.utilities.chat.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ public class Duel {
 
 
 
-    public Duel(List<Team> teams, GameMapType gameMapType) {
+    public Duel(List<Team> teams, GameMapType gameMapType, Arena arena) {
         Validate.notNull(teams, "Teams cannot be null");
         Validate.notEmpty(teams, "Teams cannot be empty!");
 
@@ -35,6 +36,8 @@ public class Duel {
         this.gameMapType = gameMapType;
 
         this.duel = new DuelCounter(this, this.teams);
+
+        this.arena = arena;
     }
 
 
