@@ -1,3 +1,5 @@
+//Przed startem testow:
+
 /druzyna - sprawdzanie czy gracz nie zaprasza siebie, sprawdzanie czy nie dolacza do siebie, czy nie wyrzuca siebie itp
 
 Usuwanie z kolejki przy zmianie trybu
@@ -11,3 +13,19 @@ Zwracanie piorka przy koncu areny. clear inv
 PVP w druzynie off.
 
 "i przepisac ten matchmaker zeby ladniej wygladal najebane ifow i nie wiadomo o co chodzi" ~tajson
+
+dodac jakies itemy do gamemaptype!
+
+playerrespawnevent i teleport na spawn.
+
+osobne gui XVX XVSXVSX
+
+osobne swiaty / multiverse core
+
+// Jak bedzie all git to reszta pozniej:
+
+Scoreboard sidebar
+
+Ranking
+
+Tablista
