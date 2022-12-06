@@ -2,7 +2,6 @@ package me.taison.wizardpractice.game.matchmakingsystem;
 
 import me.taison.wizardpractice.data.user.Team;
 import me.taison.wizardpractice.data.user.User;
-import me.taison.wizardpractice.game.matchmakingsystem.duel.Duel;
 import me.taison.wizardpractice.game.matchmakingsystem.queue.QueueToDuel;
 import me.taison.wizardpractice.gui.gametypeselector.GameMapType;
 
@@ -12,6 +11,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public interface Matchmaker {
+
     void removeTeamFromQueue(Team team);
 
     void addTeamToQueue(Team team, GameMapType gameMapType);

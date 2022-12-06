@@ -3,7 +3,6 @@ package me.taison.wizardpractice.game.arena.impl;
 import me.taison.wizardpractice.game.arena.Arena;
 import me.taison.wizardpractice.game.arena.ArenaState;
 import me.taison.wizardpractice.game.matchmakingsystem.Matchmaker;
-import me.taison.wizardpractice.game.matchmakingsystem.Matchmakerimpl;
 import org.bukkit.Location;
 import org.bukkit.World;
 

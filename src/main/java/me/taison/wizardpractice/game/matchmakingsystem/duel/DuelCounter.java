@@ -2,6 +2,7 @@ package me.taison.wizardpractice.game.matchmakingsystem.duel;
 
 import me.taison.wizardpractice.WizardPractice;
 import me.taison.wizardpractice.data.user.Team;
+import me.taison.wizardpractice.game.matchmakingsystem.Duel;
 import me.taison.wizardpractice.utilities.chat.StringUtils;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -11,13 +12,13 @@ public class DuelCounter extends BukkitRunnable {
 
     private final List<Team> teams;
 
-    private final Duel duelImpl;
+    private final Duel duel;
     private int counter = 5;
 
 
 
-    public DuelCounter(Duel duelImpl, List<Team> teams) {
-        this.duelImpl = duelImpl;
+    public DuelCounter(Duel duel, List<Team> teams) {
+        this.duel = duel;
         this.teams = teams;
     }
 
@@ -45,7 +46,7 @@ public class DuelCounter extends BukkitRunnable {
 
     //      GETTERS      \\
     public Duel getDuel() {
-        return duelImpl;
+        return duel;
     }
     public List<Team> getTeam() {
         return teams;

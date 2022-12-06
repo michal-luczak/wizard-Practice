@@ -49,7 +49,7 @@ public class TeamCommand extends AbstractCommand {
                         player.sendMessage(StringUtils.color("&cNie mozesz zarzadzac druzyna nie bedac liderem."));
                         return;
                     }
-                    user.getTeam().invitePlayer(user);
+                    playerUser.getTeam().invitePlayer(user);
                 });
             });
         } else if (args[0].equals("dolacz")) {

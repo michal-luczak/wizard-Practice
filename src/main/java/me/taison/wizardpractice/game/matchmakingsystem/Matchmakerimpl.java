@@ -5,7 +5,7 @@ import me.taison.wizardpractice.data.user.Team;
 import me.taison.wizardpractice.data.user.User;
 import me.taison.wizardpractice.game.arena.Arena;
 import me.taison.wizardpractice.game.arena.ArenaState;
-import me.taison.wizardpractice.game.matchmakingsystem.duel.Duel;
+import me.taison.wizardpractice.game.matchmakingsystem.duel.DuelImpl;
 import me.taison.wizardpractice.game.matchmakingsystem.queue.QueueToDuel;
 import me.taison.wizardpractice.gui.gametypeselector.GameMapType;
 import me.taison.wizardpractice.utilities.random.RandomUtils;
@@ -35,7 +35,7 @@ public class Matchmakerimpl implements Matchmaker {
 
 
 
-     //                           > MATCHMAKER <                         \\
+    //                           > MATCHMAKER <                         \\
     // Jeżeli istnieje możliwy do wystartowania duel to zwraca tego duela \\
     private List<Duel> tryMakeMatch() {
 
@@ -80,7 +80,8 @@ public class Matchmakerimpl implements Matchmaker {
 
                 int indexOfArena = RandomUtils.getRandInt(0, arenasXvX.size()-1);
 
-                duels.add(new Duel(matchedTeams, queue.getGameMapType(), arenasXvX.get(indexOfArena)));
+                Duel duel = new DuelImpl(matchedTeams, queue.getGameMapType(), arenasXvX.get(indexOfArena));
+                duels.add(duel);
                 arenasXvX.remove(indexOfArena);
 
                 i++;
@@ -101,7 +102,8 @@ public class Matchmakerimpl implements Matchmaker {
 
                 int indexOfArena = RandomUtils.getRandInt(0, arenasXvXvX.size());
 
-                duels.add(new Duel(matchedTeams, queue.getGameMapType(), arenasXvXvX.get(indexOfArena)));
+                Duel duel = new DuelImpl(matchedTeams, queue.getGameMapType(), arenasXvXvX.get(indexOfArena));
+                duels.add(duel);
                 arenasXvXvX.remove(indexOfArena);
 
                 i++;
@@ -117,7 +119,7 @@ public class Matchmakerimpl implements Matchmaker {
     @Override
     public void removeTeamFromQueue(Team team) {
         getQueueByTeam(team).ifPresentOrElse(queue ->
-                queue.removeTeamFromQueue(team),
+                        queue.removeTeamFromQueue(team),
                 () -> team.sendMessage("coś sie zjebało z usuwaniem z kolejki"));
         beginDuelRequest();
     }
@@ -125,7 +127,7 @@ public class Matchmakerimpl implements Matchmaker {
     @Override
     public void addTeamToQueue(Team team, GameMapType gameMapType) {
         getQueueByGameType(gameMapType).ifPresentOrElse(queueToDuel ->
-                queueToDuel.addTeamToQueue(team),
+                        queueToDuel.addTeamToQueue(team),
                 () -> team.sendMessage("coś sie zjebało z dodawaniem do kolejki"));
         beginDuelRequest();
     }
