@@ -4,6 +4,7 @@ import me.taison.wizardpractice.WizardPractice;
 import me.taison.wizardpractice.data.factory.UserFactory;
 import me.taison.wizardpractice.data.user.User;
 import me.taison.wizardpractice.game.matchmakingsystem.Matchmaker;
+import me.taison.wizardpractice.game.matchmakingsystem.Matchmakerimpl;
 import me.taison.wizardpractice.gui.GuiHolder;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

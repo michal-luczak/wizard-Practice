@@ -13,6 +13,7 @@ import me.taison.wizardpractice.data.storage.MySQLStorage;
 import me.taison.wizardpractice.game.arena.Arena;
 import me.taison.wizardpractice.game.arena.impl.ArenaImpl;
 import me.taison.wizardpractice.game.matchmakingsystem.Matchmaker;
+import me.taison.wizardpractice.game.matchmakingsystem.Matchmakerimpl;
 import me.taison.wizardpractice.service.Service;
 import me.taison.wizardpractice.utilities.AbstractCommand;
 import me.taison.wizardpractice.utilities.chat.StringUtils;
@@ -69,7 +70,7 @@ public final class WizardPractice extends JavaPlugin {
         this.initializeCommands();
         this.initializeArenas();
 
-        this.matchmaker = new Matchmaker(arenaFactory);
+        this.matchmaker = new Matchmakerimpl(arenaFactory);
 
         this.database = new MySQLStorage();
         database.open();
