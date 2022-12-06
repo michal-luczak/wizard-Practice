@@ -3,7 +3,6 @@ package me.taison.wizardpractice.game.matchmakingsystem.matchmaker;
 import me.taison.wizardpractice.data.factory.ArenaFactory;
 import me.taison.wizardpractice.data.user.Team;
 import me.taison.wizardpractice.game.arena.Arena;
-import me.taison.wizardpractice.game.arena.ArenaState;
 import me.taison.wizardpractice.game.matchmakingsystem.Duel;
 import me.taison.wizardpractice.game.matchmakingsystem.Matchmaker;
 import me.taison.wizardpractice.game.matchmakingsystem.duel.DuelImpl;
@@ -40,15 +39,8 @@ public class MatchmakerImpl implements Matchmaker {
     // Jeżeli istnieje możliwy do wystartowania duel to zwraca tego duela \\
     private List<Duel> tryMakeMatch() {
 
-        List<Arena> arenasXvX = new ArrayList<>(arenaFactory.getArenas()
-                .stream()
-                .filter(arena -> arena.getState() == ArenaState.FREE)
-                .toList());
-
-        List<Arena> arenasXvXvX = new ArrayList<>(arenaFactory.getArenas()
-                .stream()
-                .filter(arena -> arena.getState() == ArenaState.FREE)
-                .toList());
+        List<Arena> arenasXvX = arenaFactory.getAvailableArenas(2);
+        List<Arena> arenasXvXvX = arenaFactory.getAvailableArenas(3);
 
 
 
@@ -68,16 +60,15 @@ public class MatchmakerImpl implements Matchmaker {
                 if (teams.get(i).getTeam().size() != teams.get(i+1).getTeam().size()) {
                     break;
                 }
-
                 if (slots == 3) {
+                    break;
+                }
+                if (arenasXvX.isEmpty()) {
                     break;
                 }
 
                 List<Team> matchedTeams = new ArrayList<>(Arrays.stream(new Team[]{teams.get(i), teams.get(i+1)}).toList());
 
-                if (arenasXvX.isEmpty()) {
-                    break;
-                }
 
                 int indexOfArena = RandomUtils.getRandInt(0, arenasXvX.size()-1);
 
@@ -92,6 +83,9 @@ public class MatchmakerImpl implements Matchmaker {
 
                 if ((teams.get(i).getTeam().size() != teams.get(i+1).getTeam().size())
                         || (teams.get(i).getTeam().size() != teams.get(i+2).getTeam().size())) {
+                    break;
+                }
+                if (slots != 3) {
                     break;
                 }
 

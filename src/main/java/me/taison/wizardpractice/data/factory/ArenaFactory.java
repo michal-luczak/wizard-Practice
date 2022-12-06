@@ -4,7 +4,6 @@ import me.taison.wizardpractice.game.arena.Arena;
 import me.taison.wizardpractice.game.arena.ArenaState;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ArenaFactory {
 
@@ -14,8 +13,8 @@ public interface ArenaFactory {
 
     void unregister(Arena arena);
 
-    default Optional<Arena> getAvailableArena(int teamsAmount){
-        return this.getArenas().stream().filter(arena -> arena.getState() == ArenaState.FREE && arena.isEnoughSpace(teamsAmount)).findAny();
+    default List<Arena> getAvailableArenas(int teamsAmount){
+        return this.getArenas().stream().filter(arena -> arena.getState() == ArenaState.FREE && arena.isEnoughSpace(teamsAmount)).toList();
         //TODO orElse -> dynamiczne tworzenie areny ???
     }
 

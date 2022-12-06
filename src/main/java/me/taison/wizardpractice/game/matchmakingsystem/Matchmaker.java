@@ -16,8 +16,9 @@ public interface Matchmaker {
 
     void addTeamToQueue(Team team, GameMapType gameMapType);
 
-    //      FINISH DUEL      \\
     void finishDuel(Duel duel);
+
+
 
 
     void beginDuelRequest();
@@ -29,7 +30,6 @@ public interface Matchmaker {
     default int getAmountOfRunningDuels(GameMapType gameMapType) {
         return (int) this.getRunningDuels().stream().filter(duelImpl -> duelImpl.getGameMapType() == gameMapType).count();
     }
-
 
     default Optional<Duel> getDuelByUser(User user) {
         for (Duel duel : getRunningDuels()) {
@@ -49,8 +49,10 @@ public interface Matchmaker {
                 queue.getTeamsInQueue().stream().anyMatch(team1 -> team1.equals(team))).findFirst();
     }
 
-    ConcurrentLinkedQueue<Duel> getRunningDuels();
 
+
+
+    ConcurrentLinkedQueue<Duel> getRunningDuels();
 
     CopyOnWriteArrayList<QueueToDuel> getQueuesToDuels();
 }
