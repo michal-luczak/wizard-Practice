@@ -9,7 +9,9 @@ import me.taison.wizardpractice.game.matchmakingsystem.Duel;
 import me.taison.wizardpractice.gui.gametypeselector.GameMapType;
 import me.taison.wizardpractice.utilities.chat.StringUtils;
 import org.apache.commons.lang3.Validate;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -40,6 +42,10 @@ public class DuelImpl implements Duel {
 
         this.aliveTeamMap = new ConcurrentHashMap<>(teams.size());
 
+        this.teams.forEach(team -> {
+            this.aliveTeamMap.put(team, team.getTeam());
+        });
+
         this.gameMapType = gameMapType;
 
         this.duel = new DuelCounter(this, this.teams);
@@ -63,6 +69,14 @@ public class DuelImpl implements Duel {
         this.teleportTeamsToSpawn();
 
         this.duel.cancel();
+
+        this.clearBlocks();
+    }
+
+    private void clearBlocks(){
+        this.placedBlocks.forEach(location -> {
+            location.getWorld().getBlockAt(location).setType(Material.AIR);
+        });
 
         this.placedBlocks.clear();
     }
@@ -134,15 +148,23 @@ public class DuelImpl implements Duel {
 
             if(aliveTeamUsers.size() == 1) {
                 this.teams.forEach(team -> team.sendTitle("&aTeam &2" + killer.getTeam().getLeader().getName() + " &awygrywa", "&aGratulacje!", 0, 0, 100));
-                this.stopDuel();
-            } else if(aliveTeamUsers.size() >= 3){
+
+                this.teams.forEach(team -> team.sendMessage("&c" + killer.getName() + " zabija gracza " + victim.getName()));
+                Bukkit.broadcastMessage(StringUtils.color("&aTeam &2" + killer.getTeam().getLeader().getName() + " &awygrywa arene " + this.arena.getName()));
+
+                WizardPractice.getSingleton().getMatchmaker().finishDuel(this);
+            } else if(aliveTeamUsers.size() >= 2){
                 this.getAliveUsersByTeam(aliveTeam).remove(victim);
 
-                killer.sendTitle("&a⚔ " + victim.getName(), "+ %punkty", 0, 0, 60); //TODO Ranking w przyszlosci
+                killer.sendTitle("&a⚔ " + victim.getName(), "+100 PKT", 0, 0, 60); //TODO Ranking w przyszlosci
 
                 this.teams.forEach(team -> team.sendMessage("&c" + killer.getName() + " zabija gracza " + victim.getName()));
             }
         }
+        victim.getAsPlayer().spigot().respawn();
+
+        //Workaround:
+        victim.getAsPlayer().teleport(WizardPractice.getSingleton().getSpawnLocation());
 
     }
 

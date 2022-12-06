@@ -25,7 +25,7 @@ public interface Arena {
      * @return boolean indicating whether the arena has enough room to hold the teams
      */
     default boolean isEnoughSpace(int teamsAmount){
-        return this.getSpawnLocations().size() >= teamsAmount;
+        return this.getSpawnLocations().size() == teamsAmount;
     }
 
     /*
@@ -34,5 +34,7 @@ public interface Arena {
     default void restartArena() {
         this.setState(ArenaState.RESTARTING);
     }
+
+    String getName();
 
 }

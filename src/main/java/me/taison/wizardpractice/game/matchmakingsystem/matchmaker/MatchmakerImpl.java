@@ -42,7 +42,8 @@ public class MatchmakerImpl implements Matchmaker {
         List<Arena> arenasXvX = arenaFactory.getAvailableArenas(2);
         List<Arena> arenasXvXvX = arenaFactory.getAvailableArenas(3);
 
-
+        System.out.println(arenasXvX.size());
+        System.out.println(arenasXvXvX.size());
 
 
         List<Duel> duels = new ArrayList<>();
@@ -63,17 +64,20 @@ public class MatchmakerImpl implements Matchmaker {
                 if (slots == 3) {
                     break;
                 }
-                if (arenasXvX.isEmpty()) {
+                if (arenasXvX.size() == 0) {
                     break;
                 }
 
                 List<Team> matchedTeams = new ArrayList<>(Arrays.stream(new Team[]{teams.get(i), teams.get(i+1)}).toList());
 
 
-                int indexOfArena = RandomUtils.getRandInt(0, arenasXvX.size()-1);
+                int index = arenasXvX.size() - 1;
+                System.out.println("index: " +index);
+                int indexOfArena = RandomUtils.getRandInt(0, index);
 
                 Duel duel = new DuelImpl(matchedTeams, queue.getGameMapType(), arenasXvX.get(indexOfArena));
                 duels.add(duel);
+                System.out.println(arenasXvX);
                 arenasXvX.remove(indexOfArena);
 
                 i++;
@@ -91,11 +95,11 @@ public class MatchmakerImpl implements Matchmaker {
 
                 List<Team> matchedTeams = new ArrayList<>(Arrays.stream(new Team[]{teams.get(i), teams.get(i+1), teams.get(i+2)}).toList());
 
-                if (arenasXvXvX.isEmpty()) {
+                if (arenasXvXvX.size() == 0) {
                     break;
                 }
 
-                int indexOfArena = RandomUtils.getRandInt(0, arenasXvXvX.size());
+                int indexOfArena = RandomUtils.getRandInt(0, arenasXvXvX.size()-1);
 
                 Duel duel = new DuelImpl(matchedTeams, queue.getGameMapType(), arenasXvXvX.get(indexOfArena));
                 duels.add(duel);

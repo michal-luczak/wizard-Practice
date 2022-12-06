@@ -17,8 +17,6 @@ public class ArenaImpl implements Arena {
     private ArenaState arenaState;
     private Matchmaker matchmaker;
 
-
-
     public ArenaImpl(String name) {
         this.name = name;
 

@@ -119,13 +119,13 @@ public final class WizardPractice extends JavaPlugin {
     }
 
     private void initializeArenas(){
-        Arena frostArena = new ArenaImpl("FrostArena")
+        Arena frostArena = new ArenaImpl("Zamrożona Kraina")
                 .setWorld(Bukkit.getWorld("world"))
                 .addSpawnLocation(-2.5, 90, -22.5, 0, 0)
                 .addSpawnLocation(-3.5, 90, 20.5, 180, 0)
                 .build();
 
-        Arena fullWinterArena = new ArenaImpl("FullWinterArena")
+        Arena candyArena = new ArenaImpl("Cukierkowy Las")
                 .setWorld(Bukkit.getWorld("world"))
                 .addSpawnLocation(-103.5, 109, -69.5, 0, 0)
                 .addSpawnLocation(-84.5, 109, -46.5, 90, 0)
@@ -133,7 +133,7 @@ public final class WizardPractice extends JavaPlugin {
                 .build();
 
         this.arenaFactory.register(frostArena);
-        this.arenaFactory.register(fullWinterArena);
+        this.arenaFactory.register(candyArena);
 
     }
 

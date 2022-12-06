@@ -24,6 +24,7 @@ public class PlayerQuitListener implements Listener {
             User user = userFactory.getByUniqueId(event.getPlayer().getUniqueId()).get();
 
             matchmaker.getDuelByUser(user).ifPresent(matchmaker::finishDuel);
+            matchmaker.removeTeamFromQueue(user.getTeam());
 
         }
 
