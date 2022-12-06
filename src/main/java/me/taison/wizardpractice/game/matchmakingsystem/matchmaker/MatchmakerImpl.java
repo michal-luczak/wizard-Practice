@@ -1,10 +1,11 @@
-package me.taison.wizardpractice.game.matchmakingsystem;
+package me.taison.wizardpractice.game.matchmakingsystem.matchmaker;
 
 import me.taison.wizardpractice.data.factory.ArenaFactory;
 import me.taison.wizardpractice.data.user.Team;
-import me.taison.wizardpractice.data.user.User;
 import me.taison.wizardpractice.game.arena.Arena;
 import me.taison.wizardpractice.game.arena.ArenaState;
+import me.taison.wizardpractice.game.matchmakingsystem.Duel;
+import me.taison.wizardpractice.game.matchmakingsystem.Matchmaker;
 import me.taison.wizardpractice.game.matchmakingsystem.duel.DuelImpl;
 import me.taison.wizardpractice.game.matchmakingsystem.queue.QueueToDuel;
 import me.taison.wizardpractice.gui.gametypeselector.GameMapType;
@@ -14,7 +15,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class Matchmakerimpl implements Matchmaker {
+public class MatchmakerImpl implements Matchmaker {
 
     private final ConcurrentLinkedQueue<Duel> runningDuel;
 
@@ -24,7 +25,7 @@ public class Matchmakerimpl implements Matchmaker {
 
 
 
-    public Matchmakerimpl(ArenaFactory arenaFactory) {
+    public MatchmakerImpl(ArenaFactory arenaFactory) {
         this.runningDuel = new ConcurrentLinkedQueue<>();
         this.queuesToDuels = new CopyOnWriteArrayList<>();
         this.arenaFactory = arenaFactory;
