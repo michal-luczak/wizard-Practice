@@ -151,34 +151,44 @@ public class DuelImpl implements Duel {
 
             List<User> aliveTeamUsers = this.getAliveUsersByTeam(aliveTeam);
 
-            if(user.getLastDamager() == null || (System.currentTimeMillis() - user.getLastDamage() > TimeUnit.SECONDS.toMillis(15))){
-                this.teams.forEach(team -> team.sendMessage("&c" + user.getName() + "wyszedl z areny. Anulowanie gry."));
+            if (this.aliveTeamMap.size() == 1) {
+                if (user.getLastDamager() == null || (System.currentTimeMillis() - user.getLastDamage() > TimeUnit.SECONDS.toMillis(15))) {
+                    this.teams.forEach(team -> team.sendMessage("&c" + user.getName() + "wyszedl z areny. Anulowanie gry."));
+
+                    WizardPractice.getSingleton().getMatchmaker().finishDuel(this);
+                    return;
+                }
+
+                Bukkit.broadcastMessage(StringUtils.color("&aTeam &2" + user.getLastDamager().getTeam().getLeader().getName() + " &awygrywa arene " + this.arena.getName()));
+
+                this.teams.forEach(team -> team.sendTitle("&aTeam &2" + user.getLastDamager().getTeam().getLeader().getName() + " &awygrywa", "&aGratulacje!", 0, 0, 100));
+
                 WizardPractice.getSingleton().getMatchmaker().finishDuel(this);
                 return;
             }
 
-            Team winnerTeam = user.getLastDamager().getTeam();
+            if(this.aliveTeamMap.size() > 1){
+                if(aliveTeamUsers.size() == 1) {
+                    this.getAliveUsersByTeam(aliveTeam).remove(user);
 
-            if (aliveTeamMap.keySet().size() == 2 && aliveTeamUsers.size() == 1) {
-                this.teams.forEach(team -> team.sendTitle("&aTeam &2" + winnerTeam.getLeader().getName() + " &awygrywa", "&aGratulacje!", 0, 0, 100));
+                    if (user.getLastDamager() == null || (System.currentTimeMillis() - user.getLastDamage() > TimeUnit.SECONDS.toMillis(15))) {
+                        this.teams.forEach(team -> team.sendMessage("&c" + user.getName() + "opuscil gre. Anulowanie areny."));
+                        WizardPractice.getSingleton().getMatchmaker().finishDuel(this);
+                        return;
+                    }
 
-                this.teams.forEach(team -> team.sendMessage("&c" + user.getLastDamager().getName() + " zabija gracza " + user.getName()));
-                Bukkit.broadcastMessage(StringUtils.color("&aTeam &2" + winnerTeam.getLeader().getName() + " &awygrywa arene " + this.arena.getName()));
+                    this.removeAliveTeam(aliveTeam);
 
-                this.removeAliveTeam(aliveTeam);
-                WizardPractice.getSingleton().getMatchmaker().finishDuel(this);
-            } else if(aliveTeamUsers.size() >= 2){
-                this.getAliveUsersByTeam(aliveTeam).remove(user);
+                    this.teams.forEach(team -> {
+                        team.sendMessage("&c" + user.getName() + "opuscil gre.");
+                        team.sendMessage("&c" + user.getLastDamager().getName() + " zabija gracza " + user.getName());
+                    });
 
-                if(user.getLastDamager() == null || (System.currentTimeMillis() - user.getLastDamage() > TimeUnit.SECONDS.toMillis(15))){
-                    this.teams.forEach(team -> team.sendMessage("&c" + user.getName() + "wyszedl z areny."));
+                    WizardPractice.getSingleton().getMatchmaker().finishDuel(this);
                     return;
                 }
-
-                this.teams.forEach(team -> team.sendMessage("&c" + user.getLastDamager().getName() + " wyszedl z gry. "));
-                this.teams.forEach(team -> team.sendMessage("&c" + user.getLastDamager().getName() + " zabija gracza " + user.getName()));
-                //TODO lastDamager addPoints/Kill/ Ranking update
-
+                this.getAliveUsersByTeam(aliveTeam).remove(user);
+                this.teams.forEach(team -> team.sendMessage("&c" + user.getName() + "opuscil arene."));
             }
         }
     }
@@ -192,20 +202,27 @@ public class DuelImpl implements Duel {
 
             List<User> aliveTeamUsers = this.getAliveUsersByTeam(aliveTeam);
 
-            if(aliveTeamMap.keySet().size() == 2 && aliveTeamUsers.size() == 1) {
-                this.teams.forEach(team -> team.sendTitle("&aTeam &2" + killer.getTeam().getLeader().getName() + " &awygrywa", "&aGratulacje!", 0, 0, 100));
+            if(aliveTeamUsers.size() == 1) {
 
                 this.teams.forEach(team -> team.sendMessage("&c" + killer.getName() + " zabija gracza " + victim.getName()));
-                Bukkit.broadcastMessage(StringUtils.color("&aTeam &2" + killer.getTeam().getLeader().getName() + " &awygrywa arene " + this.arena.getName()));
 
                 this.removeAliveTeam(aliveTeam);
-                WizardPractice.getSingleton().getMatchmaker().finishDuel(this);
-            } else if(aliveTeamUsers.size() >= 2){
-                this.getAliveUsersByTeam(aliveTeam).remove(victim);
 
-                killer.sendTitle("&a⚔ " + victim.getName(), "+100 PKT", 0, 0, 60); //TODO Ranking w przyszlosci
+                if(this.aliveTeamMap.size() == 1) {
+                    Bukkit.broadcastMessage(StringUtils.color("&aTeam &2" + killer.getTeam().getLeader().getName() + " &awygrywa arene " + this.arena.getName()));
 
-                this.teams.forEach(team -> team.sendMessage("&c" + killer.getName() + " zabija gracza " + victim.getName()));
+                    this.teams.forEach(team -> team.sendTitle("&aTeam &2" + killer.getTeam().getLeader().getName() + " &awygrywa", "&aGratulacje!", 0, 0, 100));
+
+                    WizardPractice.getSingleton().getMatchmaker().finishDuel(this);
+                    return;
+                }
+                if(aliveTeamUsers.size() > 1){
+                    this.getAliveUsersByTeam(aliveTeam).remove(victim);
+
+                    killer.sendTitle("&a⚔ " + victim.getName(), "+100 PKT", 0, 0, 60); //TODO Ranking w przyszlosci
+
+                    this.teams.forEach(team -> team.sendMessage("&c" + killer.getName() + " zabija gracza " + victim.getName()));
+                }
             }
         }
     }

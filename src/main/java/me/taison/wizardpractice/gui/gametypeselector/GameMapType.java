@@ -120,7 +120,7 @@ public enum GameMapType {
         ItemStack item = new ItemStack(Material.POTION, amount);
         PotionMeta meta = (PotionMeta) item.getItemMeta();
 
-        meta.setBasePotionData(new PotionData(potionType, true, lvl));
+        meta.setBasePotionData(new PotionData(potionType, false, lvl));
         item.setItemMeta(meta);
 
         return item;
