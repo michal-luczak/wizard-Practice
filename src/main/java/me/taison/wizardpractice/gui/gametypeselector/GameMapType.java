@@ -50,7 +50,7 @@ public enum GameMapType {
             new ItemStack[]{
                     new ItemBuilder(Material.DIAMOND_SWORD, 1).addEnchant(Enchantment.DAMAGE_ALL, 2).toItemStack(),
                     new ItemBuilder(Material.GOLDEN_CARROT, 64).addEnchant(Enchantment.DAMAGE_ALL, 2).toItemStack(),
-                    getPotion(PotionType.SPEED, 1)
+                    getPotion(PotionType.SPEED, 1, true)
             }, 2),
 
     DIAMOND_GAME_MUTLI_TEAM(20, "&aDiament XvsXvsX", Arrays.asList("&cRodzaj gry: Diamentowe Sety", " ", "&7Graczy w kolejce: %queuedPlayer", "&7Graczy grających: %currentPlaying"),
@@ -89,7 +89,7 @@ public enum GameMapType {
             new ItemStack[]{
                     new ItemBuilder(Material.DIAMOND_SWORD, 1).addEnchant(Enchantment.DAMAGE_ALL, 2).toItemStack(),
                     new ItemBuilder(Material.GOLDEN_CARROT, 64).addEnchant(Enchantment.DAMAGE_ALL, 2).toItemStack(),
-                    getPotion(PotionType.SPEED, 1)
+                    getPotion(PotionType.SPEED, 1, true)
             }, 3);
 
     private final int slotId;
@@ -116,11 +116,11 @@ public enum GameMapType {
         this.slots = slots;
     }
 
-    private static ItemStack getPotion(PotionType potionType, int amount) {
+    private static ItemStack getPotion(PotionType potionType, int amount, boolean lvl) {
         ItemStack item = new ItemStack(Material.POTION, amount);
         PotionMeta meta = (PotionMeta) item.getItemMeta();
 
-        meta.setBasePotionData(new PotionData(potionType));
+        meta.setBasePotionData(new PotionData(potionType, true, lvl));
         item.setItemMeta(meta);
 
         return item;
