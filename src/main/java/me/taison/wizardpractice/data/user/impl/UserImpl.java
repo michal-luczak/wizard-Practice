@@ -56,6 +56,11 @@ public class UserImpl implements User {
     }
 
     @Override
+    public User getLastDamager() {
+        return lastDamager;
+    }
+
+    @Override
     public Team getTeam() {
         return this.team;
     }

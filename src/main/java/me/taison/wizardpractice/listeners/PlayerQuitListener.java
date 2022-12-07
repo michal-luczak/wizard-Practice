@@ -23,8 +23,15 @@ public class PlayerQuitListener implements Listener {
         if (userFactory.getByUniqueId(event.getPlayer().getUniqueId()).isPresent()) {
             User user = userFactory.getByUniqueId(event.getPlayer().getUniqueId()).get();
 
-            matchmaker.getDuelByUser(user).ifPresent(matchmaker::finishDuel);
-            matchmaker.removeTeamFromQueue(user.getTeam());
+            matchmaker.getDuelByUser(user).ifPresent(action -> {
+                action.playerLeft(user);
+            });
+
+            matchmaker.getQueueByTeam(user.getTeam()).ifPresent(action -> {
+                matchmaker.removeTeamFromQueue(user.getTeam());
+
+                user.getTeam().sendTitle("&6&lSYSTEM DOBIERANIA", "&cGracz z twojej druzyny wyszedl z gry, zatrzymano dobieranie.", 0, 0, 120);
+            });
 
         }
 

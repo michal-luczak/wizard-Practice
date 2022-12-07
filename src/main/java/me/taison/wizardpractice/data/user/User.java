@@ -12,6 +12,8 @@ public interface User {
 
     long getLastDamage();
 
+    User getLastDamager();
+
     void setLastDamager(User damager);
 
     Team getTeam();

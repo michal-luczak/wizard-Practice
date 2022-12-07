@@ -49,13 +49,6 @@ public final class WizardPractice extends JavaPlugin {
 
     private Location SPAWN_LOCATION;
 
-    private final ItemStack featherItem = new ItemBuilder(Material.FEATHER).addItemFlag(ItemFlag.HIDE_ENCHANTS)
-            .addEnchant(Enchantment.ARROW_DAMAGE, 1).setName(StringUtils.color("&5&lWybór duela")).
-            addLoreLine(StringUtils.color("&dKliknij aby zagrać!")).toItemStack();
-    private final ItemStack barrierItem = new ItemBuilder(Material.BARRIER).addItemFlag(ItemFlag.HIDE_ENCHANTS)
-            .addEnchant(Enchantment.ARROW_DAMAGE, 1).setName(StringUtils.color("&4&lAnulowanie duela")).
-            addLoreLine(StringUtils.color("&cKliknij aby anulować!")).toItemStack();
-
     @Override
     public void onLoad(){
         singleton = this;
@@ -172,11 +165,5 @@ public final class WizardPractice extends JavaPlugin {
     }
     public TeamFactory getTeamFactory() {
         return teamFactory;
-    }
-    public ItemStack getFeatherItem() {
-        return featherItem;
-    }
-    public ItemStack getBarrierItem() {
-        return barrierItem;
     }
 }

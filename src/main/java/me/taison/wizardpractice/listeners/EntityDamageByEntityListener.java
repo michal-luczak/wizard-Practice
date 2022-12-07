@@ -20,10 +20,11 @@ public class EntityDamageByEntityListener implements Listener {
                 Optional<User> damagerUserOptional = WizardPractice.getSingleton().getUserFactory().getByUniqueId(event.getDamager().getUniqueId());
 
                 damagerUserOptional.ifPresent(damagerUser -> {
-                    user.setLastDamager(damagerUser);
                     if (user.getTeam().equals(damagerUser.getTeam())) {
-                        event.setCancelled(true);
+                        event.setDamage(0);
+                        return;
                     }
+                    user.setLastDamager(damagerUser);
                 });
             });
         } else {

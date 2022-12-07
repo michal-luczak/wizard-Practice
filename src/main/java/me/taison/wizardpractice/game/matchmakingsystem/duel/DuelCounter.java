@@ -15,14 +15,10 @@ public class DuelCounter extends BukkitRunnable {
     private final Duel duel;
     private int counter = 5;
 
-
-
     public DuelCounter(Duel duel, List<Team> teams) {
         this.duel = duel;
         this.teams = teams;
     }
-
-
 
     @Override
     public void run() {

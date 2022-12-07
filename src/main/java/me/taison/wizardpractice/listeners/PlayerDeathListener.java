@@ -21,6 +21,7 @@ public class PlayerDeathListener implements Listener {
 
         Optional<User> victimUser = WizardPractice.getSingleton().getUserFactory().getByUniqueId(event.getEntity().getUniqueId());
         Optional<User> killerUser = WizardPractice.getSingleton().getUserFactory().getByUniqueId(event.getEntity().getKiller().getUniqueId());
+
         if(killerUser.isPresent() && victimUser.isPresent()){
             Optional<Duel> userDuel = WizardPractice.getSingleton().getMatchmaker().getDuelByUser(victimUser.get());
 

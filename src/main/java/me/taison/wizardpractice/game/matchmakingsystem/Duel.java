@@ -16,6 +16,8 @@ public interface Duel {
 
     void stopDuel();
 
+    void playerLeft(User user);
+
     GameMapType getGameMapType();
 
     DuelCounter getDuelCounter();

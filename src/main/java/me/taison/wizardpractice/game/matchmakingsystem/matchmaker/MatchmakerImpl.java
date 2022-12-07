@@ -2,6 +2,7 @@ package me.taison.wizardpractice.game.matchmakingsystem.matchmaker;
 
 import me.taison.wizardpractice.data.factory.ArenaFactory;
 import me.taison.wizardpractice.data.user.Team;
+import me.taison.wizardpractice.data.user.User;
 import me.taison.wizardpractice.game.arena.Arena;
 import me.taison.wizardpractice.game.matchmakingsystem.Duel;
 import me.taison.wizardpractice.game.matchmakingsystem.Matchmaker;
@@ -119,7 +120,7 @@ public class MatchmakerImpl implements Matchmaker {
     public void removeTeamFromQueue(Team team) {
         getQueueByTeam(team).ifPresentOrElse(queue ->
                         queue.removeTeamFromQueue(team),
-                () -> team.sendMessage("coś sie zjebało z usuwaniem z kolejki"));
+                () -> team.sendMessage("&cBłąd kolejki: Zgłos to do administratora!"));
         beginDuelRequest();
     }
 
@@ -127,7 +128,7 @@ public class MatchmakerImpl implements Matchmaker {
     public void addTeamToQueue(Team team, GameMapType gameMapType) {
         getQueueByGameType(gameMapType).ifPresentOrElse(queueToDuel ->
                         queueToDuel.addTeamToQueue(team),
-                () -> team.sendMessage("coś sie zjebało z dodawaniem do kolejki"));
+                () -> team.sendMessage("&cBłąd kolejki: Zgłos to do administratora!"));
         beginDuelRequest();
     }
 
@@ -142,7 +143,10 @@ public class MatchmakerImpl implements Matchmaker {
         beginDuelRequest();
     }
 
-
+    @Override
+    public void playerLeft(Duel duel, User user) {
+        duel.playerLeft(user);
+    }
 
     @Override
     public void beginDuelRequest() {
