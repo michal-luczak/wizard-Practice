@@ -65,38 +65,18 @@ public class GameSelectorGuiItem extends GuiItem {
         User user = userFactory.getByUniqueId(event.getPlayer().getUniqueId()).get();
         Team team = user.getTeam();
 
-        switch (this.gameMapType) {
-            case DIAMOND_GAME -> {
-                player.sendMessage(StringUtils.color("&cTest1"));
-                matchmaker.addTeamToQueue(team, gameMapType);
-                event.setWillClose(true);
-            }
-            case NORMAL_GAME -> {
-                player.sendMessage(StringUtils.color("&cTest2"));
-                matchmaker.addTeamToQueue(team, gameMapType);
-                event.setWillClose(true);
-            }
-            case SPEED_GAME -> {
-                player.sendMessage(StringUtils.color("&cTest3"));
-                matchmaker.addTeamToQueue(team, gameMapType);
-                event.setWillClose(true);
-            }
-            case SPEED_GAME_MUTLI_TEAM -> {
-                player.sendMessage(StringUtils.color("&cTest4"));
-                matchmaker.addTeamToQueue(team, gameMapType);
-                event.setWillClose(true);
-            }
-            case NORMAL_GAME_MUTLI_TEAM -> {
-                player.sendMessage(StringUtils.color("&cTest5"));
-                matchmaker.addTeamToQueue(team, gameMapType);
-                event.setWillClose(true);
-            }
-
-            case DIAMOND_GAME_MUTLI_TEAM -> {
-                player.sendMessage(StringUtils.color("&cTest6"));
-                matchmaker.addTeamToQueue(team, gameMapType);
-                event.setWillClose(true);
-            }
+        if (!team.getLeader().equals(user)) {
+            player.sendMessage("Nie możesz dołączyć do kolejki nie będąc liderem!");
+            return;
         }
+
+        if (gameMapType == null) {
+            player.sendMessage("&cBłąd Eventu !!! JEDNAK NIE ANULUJE EVENTU WCZEŚNIEJ !!!");
+            return;
+        }
+
+        matchmaker.getQueueByTeam(team).ifPresent(queue -> queue.removeTeamFromQueue(team));
+        matchmaker.addTeamToQueue(team, gameMapType);
+        event.setWillClose(true);
     }
 }

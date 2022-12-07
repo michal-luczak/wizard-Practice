@@ -5,6 +5,9 @@ import me.taison.wizardpractice.utilities.items.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionData;
+import org.bukkit.potion.PotionType;
 
 import java.util.Arrays;
 import java.util.List;
@@ -13,27 +16,81 @@ public enum GameMapType {
 
     DIAMOND_GAME(10, "&aDiament", Arrays.asList("&cRodzaj gry: Diamentowe Sety", " ", "&7Graczy w kolejce: %queuedPlayer", "&7Graczy grających: %currentPlaying"),
             new ItemBuilder(Material.DIAMOND_SWORD, 1).addEnchant(Enchantment.KNOCKBACK, 1).toItemStack(),
-            new ItemStack[]{}, new ItemStack[]{}, 2),
+            new ItemStack[]{
+                    new ItemBuilder(Material.DIAMOND_SWORD, 1).addEnchant(Enchantment.DAMAGE_ALL, 2).toItemStack(),
+                    new ItemBuilder(Material.GOLDEN_CARROT, 64).addEnchant(Enchantment.DAMAGE_ALL, 2).toItemStack()
+            },
+            new ItemStack[]{
+                    new ItemBuilder(Material.DIAMOND_HELMET, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4).toItemStack(),
+                    new ItemBuilder(Material.DIAMOND_CHESTPLATE, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4).toItemStack(),
+                    new ItemBuilder(Material.DIAMOND_LEGGINGS, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4).toItemStack(),
+                    new ItemBuilder(Material.DIAMOND_BOOTS, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4).toItemStack()
+    }, 2),
 
     NORMAL_GAME(13, "&aNormal", Arrays.asList("&cRodzaj gry: Zwykla gra.", " ", "&7Graczy w kolejce: %queuedPlayer", "&7Graczy grających: %currentPlaying"),
             new ItemBuilder(Material.DIAMOND_SWORD, 1).toItemStack(),
-            new ItemStack[]{}, new ItemStack[]{}, 2),
+            new ItemStack[]{
+                    new ItemBuilder(Material.DIAMOND_SWORD, 1).addEnchant(Enchantment.DAMAGE_ALL, 2).toItemStack()
+            },
+            new ItemStack[]{
+                    new ItemBuilder(Material.DIAMOND_HELMET, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4).toItemStack(),
+                    new ItemBuilder(Material.DIAMOND_CHESTPLATE, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4).toItemStack(),
+                    new ItemBuilder(Material.DIAMOND_LEGGINGS, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4).toItemStack(),
+                    new ItemBuilder(Material.DIAMOND_BOOTS, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4).toItemStack()
+    }, 2),
 
     SPEED_GAME(16, "&aSpeed", Arrays.asList("&cRodzaj gry: Speed.", " ", "&7Graczy w kolejce: %queuedPlayer", "&7Graczy grających: %currentPlaying"),
             new ItemBuilder(Material.POTION, 1).toItemStack(),
-            new ItemStack[]{}, new ItemStack[]{}, 2),
+            new ItemStack[]{
+                    new ItemBuilder(Material.DIAMOND_SWORD, 1).addEnchant(Enchantment.DAMAGE_ALL, 2).toItemStack(),
+                    new ItemBuilder(Material.GOLDEN_CARROT, 64).addEnchant(Enchantment.DAMAGE_ALL, 2).toItemStack(),
+                    getPotion(PotionType.SPEED, 1)
+            },
+            new ItemStack[]{
+                    new ItemBuilder(Material.DIAMOND_HELMET, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4).toItemStack(),
+                    new ItemBuilder(Material.DIAMOND_CHESTPLATE, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4).toItemStack(),
+                    new ItemBuilder(Material.DIAMOND_LEGGINGS, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4).toItemStack(),
+                    new ItemBuilder(Material.DIAMOND_BOOTS, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4).toItemStack()
+    }, 2),
 
     DIAMOND_GAME_MUTLI_TEAM(20, "&aDiament XvsXvsX", Arrays.asList("&cRodzaj gry: Diamentowe Sety", " ", "&7Graczy w kolejce: %queuedPlayer", "&7Graczy grających: %currentPlaying"),
             new ItemBuilder(Material.DIAMOND_SWORD, 1).addEnchant(Enchantment.KNOCKBACK, 1).toItemStack(),
-            new ItemStack[]{}, new ItemStack[]{}, 3),
+            new ItemStack[]{
+                    new ItemBuilder(Material.DIAMOND_SWORD, 1).addEnchant(Enchantment.DAMAGE_ALL, 2).toItemStack(),
+                    new ItemBuilder(Material.GOLDEN_CARROT, 64).addEnchant(Enchantment.DAMAGE_ALL, 2).toItemStack()
+            },
+            new ItemStack[]{
+                    new ItemBuilder(Material.DIAMOND_HELMET, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4).toItemStack(),
+                    new ItemBuilder(Material.DIAMOND_CHESTPLATE, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4).toItemStack(),
+                    new ItemBuilder(Material.DIAMOND_LEGGINGS, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4).toItemStack(),
+                    new ItemBuilder(Material.DIAMOND_BOOTS, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4).toItemStack()
+    }, 3),
 
     NORMAL_GAME_MUTLI_TEAM(22, "&aNormal XvsXvsX", Arrays.asList("&cRodzaj gry: Zwykla gra.", " ", "&7Graczy w kolejce: %queuedPlayer", "&7Graczy grających: %currentPlaying"),
             new ItemBuilder(Material.DIAMOND_SWORD, 1).toItemStack(),
-            new ItemStack[]{}, new ItemStack[]{}, 3),
+            new ItemStack[]{
+                    new ItemBuilder(Material.DIAMOND_SWORD, 1).addEnchant(Enchantment.DAMAGE_ALL, 2).toItemStack()
+            },
+            new ItemStack[]{
+                    new ItemBuilder(Material.DIAMOND_HELMET, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4).toItemStack(),
+                    new ItemBuilder(Material.DIAMOND_CHESTPLATE, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4).toItemStack(),
+                    new ItemBuilder(Material.DIAMOND_LEGGINGS, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4).toItemStack(),
+                    new ItemBuilder(Material.DIAMOND_BOOTS, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4).toItemStack()
+    }, 3),
 
     SPEED_GAME_MUTLI_TEAM(24, "&aSpeed XvsXvsX", Arrays.asList("&cRodzaj gry: Speed.", " ", "&7Graczy w kolejce: %queuedPlayer", "&7Graczy grających: %currentPlaying"),
             new ItemBuilder(Material.POTION, 1).toItemStack(),
-            new ItemStack[]{}, new ItemStack[]{}, 3);
+            new ItemStack[]{
+                    new ItemBuilder(Material.DIAMOND_SWORD, 1).addEnchant(Enchantment.DAMAGE_ALL, 2).toItemStack(),
+                    new ItemBuilder(Material.GOLDEN_CARROT, 64).addEnchant(Enchantment.DAMAGE_ALL, 2).toItemStack(),
+                    getPotion(PotionType.SPEED, 1)
+            },
+            new ItemStack[]{
+                    new ItemBuilder(Material.DIAMOND_HELMET, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4).toItemStack(),
+                    new ItemBuilder(Material.DIAMOND_CHESTPLATE, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4).toItemStack(),
+                    new ItemBuilder(Material.DIAMOND_LEGGINGS, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4).toItemStack(),
+                    new ItemBuilder(Material.DIAMOND_BOOTS, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4).toItemStack()
+    }, 3);
 
     private final int slotId;
 
@@ -57,6 +114,16 @@ public enum GameMapType {
         this.armor = armor;
         this.items = items;
         this.slots = slots;
+    }
+
+    private static ItemStack getPotion(PotionType potionType, int amount) {
+        ItemStack item = new ItemStack(Material.POTION, amount);
+        PotionMeta meta = (PotionMeta) item.getItemMeta();
+
+        meta.setBasePotionData(new PotionData(potionType));
+        item.setItemMeta(meta);
+
+        return item;
     }
 
     public int getSlotId() {

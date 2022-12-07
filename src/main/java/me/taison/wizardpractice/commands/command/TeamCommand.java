@@ -43,6 +43,11 @@ public class TeamCommand extends AbstractCommand {
                 return;
             }
 
+            if (playerToInvite.equals(player)) {
+                player.sendMessage(StringUtils.color("&cNie możesz zaprosić sam siebie!"));
+                return;
+            }
+
             userFactory.getByUniqueId(playerToInvite.getUniqueId()).ifPresent(user -> {
                 userFactory.getByUniqueId(player.getUniqueId()).ifPresent(playerUser -> {
                     if(!playerUser.getTeam().getLeader().equals(playerUser)){
@@ -57,9 +62,15 @@ public class TeamCommand extends AbstractCommand {
                 player.sendMessage(StringUtils.color("&cPodaj nazwe teamu!"));
                 return;
             }
+
             Player leader = Bukkit.getPlayer(args[1]);
             if(leader == null) {
                 player.sendMessage(StringUtils.color("&cNie ma takiego teamu!"));
+                return;
+            }
+
+            if (leader.equals(player)) {
+                player.sendMessage(StringUtils.color("&cNie możesz dołączyć do własnej drużyny!"));
                 return;
             }
 
@@ -80,11 +91,18 @@ public class TeamCommand extends AbstractCommand {
                 player.sendMessage(StringUtils.color("&cPodaj nazwe gracza do wyrzucenia"));
                 return;
             }
+
             Player playerToKick = Bukkit.getPlayer(args[1]);
             if(playerToKick == null) {
                 player.sendMessage(StringUtils.color("&cGracz do wyrzucenia nie jest na serwerze."));
                 return;
             }
+
+            if (playerToKick.equals(player)) {
+                player.sendMessage(StringUtils.color("&cNie możesz opuścić drużyny, ponieważ jesteś jedynym jej członkiem!"));
+                return;
+            }
+
             userFactory.getByUniqueId(playerToKick.getUniqueId()).ifPresent(user -> userFactory.getByUniqueId(player.getUniqueId()).ifPresent(playerUser -> {
                 if(!playerUser.getTeam().getLeader().equals(playerUser)){
                     player.sendMessage(StringUtils.color("&cNie mozesz zarzadzac druzyna nie bedac liderem."));

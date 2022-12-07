@@ -1,20 +1,20 @@
 //Przed startem testow:
 
-/druzyna - sprawdzanie czy gracz nie zaprasza siebie, sprawdzanie czy nie dolacza do siebie, czy nie wyrzuca siebie itp
+DONE                  /druzyna - sprawdzanie czy gracz nie zaprasza siebie, sprawdzanie czy nie dolacza do siebie, czy nie wyrzuca siebie itp
 
-Usuwanie z kolejki przy zmianie trybu
+DONE                  Usuwanie z kolejki przy zmianie trybu
 
-Tylko lider moze wybrac tryb
+DONE                  Tylko lider moze wybrac tryb
 
 Wychodzenie - usuwanie z kolejki | sprawdzanie areny usuwanie z listy żywych i sprawdzanie jej czy nie był ostatnim grajacym.
 
 Zwracanie piorka przy koncu areny. clear inv
 
-PVP w druzynie off.
+DONE                  PVP w druzynie off.
 
 "i przepisac ten matchmaker zeby ladniej wygladal najebane ifow i nie wiadomo o co chodzi" ~tajson
 
-dodac jakies itemy do gamemaptype!
+DONE                  dodac jakies itemy do gamemaptype!
 
 playerrespawnevent i teleport na spawn.
 
