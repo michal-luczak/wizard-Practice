@@ -14,6 +14,7 @@ import me.taison.wizardpractice.utilities.random.RandomUtils;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class MatchmakerImpl implements Matchmaker {
 
@@ -33,103 +34,86 @@ public class MatchmakerImpl implements Matchmaker {
     }
 
 
-
     //                           > MATCHMAKER <                         \\
     // Jeżeli istnieje możliwy do wystartowania duel to zwraca tego duela \\
     private List<Duel> tryMakeMatch() {
 
-        List<Arena> arenasXvX = arenaFactory.getAvailableArenas(2);
-        List<Arena> arenasXvXvX = arenaFactory.getAvailableArenas(3);
-
-        System.out.println(arenasXvX.size());
-        System.out.println(arenasXvXvX.size());
+        List<Arena> twoSlotsArenas = arenaFactory.getAvailableArenas(2);
+        List<Arena> threeSlotsArenas = arenaFactory.getAvailableArenas(3);
 
 
         List<Duel> duels = new ArrayList<>();
 
-        for (QueueToDuel queue : queuesToDuels) {
+        queuesToDuels.forEach(queue -> {
 
-            int slots = queue.getGameMapType().getSlots();
-
-            List<Team> teams = queue.getTeamsInQueue();
-
-            teams.sort(Comparator.comparing(team -> team.getTeam().size()));
-
-            for (int i=0; i<teams.size()-1; i++) {
-
-                if (teams.get(i).getTeam().size() != teams.get(i+1).getTeam().size()) {
-                    break;
-                }
-                if (slots == 3) {
-                    break;
-                }
-                if (arenasXvX.size() == 0) {
-                    break;
-                }
-
-                List<Team> matchedTeams = new ArrayList<>(Arrays.stream(new Team[]{teams.get(i), teams.get(i+1)}).toList());
+            List<Team> teams = queue.getTeamsInQueue().stream().sorted(Comparator.comparing(team -> team.getTeam().size())).toList();
 
 
-                int index = arenasXvX.size() - 1;
-                System.out.println("index: " +index);
-                int indexOfArena = RandomUtils.getRandInt(0, index);
+            AtomicInteger i = new AtomicInteger(0);
+            teams.stream()
+                    .filter(team -> i.get() < teams.size()-1)
+                    .filter(team -> teams.get(i.get()).getTeam().size() == teams.get(i.get() + 1).getTeam().size())
+                    .filter(team -> !twoSlotsArenas.isEmpty())
+                    .forEach(team -> {
+                        Duel duel = new DuelImpl(
+                                this,
+                                new ArrayList<>(Arrays.stream(new Team[]{
+                                        teams.get(i.get()),
+                                        teams.get(i.get() + 1)
+                                }).toList()),
+                                queue.getGameMapType(),
+                                twoSlotsArenas.get(RandomUtils.getRandInt(0, threeSlotsArenas.size() - 1)));
 
-                Duel duel = new DuelImpl(this, matchedTeams, queue.getGameMapType(), arenasXvX.get(indexOfArena));
-                duels.add(duel);
-                System.out.println(arenasXvX);
-                arenasXvX.remove(indexOfArena);
+                        duels.add(duel);
+                        twoSlotsArenas.remove(RandomUtils.getRandInt(0, threeSlotsArenas.size() - 1));
 
-                i++;
-            }
+                        i.getAndIncrement();
+                    });
 
-            for (int i=0; i<teams.size()-2; i++) {
 
-                if ((teams.get(i).getTeam().size() != teams.get(i+1).getTeam().size())
-                        || (teams.get(i).getTeam().size() != teams.get(i+2).getTeam().size())) {
-                    break;
-                }
-                if (slots != 3) {
-                    break;
-                }
 
-                List<Team> matchedTeams = new ArrayList<>(Arrays.stream(new Team[]{teams.get(i), teams.get(i+1), teams.get(i+2)}).toList());
+            i.set(0);
+            teams.stream()
+                    .filter(team -> i.get() < teams.size()-2)
+                    .filter(team -> teams.get(i.get()).getTeam().size() == teams.get(i.get() + 1).getTeam().size())
+                    .filter(team -> teams.get(i.get()).getTeam().size() == teams.get(i.get() + 2).getTeam().size())
+                    .filter(team -> !threeSlotsArenas.isEmpty())
+                    .forEach(team -> {
+                        Duel duel = new DuelImpl(
+                                this,
+                                new ArrayList<>(Arrays.stream(new Team[]{
+                                        teams.get(i.get()),
+                                        teams.get(i.get() + 1),
+                                        teams.get(i.get() + 2)
+                                }).toList()),
+                                queue.getGameMapType(),
+                                threeSlotsArenas.get(RandomUtils.getRandInt(0, threeSlotsArenas.size() - 1)));
 
-                if (arenasXvXvX.size() == 0) {
-                    break;
-                }
+                        duels.add(duel);
+                        threeSlotsArenas.remove(RandomUtils.getRandInt(0, threeSlotsArenas.size() - 1));
 
-                int indexOfArena = RandomUtils.getRandInt(0, arenasXvXvX.size()-1);
+                        i.getAndIncrement();
+                        i.getAndIncrement();
+                    });
+        });
 
-                Duel duel = new DuelImpl(this, matchedTeams, queue.getGameMapType(), arenasXvXvX.get(indexOfArena));
-                duels.add(duel);
-                arenasXvXvX.remove(indexOfArena);
-
-                i++;
-            }
-        }
 
         return duels;
     }
 
 
-
     //      ADD/REMOVE TEAM TO QUEUE OPERATIONS      \\
     @Override
     public void removeTeamFromQueue(Team team) {
-        getQueueByTeam(team).ifPresentOrElse(queue ->
-                        queue.removeTeamFromQueue(team),
-                () -> team.sendMessage("&cBłąd kolejki: Zgłos to do administratora!"));
+        getQueueByTeam(team).ifPresentOrElse(queue -> queue.removeTeamFromQueue(team), () -> team.sendMessage("&cBłąd kolejki: Zgłos to do administratora!"));
         beginDuelRequest();
     }
 
     @Override
     public void addTeamToQueue(Team team, GameMapType gameMapType) {
-        getQueueByGameType(gameMapType).ifPresentOrElse(queueToDuel ->
-                        queueToDuel.addTeamToQueue(team),
-                () -> team.sendMessage("&cBłąd kolejki: Zgłos to do administratora!"));
+        getQueueByGameType(gameMapType).ifPresentOrElse(queueToDuel -> queueToDuel.addTeamToQueue(team), () -> team.sendMessage("&cBłąd kolejki: Zgłos to do administratora!"));
         beginDuelRequest();
     }
-
 
 
     //      FINISH DUEL      \\
@@ -156,7 +140,6 @@ public class MatchmakerImpl implements Matchmaker {
             runningDuel.add(duel);
         });
     }
-
 
 
     //      GETTERS      \\
