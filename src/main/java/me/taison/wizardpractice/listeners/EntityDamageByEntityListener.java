@@ -17,6 +17,12 @@ public class EntityDamageByEntityListener implements Listener {
     public void handle(EntityDamageByEntityEvent event){
         if(event.getEntity() instanceof Player player && event.getDamager() instanceof Player){
             WizardPractice.getSingleton().getUserFactory().getByUniqueId(player.getUniqueId()).ifPresent(user -> {
+                WizardPractice.getSingleton().getMatchmaker().getDuelByUser(user).ifPresent(match -> {
+                    if(!match.getDuelCounter().isCancelled()){
+                        event.setCancelled(true);
+                    }
+                });
+
                 Optional<User> damagerUserOptional = WizardPractice.getSingleton().getUserFactory().getByUniqueId(event.getDamager().getUniqueId());
 
                 damagerUserOptional.ifPresent(damagerUser -> {

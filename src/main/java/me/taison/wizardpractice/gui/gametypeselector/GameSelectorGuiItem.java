@@ -59,8 +59,10 @@ public class GameSelectorGuiItem extends GuiItem {
         Player player = event.getPlayer();
 
         UserFactory userFactory = WizardPractice.getSingleton().getUserFactory();
-        if (userFactory.getByUniqueId(event.getPlayer().getUniqueId()).isEmpty())
+
+        if (userFactory.getByUniqueId(event.getPlayer().getUniqueId()).isEmpty()) {
             return;
+        }
 
         User user = userFactory.getByUniqueId(event.getPlayer().getUniqueId()).get();
         Team team = user.getTeam();
@@ -70,13 +72,11 @@ public class GameSelectorGuiItem extends GuiItem {
             return;
         }
 
-        if (gameMapType == null) {
-            player.sendMessage("&cBłąd Eventu !!! JEDNAK NIE ANULUJE EVENTU WCZEŚNIEJ !!!");
-            return;
-        }
-
         matchmaker.getQueueByTeam(team).ifPresent(queue -> queue.removeTeamFromQueue(team));
         matchmaker.addTeamToQueue(team, gameMapType);
+
+        player.sendMessage(StringUtils.color("&aDołączono do wyszukiwania trybu gry: " + gameMapType.getName()));
+
         event.setWillClose(true);
     }
 }

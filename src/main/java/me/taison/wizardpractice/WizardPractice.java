@@ -14,6 +14,7 @@ import me.taison.wizardpractice.game.arena.Arena;
 import me.taison.wizardpractice.game.arena.impl.ArenaImpl;
 import me.taison.wizardpractice.game.matchmakingsystem.Matchmaker;
 import me.taison.wizardpractice.game.matchmakingsystem.matchmaker.MatchmakerImpl;
+import me.taison.wizardpractice.game.task.QueueActionBarUpdateTask;
 import me.taison.wizardpractice.service.Service;
 import me.taison.wizardpractice.utilities.AbstractCommand;
 import me.taison.wizardpractice.utilities.chat.StringUtils;
@@ -49,6 +50,8 @@ public final class WizardPractice extends JavaPlugin {
 
     private Location SPAWN_LOCATION;
 
+    private QueueActionBarUpdateTask queueActionBarUpdateTask;
+
     @Override
     public void onLoad(){
         singleton = this;
@@ -62,6 +65,7 @@ public final class WizardPractice extends JavaPlugin {
         this.initializeListeners();
         this.initializeCommands();
         this.initializeArenas();
+        this.initializeTasks();
 
         this.matchmaker = new MatchmakerImpl(arenaFactory);
 
@@ -128,6 +132,11 @@ public final class WizardPractice extends JavaPlugin {
         this.arenaFactory.register(frostArena);
         this.arenaFactory.register(candyArena);
 
+    }
+
+    private void initializeTasks(){
+        this.queueActionBarUpdateTask = new QueueActionBarUpdateTask(this);
+        this.queueActionBarUpdateTask.startActionBarUpdate();
     }
 
     @Override

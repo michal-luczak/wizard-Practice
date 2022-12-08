@@ -23,8 +23,6 @@ public class MatchmakerImpl implements Matchmaker {
 
     private final ArenaFactory arenaFactory;
 
-
-
     public MatchmakerImpl(ArenaFactory arenaFactory) {
         this.runningDuel = new ConcurrentLinkedQueue<>();
         this.queuesToDuels = new CopyOnWriteArrayList<>();
