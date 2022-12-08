@@ -76,7 +76,7 @@ public class MatchmakerImpl implements Matchmaker {
                 System.out.println("index: " +index);
                 int indexOfArena = RandomUtils.getRandInt(0, index);
 
-                Duel duel = new DuelImpl(matchedTeams, queue.getGameMapType(), arenasXvX.get(indexOfArena));
+                Duel duel = new DuelImpl(this, matchedTeams, queue.getGameMapType(), arenasXvX.get(indexOfArena));
                 duels.add(duel);
                 System.out.println(arenasXvX);
                 arenasXvX.remove(indexOfArena);
@@ -102,7 +102,7 @@ public class MatchmakerImpl implements Matchmaker {
 
                 int indexOfArena = RandomUtils.getRandInt(0, arenasXvXvX.size()-1);
 
-                Duel duel = new DuelImpl(matchedTeams, queue.getGameMapType(), arenasXvXvX.get(indexOfArena));
+                Duel duel = new DuelImpl(this, matchedTeams, queue.getGameMapType(), arenasXvXvX.get(indexOfArena));
                 duels.add(duel);
                 arenasXvXvX.remove(indexOfArena);
 

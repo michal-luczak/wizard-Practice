@@ -6,9 +6,11 @@ import me.taison.wizardpractice.data.user.User;
 import me.taison.wizardpractice.game.arena.Arena;
 import me.taison.wizardpractice.game.arena.ArenaState;
 import me.taison.wizardpractice.game.matchmakingsystem.Duel;
+import me.taison.wizardpractice.game.matchmakingsystem.Matchmaker;
 import me.taison.wizardpractice.gui.gametypeselector.GameMapType;
 import me.taison.wizardpractice.utilities.chat.StringUtils;
 import me.taison.wizardpractice.utilities.items.VariousItems;
+import net.kyori.adventure.text.Component;
 import org.apache.commons.lang3.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -25,20 +27,26 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class DuelImpl implements Duel {
+public final class DuelImpl implements Duel {
 
+    private final Arena arena;
     private final List<Team> teams;
+    private final List<Location> placedBlocks;
 
-    private Map<Team, List<User>> aliveTeamMap;
+    private final Map<Team, List<User>> aliveTeamMap;
     private final GameMapType gameMapType;
     private final DuelCounter duel;
-    private Arena arena;
 
-    private List<Location> placedBlocks;
+    private final Matchmaker matchmaker;
 
-    public DuelImpl(List<Team> teams, GameMapType gameMapType, Arena arena) {
+    public DuelImpl(Matchmaker matchmaker, List<Team> teams, GameMapType gameMapType, Arena arena) {
         Validate.notNull(teams, "Teams cannot be null");
+        Validate.notNull(matchmaker, "Matchmaker cannot be null");
+        Validate.notNull(arena, "Arena cannot be null");
+
         Validate.notEmpty(teams, "Teams cannot be empty!");
+
+        this.matchmaker = matchmaker;
 
         this.teams = new ArrayList<>(teams);
 
@@ -97,12 +105,11 @@ public class DuelImpl implements Duel {
     }
     private void teleportTeamsToSpawn() {
         this.teams.forEach(team -> {
-            team.sendMessage(StringUtils.color("&a&lINFO: &aArena sie zakonczyla."));
             team.teleport(WizardPractice.getSingleton().getSpawnLocation());
 
             team.clearInventory();
 
-            team.getTeam().forEach(user -> user.getAsPlayer().getInventory().setItem(4, VariousItems.featherItem));
+            team.getTeam().forEach(user -> user.getAsPlayer().getInventory().setItem(4, VariousItems.FEATHER_ITEM));
         });
     }
 
@@ -130,16 +137,6 @@ public class DuelImpl implements Duel {
     }
 
     @Override
-    public Arena getArena() {
-        return arena;
-    }
-
-    @Override
-    public void setArena(Arena arena) {
-        this.arena = arena;
-    }
-
-    @Override
     public List<Team> getTeams() {
         return teams;
     }
@@ -147,48 +144,46 @@ public class DuelImpl implements Duel {
     @Override
     public void playerLeft(User user){
         if(this.getAliveTeamByUser(user).isPresent()) {
-            Team aliveTeam = this.getAliveTeamByUser(user).get();
-
-            List<User> aliveTeamUsers = this.getAliveUsersByTeam(aliveTeam);
-
-            if (this.aliveTeamMap.size() == 1) {
+            if (this.aliveTeamMap.size() == 2) {
                 if (user.getLastDamager() == null || (System.currentTimeMillis() - user.getLastDamage() > TimeUnit.SECONDS.toMillis(15))) {
                     this.teams.forEach(team -> team.sendMessage("&c" + user.getName() + "wyszedl z areny. Anulowanie gry."));
 
-                    WizardPractice.getSingleton().getMatchmaker().finishDuel(this);
+                    this.matchmaker.finishDuel(this);
                     return;
                 }
 
-                Bukkit.broadcastMessage(StringUtils.color("&aTeam &2" + user.getLastDamager().getTeam().getLeader().getName() + " &awygrywa arene " + this.arena.getName()));
+                Bukkit.broadcast(Component.text(StringUtils.color("&aTeam &2" + user.getLastDamager().getTeam().getLeader().getName() + " &awygrywa arene " + this.arena.getName())));
 
                 this.teams.forEach(team -> team.sendTitle("&aTeam &2" + user.getLastDamager().getTeam().getLeader().getName() + " &awygrywa", "&aGratulacje!", 0, 0, 100));
 
-                WizardPractice.getSingleton().getMatchmaker().finishDuel(this);
-                return;
+                this.matchmaker.finishDuel(this);
             }
 
-            if(this.aliveTeamMap.size() > 1){
-                if(aliveTeamUsers.size() == 1) {
+            if(this.aliveTeamMap.size() > 2){
+                Team aliveTeam = this.getAliveTeamByUser(user).get();
+
+                List<User> aliveTeamUsers = this.getAliveUsersByTeam(aliveTeam);
+
+                if(aliveTeamUsers.size() > 1){
                     this.getAliveUsersByTeam(aliveTeam).remove(user);
 
-                    if (user.getLastDamager() == null || (System.currentTimeMillis() - user.getLastDamage() > TimeUnit.SECONDS.toMillis(15))) {
-                        this.teams.forEach(team -> team.sendMessage("&c" + user.getName() + "opuscil gre. Anulowanie areny."));
-                        WizardPractice.getSingleton().getMatchmaker().finishDuel(this);
-                        return;
-                    }
+                    this.teams.forEach(team -> team.sendMessage("&aGracz &2" + user.getName() + " wyszedl z areny."));
+                }
+
+                if(aliveTeamUsers.size() == 1){
+                    this.getAliveUsersByTeam(aliveTeam).remove(user);
 
                     this.removeAliveTeam(aliveTeam);
 
-                    this.teams.forEach(team -> {
-                        team.sendMessage("&c" + user.getName() + "opuscil gre.");
-                        team.sendMessage("&c" + user.getLastDamager().getName() + " zabija gracza " + user.getName());
-                    });
-
-                    WizardPractice.getSingleton().getMatchmaker().finishDuel(this);
-                    return;
+                    this.teams.forEach(team -> team.sendMessage("&aGracz &2" + user.getName() + " wyszedl z areny."));
                 }
-                this.getAliveUsersByTeam(aliveTeam).remove(user);
-                this.teams.forEach(team -> team.sendMessage("&c" + user.getName() + "opuscil arene."));
+
+                if (user.getLastDamager() != null && (System.currentTimeMillis() - user.getLastDamage()) < TimeUnit.SECONDS.toMillis(15)) {
+                    this.teams.forEach(team -> team.sendMessage("&c" + user.getName() + " zostal zabity przez " + user.getLastDamager().getName()));
+
+                    user.getLastDamager().sendTitle("&a⚔ " + user.getName(), "+100 PKT", 0, 0, 60);
+                }
+
             }
         }
     }
@@ -203,13 +198,12 @@ public class DuelImpl implements Duel {
             List<User> aliveTeamUsers = this.getAliveUsersByTeam(aliveTeam);
 
             if(aliveTeamUsers.size() == 1) {
-
                 this.teams.forEach(team -> team.sendMessage("&c" + killer.getName() + " zabija gracza " + victim.getName()));
 
                 this.removeAliveTeam(aliveTeam);
 
                 if(this.aliveTeamMap.size() == 1) {
-                    Bukkit.broadcastMessage(StringUtils.color("&aTeam &2" + killer.getTeam().getLeader().getName() + " &awygrywa arene " + this.arena.getName()));
+                    Bukkit.broadcast(Component.text(StringUtils.color("&aTeam &2" + killer.getTeam().getLeader().getName() + " &awygrywa arene " + this.arena.getName())));
 
                     this.teams.forEach(team -> team.sendTitle("&aTeam &2" + killer.getTeam().getLeader().getName() + " &awygrywa", "&aGratulacje!", 0, 0, 100));
 
@@ -256,6 +250,7 @@ public class DuelImpl implements Duel {
     public void handleBlockBreak(BlockBreakEvent event, User user) {
         if(!this.placedBlocks.contains(event.getBlock().getLocation())){
             event.getPlayer().sendMessage(StringUtils.color("&cMozesz niszczyc tylko bloki postawione przez innych graczy."));
+
             event.setCancelled(true);
         }
     }

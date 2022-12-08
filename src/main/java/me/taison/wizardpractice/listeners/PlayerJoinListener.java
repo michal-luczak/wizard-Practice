@@ -20,7 +20,7 @@ public class PlayerJoinListener implements Listener {
     @EventHandler
     public void handle(PlayerJoinEvent e){
         e.getPlayer().getInventory().clear();
-        e.getPlayer().getInventory().setItem(4, VariousItems.featherItem);
+        e.getPlayer().getInventory().setItem(4, VariousItems.FEATHER_ITEM);
 
         UserFactory userFactory = WizardPractice.getSingleton().getUserFactory();
         TeamFactory teamFactory = WizardPractice.getSingleton().getTeamFactory();

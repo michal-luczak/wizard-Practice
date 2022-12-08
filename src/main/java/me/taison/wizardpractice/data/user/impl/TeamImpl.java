@@ -23,6 +23,7 @@ public class TeamImpl implements Team {
     public TeamImpl(User leader){
         this.leader = leader;
 
+        //TODO zamiana guava -> caffeine
         this.cachedInvitations = CacheBuilder.newBuilder().expireAfterWrite(3, TimeUnit.MINUTES)
                 .removalListener((RemovalListener<User, String>) removal -> {
                     if (removal.getKey() != null) {

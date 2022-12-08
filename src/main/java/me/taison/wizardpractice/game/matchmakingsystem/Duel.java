@@ -22,10 +22,6 @@ public interface Duel {
 
     DuelCounter getDuelCounter();
 
-    Arena getArena();
-
-    void setArena(Arena arena);
-
     List<Team> getTeams();
 
     /*

@@ -27,6 +27,8 @@ public class PlayerDeathListener implements Listener {
 
             userDuel.ifPresent(duel -> {
                 duel.handleDeath(killerUser.get(), victimUser.get());
+
+                event.getDrops().clear();
             });
         }
     }
