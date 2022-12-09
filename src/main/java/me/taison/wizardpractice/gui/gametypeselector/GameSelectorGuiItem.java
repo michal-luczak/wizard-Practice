@@ -8,6 +8,8 @@ import me.taison.wizardpractice.game.matchmakingsystem.Matchmaker;
 import me.taison.wizardpractice.gui.GuiItem;
 import me.taison.wizardpractice.gui.event.GuiItemClickEvent;
 import me.taison.wizardpractice.utilities.chat.StringUtils;
+import me.taison.wizardpractice.utilities.items.VariousItems;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -74,6 +76,10 @@ public class GameSelectorGuiItem extends GuiItem {
 
         matchmaker.getQueueByTeam(team).ifPresent(queue -> queue.removeTeamFromQueue(team));
         matchmaker.addTeamToQueue(team, gameMapType);
+        if (player.getInventory().contains(Material.FEATHER)) {
+            player.getInventory().remove(Material.FEATHER);
+            player.getInventory().setItem(8, VariousItems.BARRIER_ITEM);
+        }
 
         player.sendMessage(StringUtils.color("&aDołączono do wyszukiwania trybu gry: " + gameMapType.getName()));
 

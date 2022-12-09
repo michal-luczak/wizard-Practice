@@ -24,7 +24,7 @@ public enum GameMapType {
             },
             new ItemStack[]{
                     new ItemBuilder(Material.DIAMOND_SWORD, 1).addEnchant(Enchantment.DAMAGE_ALL, 2).toItemStack(),
-                    new ItemBuilder(Material.GOLDEN_CARROT, 64).addEnchant(Enchantment.DAMAGE_ALL, 2).toItemStack()
+                    new ItemBuilder(Material.GOLDEN_CARROT, 64).toItemStack()
             }, 2),
 
     NORMAL_GAME(13, "&aNormal", Arrays.asList("&cRodzaj gry: Zwykla gra.", " ", "&7Graczy w kolejce: %queuedPlayer", "&7Graczy grających: %currentPlaying"),
@@ -49,7 +49,7 @@ public enum GameMapType {
             },
             new ItemStack[]{
                     new ItemBuilder(Material.DIAMOND_SWORD, 1).addEnchant(Enchantment.DAMAGE_ALL, 2).toItemStack(),
-                    new ItemBuilder(Material.GOLDEN_CARROT, 64).addEnchant(Enchantment.DAMAGE_ALL, 2).toItemStack(),
+                    new ItemBuilder(Material.GOLDEN_CARROT, 64).toItemStack(),
                     getPotion(PotionType.SPEED, 1, true)
             }, 2),
 
@@ -63,7 +63,7 @@ public enum GameMapType {
             },
             new ItemStack[]{
                     new ItemBuilder(Material.DIAMOND_SWORD, 1).addEnchant(Enchantment.DAMAGE_ALL, 2).toItemStack(),
-                    new ItemBuilder(Material.GOLDEN_CARROT, 64).addEnchant(Enchantment.DAMAGE_ALL, 2).toItemStack()
+                    new ItemBuilder(Material.GOLDEN_CARROT, 64).toItemStack()
             }, 3),
 
     NORMAL_GAME_MUTLI_TEAM(22, "&aNormal XvsXvsX", Arrays.asList("&cRodzaj gry: Zwykla gra.", " ", "&7Graczy w kolejce: %queuedPlayer", "&7Graczy grających: %currentPlaying"),
@@ -88,7 +88,7 @@ public enum GameMapType {
             },
             new ItemStack[]{
                     new ItemBuilder(Material.DIAMOND_SWORD, 1).addEnchant(Enchantment.DAMAGE_ALL, 2).toItemStack(),
-                    new ItemBuilder(Material.GOLDEN_CARROT, 64).addEnchant(Enchantment.DAMAGE_ALL, 2).toItemStack(),
+                    new ItemBuilder(Material.GOLDEN_CARROT, 64).toItemStack(),
                     getPotion(PotionType.SPEED, 1, true)
             }, 3);
 
