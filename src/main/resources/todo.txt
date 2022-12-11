@@ -1,12 +1,8 @@
 //Przed startem testow:
 
-Wychodzenie - usuwanie z kolejki | sprawdzanie areny usuwanie z listy żywych i sprawdzanie jej czy nie był ostatnim grajacym.
-
 Zwracanie piorka przy koncu areny. clear inv
 
 "i przepisac ten matchmaker zeby ladniej wygladal najebane ifow i nie wiadomo o co chodzi" ~tajson
-
-playerrespawnevent i teleport na spawn.
 
 osobne gui XVX XVSXVSX
 

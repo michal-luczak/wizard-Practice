@@ -15,6 +15,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 public class MatchmakerImpl implements Matchmaker {
 
@@ -37,66 +38,38 @@ public class MatchmakerImpl implements Matchmaker {
     //                           > MATCHMAKER <                         \\
     // Jeżeli istnieje możliwy do wystartowania duel to zwraca tego duela \\
     private List<Duel> tryMakeMatch() {
-
-        List<Arena> twoSlotsArenas = arenaFactory.getAvailableArenas(2);
-        List<Arena> threeSlotsArenas = arenaFactory.getAvailableArenas(3);
-
-
         List<Duel> duels = new ArrayList<>();
 
-        queuesToDuels.forEach(queue -> {
+        for (QueueToDuel queue : queuesToDuels) {
+            List<Team> teams = queue.getTeamsInQueue();
 
-            List<Team> teams = queue.getTeamsInQueue().stream().sorted(Comparator.comparing(team -> team.getTeam().size())).toList();
+            int requiredSlots = queue.getGameMapType().getSlots();
 
+            List<List<Team>> teamCombinations = teams.stream()
+                    .filter(team -> team.getTeam().size() == requiredSlots)
+                    .collect(Collectors.groupingBy(team -> team.getTeam().size()))
+                    .values()
+                    .stream()
+                    .flatMap(teamsWithSameSize -> {
+                        List<List<Team>> combinations = new ArrayList<>();
+                        for (int i = 0; i < teamsWithSameSize.size() - requiredSlots + 1; i++) {
+                            combinations.add(teamsWithSameSize.subList(i, i + requiredSlots));
+                        }
+                        return combinations.stream();
+                    }).toList();
 
-            AtomicInteger i = new AtomicInteger(0);
-            teams.stream()
-                    .filter(team -> i.get() < teams.size()-1)
-                    .filter(team -> teams.get(i.get()).getTeam().size() == teams.get(i.get() + 1).getTeam().size())
-                    .filter(team -> !twoSlotsArenas.isEmpty())
-                    .forEach(team -> {
-                        Duel duel = new DuelImpl(
-                                this,
-                                new ArrayList<>(Arrays.stream(new Team[]{
-                                        teams.get(i.get()),
-                                        teams.get(i.get() + 1)
-                                }).toList()),
-                                queue.getGameMapType(),
-                                twoSlotsArenas.get(RandomUtils.getRandInt(0, threeSlotsArenas.size() - 1)));
+            for (List<Team> matchedTeams : teamCombinations) {
+                Optional<Arena> selectedArena = arenaFactory.getAvailableArenas(requiredSlots).stream()
+                        .findFirst();
 
-                        duels.add(duel);
-                        twoSlotsArenas.remove(RandomUtils.getRandInt(0, threeSlotsArenas.size() - 1));
+                if (!selectedArena.isPresent()) {
+                    break;
+                }
 
-                        i.getAndIncrement();
-                    });
-
-
-
-            i.set(0);
-            teams.stream()
-                    .filter(team -> i.get() < teams.size()-2)
-                    .filter(team -> teams.get(i.get()).getTeam().size() == teams.get(i.get() + 1).getTeam().size())
-                    .filter(team -> teams.get(i.get()).getTeam().size() == teams.get(i.get() + 2).getTeam().size())
-                    .filter(team -> !threeSlotsArenas.isEmpty())
-                    .forEach(team -> {
-                        Duel duel = new DuelImpl(
-                                this,
-                                new ArrayList<>(Arrays.stream(new Team[]{
-                                        teams.get(i.get()),
-                                        teams.get(i.get() + 1),
-                                        teams.get(i.get() + 2)
-                                }).toList()),
-                                queue.getGameMapType(),
-                                threeSlotsArenas.get(RandomUtils.getRandInt(0, threeSlotsArenas.size() - 1)));
-
-                        duels.add(duel);
-                        threeSlotsArenas.remove(RandomUtils.getRandInt(0, threeSlotsArenas.size() - 1));
-
-                        i.getAndIncrement();
-                        i.getAndIncrement();
-                    });
-        });
-
+                Duel duel = new DuelImpl(this, matchedTeams, queue.getGameMapType(), selectedArena.orElse(null));
+                duels.add(duel);
+            }
+        }
 
         return duels;
     }

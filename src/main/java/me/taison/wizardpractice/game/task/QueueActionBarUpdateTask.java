@@ -22,7 +22,7 @@ public class QueueActionBarUpdateTask extends BukkitRunnable {
     public void run() {
         wizard.getMatchmaker().getQueuesToDuels().forEach(queueToDuel -> queueToDuel.getTeamsInQueue().forEach(team -> {
             Optional<QueueToDuel> queueToDuelOptional = wizard.getMatchmaker().getQueueByTeam(team);
-            queueToDuelOptional.ifPresent(toDuel -> team.sendActionBar("&aTrwa wyszukiwanie gry. twój numer w kolejce: " + (toDuel.getTeamsInQueue().indexOf(team) +1)));
+            queueToDuelOptional.ifPresent(toDuel -> team.sendActionBar("&aTrwa wyszukiwanie gry. Twój numer w kolejce: " + (toDuel.getTeamsInQueue().indexOf(team) +1)));
         }));
     }
 }

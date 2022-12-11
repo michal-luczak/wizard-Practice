@@ -33,6 +33,7 @@ public class InventoryClickListener implements Listener {
 
         if (e.getInventory().getHolder() instanceof GuiHolder) {
             e.setCancelled(true);
+
             ((GuiHolder) e.getInventory().getHolder()).getMenu().onInventoryClick(e);
         }
     }
