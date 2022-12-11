@@ -14,6 +14,7 @@ public class PlayerRespawnListener implements Listener {
     @EventHandler
     public void handle(PlayerPostRespawnEvent event){
         event.getPlayer().teleport(WizardPractice.getSingleton().getSpawnLocation());
+        event.getPlayer().getInventory().clear();
         event.getPlayer().getInventory().setItem(4, VariousItems.FEATHER_ITEM);
         //TODO potem przekazywanie do areny  w celu dodania do spectatorów... duel.playerRespawn(user);
     }

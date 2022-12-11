@@ -109,7 +109,12 @@ public final class DuelImpl implements Duel {
 
             team.clearInventory();
 
-            team.getTeam().forEach(user -> user.getAsPlayer().setHealth(20));
+            team.getTeam().forEach(user -> {
+                if (!user.getAsPlayer().isDead()) {
+                    user.getAsPlayer().getInventory().setItem(4, VariousItems.FEATHER_ITEM);
+                }
+                user.getAsPlayer().setHealth(20);
+            });
         });
     }
 

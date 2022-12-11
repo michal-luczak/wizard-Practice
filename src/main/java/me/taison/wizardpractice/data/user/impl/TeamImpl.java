@@ -154,7 +154,7 @@ public class TeamImpl implements Team {
 
     @Override
     public void clearInventory() {
-        teamPlayers.forEach(user -> user.getAsPlayer().getInventory().clear());
+        teamPlayers.stream().filter(user -> !user.getAsPlayer().isDead()).forEach(user -> user.getAsPlayer().getInventory().clear());
     }
 
     @Override
