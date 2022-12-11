@@ -3,6 +3,7 @@ package me.taison.wizardpractice.data.user.impl;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.RemovalListener;
+import me.taison.wizardpractice.WizardPractice;
 import me.taison.wizardpractice.data.user.Team;
 import me.taison.wizardpractice.data.user.User;
 import me.taison.wizardpractice.utilities.chat.StringUtils;
@@ -64,7 +65,7 @@ public class TeamImpl implements Team {
         this.teamPlayers.forEach(teamUser -> teamUser.sendMessage("&7" + user.getName() + " &6&nzostal zaproszony do druzyny."));
 
         user.sendMessage("&7Zostales zaproszony do druzyny &6" + this.leader.getName() + "&7");
-        user.sendMessage("&7/dolacz &6" + this.leader.getName() + " &7aby dolaczyc.");
+        user.sendMessage("&7/druzyna dolacz &6" + this.leader.getName() + " &7aby dolaczyc.");
         user.sendMessage("&7Zaproszenie wygasnie po trzech minutach.");
 
         this.cachedInvitations.put(user,"");
@@ -118,6 +119,12 @@ public class TeamImpl implements Team {
 
     @Override
     public void join(User user) {
+
+        if (WizardPractice.getSingleton().getMatchmaker().getDuelByTeam(this).isPresent()) {
+            this.teamPlayers.forEach(teamUser -> teamUser.sendMessage("&cTa drużyna jest w trakcie pojedynku!"));
+            return;
+        }
+
         if(this.cachedInvitations.asMap().get(user) != null){
             this.cachedInvitations.asMap().remove(user);
         }
@@ -126,6 +133,11 @@ public class TeamImpl implements Team {
         user.setTeam(this);
         this.teamPlayers.add(user);
         this.teamPlayers.forEach(teamUser -> teamUser.sendMessage("&7" + user.getName() + " &6&ndolaczyl do druzyny."));
+
+        WizardPractice.getSingleton().getMatchmaker().getQueueByTeam(this).ifPresent(queue -> {
+            this.teamPlayers.forEach(teamUser -> teamUser.sendMessage("&cAnulowano kolejke."));
+            queue.removeTeamFromQueue(this);
+        });
     }
 
     @Override

@@ -39,6 +39,15 @@ public interface Matchmaker {
         return Optional.empty();
     }
 
+    default Optional<Duel> getDuelByTeam(Team team) {
+        for (Duel duel : getRunningDuels()) {
+            if (duel.getTeams().stream().anyMatch(team2 -> team2.equals(team))) {
+                return Optional.of(duel);
+            }
+        }
+        return Optional.empty();
+    }
+
     default Optional<QueueToDuel> getQueueByGameType(GameMapType gameMapType) {
         return getQueuesToDuels().stream().filter(queue -> queue.getGameMapType().equals(gameMapType)).findFirst();
     }
