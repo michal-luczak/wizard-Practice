@@ -6,11 +6,14 @@ import com.google.common.cache.RemovalListener;
 import me.taison.wizardpractice.WizardPractice;
 import me.taison.wizardpractice.data.user.Team;
 import me.taison.wizardpractice.data.user.User;
+import me.taison.wizardpractice.gui.gametypeselector.GameMapType;
 import me.taison.wizardpractice.utilities.chat.StringUtils;
 import org.bukkit.Location;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class TeamImpl implements Team {
@@ -20,6 +23,8 @@ public class TeamImpl implements Team {
     private List<User> teamPlayers;
 
     private User leader;
+
+    private Map<GameMapType, Long> waitingMap;
 
     public TeamImpl(User leader){
         this.leader = leader;
@@ -36,6 +41,8 @@ public class TeamImpl implements Team {
         this.teamPlayers = new ArrayList<>();
 
         this.teamPlayers.add(leader);
+
+        this.waitingMap = new HashMap<>();
     }
 
     @Override
@@ -148,6 +155,21 @@ public class TeamImpl implements Team {
     @Override
     public void clearInventory() {
         teamPlayers.forEach(user -> user.getAsPlayer().getInventory().clear());
+    }
+
+    @Override
+    public long getWaitingTime(GameMapType gameMapType) {
+        return this.waitingMap.get(gameMapType);
+    }
+
+    @Override
+    public void setWaitingTime(GameMapType gameMapType, long waitingTime) {
+        if(this.waitingMap.get(gameMapType) == null){
+            this.waitingMap.put(gameMapType, waitingTime);
+            return;
+        }
+
+        this.waitingMap.replace(gameMapType, waitingTime);
     }
 
 }

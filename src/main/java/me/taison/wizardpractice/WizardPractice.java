@@ -157,6 +157,11 @@ public final class WizardPractice extends JavaPlugin {
     public static WizardPractice getSingleton() {
         return singleton;
     }
+
+    public QueueActionBarUpdateTask getQueueActionBarUpdateTask() {
+        return queueActionBarUpdateTask;
+    }
+
     public ArenaFactory getArenaFactory() {
         return arenaFactory;
     }

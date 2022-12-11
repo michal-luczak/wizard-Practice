@@ -1,6 +1,7 @@
 package me.taison.wizardpractice.data.user;
 
 import com.google.common.cache.Cache;
+import me.taison.wizardpractice.gui.gametypeselector.GameMapType;
 import org.bukkit.Location;
 
 import java.util.List;
@@ -34,5 +35,9 @@ public interface Team {
     void teleport(Location location);
 
     void clearInventory();
+
+    long getWaitingTime(GameMapType gameMapType);
+
+    void setWaitingTime(GameMapType gameMapType, long waitingTime);
 
 }

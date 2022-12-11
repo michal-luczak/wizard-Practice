@@ -1,5 +1,6 @@
 package me.taison.wizardpractice.game.matchmakingsystem.matchmaker;
 
+import me.taison.wizardpractice.WizardPractice;
 import me.taison.wizardpractice.data.factory.ArenaFactory;
 import me.taison.wizardpractice.data.user.Team;
 import me.taison.wizardpractice.data.user.User;
@@ -46,7 +47,7 @@ public class MatchmakerImpl implements Matchmaker {
             int requiredSlots = queue.getGameMapType().getSlots();
 
             List<List<Team>> teamCombinations = teams.stream()
-                    .filter(team -> team.getTeam().size() == requiredSlots)
+                    .filter(team -> team.getTeam().size() <= requiredSlots)
                     .collect(Collectors.groupingBy(team -> team.getTeam().size()))
                     .values()
                     .stream()
@@ -59,6 +60,8 @@ public class MatchmakerImpl implements Matchmaker {
                     }).toList();
 
             for (List<Team> matchedTeams : teamCombinations) {
+                System.out.println("61 linijka "+matchedTeams.toString());
+
                 Optional<Arena> selectedArena = arenaFactory.getAvailableArenas(requiredSlots).stream()
                         .findFirst();
 
@@ -68,6 +71,8 @@ public class MatchmakerImpl implements Matchmaker {
 
                 Duel duel = new DuelImpl(this, matchedTeams, queue.getGameMapType(), selectedArena.orElse(null));
                 duels.add(duel);
+
+                WizardPractice.getSingleton().getQueueActionBarUpdateTask().setLastFoundGame(queue.getGameMapType(), System.currentTimeMillis() + matchedTeams.get(0).getWaitingTime(queue.getGameMapType()));
             }
         }
 
@@ -78,13 +83,21 @@ public class MatchmakerImpl implements Matchmaker {
     //      ADD/REMOVE TEAM TO QUEUE OPERATIONS      \\
     @Override
     public void removeTeamFromQueue(Team team) {
-        getQueueByTeam(team).ifPresentOrElse(queue -> queue.removeTeamFromQueue(team), () -> team.sendMessage("&cBłąd kolejki: Zgłos to do administratora!"));
+        getQueueByTeam(team).ifPresentOrElse(queue -> {
+            queue.removeTeamFromQueue(team);
+        }, () -> team.sendMessage("&cBłąd kolejki: Zgłos to do administratora!"));
+
         beginDuelRequest();
     }
 
     @Override
     public void addTeamToQueue(Team team, GameMapType gameMapType) {
-        getQueueByGameType(gameMapType).ifPresentOrElse(queueToDuel -> queueToDuel.addTeamToQueue(team), () -> team.sendMessage("&cBłąd kolejki: Zgłos to do administratora!"));
+        getQueueByGameType(gameMapType).ifPresentOrElse(queueToDuel -> {
+            queueToDuel.addTeamToQueue(team);
+
+            team.setWaitingTime(gameMapType, System.currentTimeMillis());
+        }, () -> team.sendMessage("&cBłąd kolejki: Zgłos to do administratora!"));
+
         beginDuelRequest();
     }
 
@@ -110,6 +123,7 @@ public class MatchmakerImpl implements Matchmaker {
         tryMakeMatch().forEach(duel -> {
             duel.startDuel();
             duel.getTeams().forEach(this::removeTeamFromQueue);
+
             runningDuel.add(duel);
         });
     }
