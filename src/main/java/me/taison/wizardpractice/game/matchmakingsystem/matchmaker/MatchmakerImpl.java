@@ -65,7 +65,7 @@ public class MatchmakerImpl implements Matchmaker {
                 Optional<Arena> selectedArena = arenaFactory.getAvailableArenas(requiredSlots).stream()
                         .findFirst();
 
-                if (!selectedArena.isPresent()) {
+                if (selectedArena.isEmpty()) {
                     break;
                 }
 
