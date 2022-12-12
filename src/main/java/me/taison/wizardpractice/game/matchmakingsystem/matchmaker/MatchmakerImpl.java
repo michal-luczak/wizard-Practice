@@ -60,8 +60,6 @@ public class MatchmakerImpl implements Matchmaker {
                     }).toList();
 
             for (List<Team> matchedTeams : teamCombinations) {
-                System.out.println("61 linijka "+matchedTeams.toString());
-
                 Optional<Arena> selectedArena = arenaFactory.getAvailableArenas(requiredSlots).stream()
                         .findFirst();
 

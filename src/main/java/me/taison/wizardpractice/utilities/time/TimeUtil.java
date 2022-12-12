@@ -3,6 +3,7 @@ package me.taison.wizardpractice.utilities.time;
 import me.taison.wizardpractice.WizardPractice;
 
 import java.time.Duration;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.Stack;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -34,7 +35,6 @@ public class TimeUtil {
 
         return time;
     }
-
     public static String getDurationBreakdown(long millis) {
         if (millis == 0) {
             return "0";
@@ -53,7 +53,23 @@ public class TimeUtil {
 
         long seconds = duration.getSeconds();
 
-        return String.format("%d dni %d godz. %d min. %d sek.", days, hours, minutes, seconds);
+        String result = "";
+        if (days > 0) {
+            result += String.format("%d dni ", days);
+        }
+        if (hours > 0) {
+            result += String.format("%d godz. ", hours);
+        }
+        if (minutes > 0) {
+            result += String.format("%d min. ", minutes);
+        }
+        if (seconds > 0) {
+            result += String.format("%d sek. ", seconds);
+        }
+
+        return result.trim();
     }
+
+
 
 }

@@ -34,6 +34,8 @@ public class PlayerInteractListener implements Listener {
 
                 user.getAsPlayer().getInventory().remove(Material.BARRIER);
                 user.getAsPlayer().getInventory().setItem(4, VariousItems.FEATHER_ITEM);
+
+                user.sendActionBar("&aOpuszczono kolejke dobierania");
             });
         }
     }

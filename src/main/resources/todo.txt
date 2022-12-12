@@ -1,8 +1,6 @@
 //Przed startem testow:
 
-Zwracanie piorka przy koncu areny. clear inv
-
-"i przepisac ten matchmaker zeby ladniej wygladal najebane ifow i nie wiadomo o co chodzi" ~tajson
+//WAZNE: NPC oraz zapisywanie ekwipunku - podstawa jest zrobiona. See: CustomInventorySettings
 
 osobne gui XVX XVSXVSX
 

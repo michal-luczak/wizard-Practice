@@ -3,6 +3,7 @@ package me.taison.wizardpractice.game.matchmakingsystem.duel;
 import me.taison.wizardpractice.WizardPractice;
 import me.taison.wizardpractice.data.user.Team;
 import me.taison.wizardpractice.data.user.User;
+import me.taison.wizardpractice.data.user.impl.CustomInventorySettings;
 import me.taison.wizardpractice.game.arena.Arena;
 import me.taison.wizardpractice.game.arena.ArenaState;
 import me.taison.wizardpractice.game.matchmakingsystem.Duel;
@@ -122,11 +123,31 @@ public final class DuelImpl implements Duel {
         this.teams.forEach(team -> team.getTeam().forEach(user -> {
             Player teamPlayer = user.getAsPlayer();
 
-            teamPlayer.getInventory().clear();
-            teamPlayer.updateInventory();
+            Optional<CustomInventorySettings> customInventorySettingsOpt = user.getCustomInventorySettings(this.gameMapType);
+            if(customInventorySettingsOpt.isEmpty()) {
+                teamPlayer.getInventory().clear();
 
-            teamPlayer.getInventory().setContents(gameMapType.getItems());
-            teamPlayer.getInventory().setArmorContents(gameMapType.getArmor());
+                teamPlayer.getInventory().setContents(gameMapType.getItems());
+                teamPlayer.getInventory().setArmorContents(gameMapType.getArmor());
+
+                teamPlayer.updateInventory();
+
+                throw new IllegalArgumentException("CustomInventorySettings is not present");
+                //Info daje itemy i tak zeby w trakcie bledu gracz i tak mogl grac.
+            } else {
+                teamPlayer.getInventory().clear();
+
+                if(customInventorySettingsOpt.get().hasSetCustomInventory()) {
+                    customInventorySettingsOpt.get().giveCustomInventory();
+
+                    teamPlayer.updateInventory();
+                } else {
+                    teamPlayer.getInventory().setContents(gameMapType.getItems());
+                    teamPlayer.getInventory().setArmorContents(gameMapType.getArmor());
+
+                    teamPlayer.updateInventory();
+                }
+            }
         }));
     }
 
@@ -166,8 +187,13 @@ public final class DuelImpl implements Duel {
                         return;
                     }
 
-                    Bukkit.broadcast(Component.text(StringUtils.color("&aTeam &2" + user.getLastDamager().getTeam().getLeader().getName() + " &awygrywa arene " + this.arena.getName())));
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(StringUtils.color("&aTeam &2" + user.getLastDamager().getTeam().getLeader().getName() + " &awygrywa arene " + this.arena.getName()));
+                    for(User teamUser : user.getLastDamager().getTeam().getTeam()){
+                        sb.append(StringUtils.color("\n  ⤹ " + teamUser.getName())); //.append share uzytkownika (ile dostal ranku)
+                    }
 
+                    Bukkit.broadcast(Component.text(sb.toString()));
                     this.teams.forEach(team -> team.sendTitle("&aTeam &2" + user.getLastDamager().getTeam().getLeader().getName() + " &awygrywa", "&aGratulacje!", 0, 0, 100));
 
                     this.matchmaker.finishDuel(this);
@@ -228,7 +254,13 @@ public final class DuelImpl implements Duel {
             }
 
             if(this.aliveTeamMap.size() == 1) {
-                Bukkit.broadcast(Component.text(StringUtils.color("&aTeam &2" + killer.getTeam().getLeader().getName() + " &awygrywa arene " + this.arena.getName())));
+                StringBuilder sb = new StringBuilder();
+                sb.append(StringUtils.color("&aTeam &2" + killer.getTeam().getLeader().getName() + " &awygrywa arene " + this.arena.getName()));
+                for(User user : killer.getTeam().getTeam()){
+                    sb.append(StringUtils.color("\n  ⤹ " + user.getName())); //.append share uzytkownika (ile dostal ranku)
+                }
+
+                Bukkit.broadcast(Component.text(sb.toString()));
 
                 this.teams.forEach(team -> team.sendTitle("&aTeam &2" + killer.getTeam().getLeader().getName() + " &awygrywa", "&aGratulacje!", 0, 0, 100));
 

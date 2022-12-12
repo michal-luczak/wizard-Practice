@@ -3,6 +3,7 @@ package me.taison.wizardpractice.data.user.impl;
 import me.taison.wizardpractice.WizardPractice;
 import me.taison.wizardpractice.data.user.Team;
 import me.taison.wizardpractice.data.user.User;
+import me.taison.wizardpractice.gui.gametypeselector.GameMapType;
 import me.taison.wizardpractice.utilities.chat.StringUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -10,6 +11,9 @@ import org.bukkit.entity.Player;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 public class UserImpl implements User {
@@ -23,14 +27,23 @@ public class UserImpl implements User {
 
     private Team team;
 
+    private Map<GameMapType, CustomInventorySettings> customInventorySettingsMap;
+
     public UserImpl(UUID uniqueIdentifier, String name){
         this.uniqueIdentifier = uniqueIdentifier;
         this.name = name;
+
+        this.customInventorySettingsMap = new HashMap<>();
     }
 
     public UserImpl(ResultSet resultSet) throws SQLException {
         this.uniqueIdentifier = UUID.fromString(resultSet.getString("uuid"));
         this.name = resultSet.getString("name");
+    }
+
+    @Override
+    public Optional<CustomInventorySettings> getCustomInventorySettings(GameMapType forGameType) {
+        return Optional.ofNullable(this.customInventorySettingsMap.getOrDefault(forGameType, new CustomInventorySettings(this)));
     }
 
     @Override

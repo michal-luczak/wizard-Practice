@@ -1,7 +1,10 @@
 package me.taison.wizardpractice.data.user;
 
+import me.taison.wizardpractice.data.user.impl.CustomInventorySettings;
+import me.taison.wizardpractice.gui.gametypeselector.GameMapType;
 import org.bukkit.entity.Player;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public interface User {
@@ -9,6 +12,8 @@ public interface User {
     UUID getUniqueIdentifier();
 
     String getName();
+
+    Optional<CustomInventorySettings> getCustomInventorySettings(GameMapType forGameType);
 
     long getLastDamage();
 

@@ -11,7 +11,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
-public class PlayerRespawnListener implements Listener {
+public class PlayerPostRespawnListener implements Listener {
 
     @EventHandler
     public void handle(PlayerPostRespawnEvent event){

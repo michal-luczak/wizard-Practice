@@ -19,17 +19,20 @@ import me.taison.wizardpractice.service.Service;
 import me.taison.wizardpractice.utilities.AbstractCommand;
 import me.taison.wizardpractice.utilities.chat.StringUtils;
 import me.taison.wizardpractice.utilities.items.ItemBuilder;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.GameRule;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.reflections.Reflections;
 
+import java.awt.event.FocusEvent;
 import java.lang.reflect.InvocationTargetException;
 
 public final class WizardPractice extends JavaPlugin {
@@ -75,6 +78,7 @@ public final class WizardPractice extends JavaPlugin {
         //freeze time and weather
         getServer().getWorlds().forEach(world -> world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false));
         getServer().getWorlds().forEach(world -> world.setGameRule(GameRule.DO_WEATHER_CYCLE, false));
+        getServer().getWorlds().forEach(world -> world.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN,  true));
 
         this.SPAWN_LOCATION = new Location(Bukkit.getServer().getWorld("world"), -2.5, 124, -53.5);
 
@@ -143,7 +147,7 @@ public final class WizardPractice extends JavaPlugin {
     public void onDisable() {
         getLogger().info("Practice plugin disabling...");
 
-        Bukkit.getOnlinePlayers().forEach(player -> player.kickPlayer("Restart"));
+        Bukkit.getOnlinePlayers().forEach(player -> player.kick(Component.text("Restart practice, wejdz za chwilkę"), PlayerKickEvent.Cause.PLUGIN));
 
         this.userFactory.saveBoxUsers();
         this.addonFactory.deinitializeAddons();
