@@ -29,6 +29,8 @@ public class UserImpl implements User {
 
     private Map<GameMapType, CustomInventorySettings> customInventorySettingsMap;
 
+    private UserRanking userRanking;
+
     public UserImpl(UUID uniqueIdentifier, String name){
         this.uniqueIdentifier = uniqueIdentifier;
         this.name = name;
@@ -44,6 +46,19 @@ public class UserImpl implements User {
     @Override
     public Optional<CustomInventorySettings> getCustomInventorySettings(GameMapType forGameType) {
         return Optional.ofNullable(this.customInventorySettingsMap.getOrDefault(forGameType, new CustomInventorySettings(this)));
+    }
+
+    @Override
+    public UserRanking getUserRanking() {
+        if (this.userRanking != null) {
+            return this.userRanking;
+        }
+
+        this.userRanking = new UserRanking(this);
+
+        WizardPractice.getSingleton().getRankingFactory().update(this);
+
+        return this.userRanking;
     }
 
     @Override

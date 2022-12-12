@@ -1,6 +1,7 @@
 package me.taison.wizardpractice.data.user;
 
 import me.taison.wizardpractice.data.user.impl.CustomInventorySettings;
+import me.taison.wizardpractice.data.user.impl.UserRanking;
 import me.taison.wizardpractice.gui.gametypeselector.GameMapType;
 import org.bukkit.entity.Player;
 
@@ -14,6 +15,8 @@ public interface User {
     String getName();
 
     Optional<CustomInventorySettings> getCustomInventorySettings(GameMapType forGameType);
+
+    UserRanking getUserRanking();
 
     long getLastDamage();
 

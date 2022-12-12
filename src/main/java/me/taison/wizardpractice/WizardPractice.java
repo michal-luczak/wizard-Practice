@@ -1,13 +1,7 @@
 package me.taison.wizardpractice;
 
-import me.taison.wizardpractice.data.factory.AddonFactory;
-import me.taison.wizardpractice.data.factory.ArenaFactory;
-import me.taison.wizardpractice.data.factory.TeamFactory;
-import me.taison.wizardpractice.data.factory.UserFactory;
-import me.taison.wizardpractice.data.factory.impl.AddonFactoryImpl;
-import me.taison.wizardpractice.data.factory.impl.ArenaFactoryImpl;
-import me.taison.wizardpractice.data.factory.impl.TeamFactoryImpl;
-import me.taison.wizardpractice.data.factory.impl.UserFactoryImpl;
+import me.taison.wizardpractice.data.factory.*;
+import me.taison.wizardpractice.data.factory.impl.*;
 import me.taison.wizardpractice.data.storage.IDatabase;
 import me.taison.wizardpractice.data.storage.MySQLStorage;
 import me.taison.wizardpractice.game.arena.Arena;
@@ -46,6 +40,8 @@ public final class WizardPractice extends JavaPlugin {
     private ArenaFactory arenaFactory;
 
     private AddonFactory addonFactory;
+
+    private RankingFactory rankingFactory;
 
     private IDatabase database;
 
@@ -117,6 +113,8 @@ public final class WizardPractice extends JavaPlugin {
 
         this.teamFactory = new TeamFactoryImpl(this);
         this.arenaFactory = new ArenaFactoryImpl(this);
+
+        this.rankingFactory = new RankingFactoryImpl(this);
     }
 
     private void initializeArenas(){
@@ -183,5 +181,9 @@ public final class WizardPractice extends JavaPlugin {
     }
     public TeamFactory getTeamFactory() {
         return teamFactory;
+    }
+
+    public RankingFactory getRankingFactory() {
+        return rankingFactory;
     }
 }
