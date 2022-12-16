@@ -33,18 +33,20 @@ public class TopPlayerCommand extends AbstractCommand {
         }
 
         List<User> topUsers = WizardPractice.getSingleton().getRankingFactory().getTopUsers(10, rankingType);
-        if (topUsers.isEmpty()) {
-            player.sendMessage(Component.text(StringUtils.color("&cBrak topowych użytkowników dla podanego typu rankingu.")));
-            return;
+
+        player.sendMessage(Component.text(StringUtils.color("&2Lista najlepszych w rankingu " + args[0])));
+        for (int i = 0; i < 10; i++) {
+            if (i >= topUsers.size()) {
+                player.sendMessage(Component.text(StringUtils.color("&a" + (i + 1) + ". -")));
+            } else {
+                User user = topUsers.get(i);
+                AbstractRanking<?> ranking = user.getUserRanking(rankingType);
+
+                player.sendMessage(Component.text(StringUtils.color(
+                        String.format("&a%d. %s #%d (%d)", i + 1, user.getName(), ranking.getPosition(), (Integer) ranking.getRanking())
+                )));
+            }
         }
-
-        topUsers.forEach(user -> {
-            AbstractRanking<?> ranking = user.getUserRanking(rankingType);
-
-            player.sendMessage(Component.text(StringUtils.color(
-                    String.format("&a%s #%d (%d)", user.getName(), ranking.getPosition(), (Integer) ranking.getRanking())
-            )));
-        });
     }
 
     public RankingType getFromString(String rankingType){
