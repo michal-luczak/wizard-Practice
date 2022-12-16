@@ -58,7 +58,7 @@ public class UserImpl implements User {
         AbstractRanking<?> abstractRanking = forRankingType.getFor(this);
         this.rankings.put(forRankingType, abstractRanking);
 
-        //WizardPractice.getSingleton().getRankingFactory().update(this, forRankingType); todo
+        WizardPractice.getSingleton().getRankingFactory().update(this, forRankingType);
 
         return abstractRanking;
     }

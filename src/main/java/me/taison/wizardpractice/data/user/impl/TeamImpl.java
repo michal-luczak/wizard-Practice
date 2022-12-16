@@ -126,7 +126,6 @@ public class TeamImpl implements Team {
 
     @Override
     public void join(User user) {
-
         if (WizardPractice.getSingleton().getMatchmaker().getDuelByTeam(this).isPresent()) {
             this.teamPlayers.forEach(teamUser -> teamUser.sendMessage("&cTa drużyna jest w trakcie pojedynku!"));
             return;
@@ -135,6 +134,7 @@ public class TeamImpl implements Team {
         if(this.cachedInvitations.asMap().get(user) != null){
             this.cachedInvitations.asMap().remove(user);
         }
+
         user.getTeam().leave(user);
 
         user.setTeam(this);
@@ -142,7 +142,8 @@ public class TeamImpl implements Team {
         this.teamPlayers.forEach(teamUser -> teamUser.sendMessage("&7" + user.getName() + " &6&ndolaczyl do druzyny."));
 
         WizardPractice.getSingleton().getMatchmaker().getQueueByTeam(this).ifPresent(queue -> {
-            this.teamPlayers.forEach(teamUser -> teamUser.sendMessage("&cAnulowano kolejke."));
+            this.teamPlayers.forEach(teamUser -> teamUser.sendMessage("&cAnulowano kolejke, gracz dolaczyl do druzyny."));
+
             queue.removeTeamFromQueue(this);
         });
     }
@@ -164,12 +165,7 @@ public class TeamImpl implements Team {
 
     @Override
     public void setWaitingTime(GameMapType gameMapType, long waitingTime) {
-        if(this.waitingMap.get(gameMapType) == null){
-            this.waitingMap.put(gameMapType, waitingTime);
-            return;
-        }
-
-        this.waitingMap.replace(gameMapType, waitingTime);
+        this.waitingMap.put(gameMapType, waitingTime);
     }
 
 }

@@ -3,7 +3,9 @@ package me.taison.wizardpractice.game.task;
 import me.taison.wizardpractice.WizardPractice;
 import me.taison.wizardpractice.game.matchmakingsystem.queue.QueueToDuel;
 import me.taison.wizardpractice.gui.gametypeselector.GameMapType;
+import me.taison.wizardpractice.utilities.random.RandomUtils;
 import me.taison.wizardpractice.utilities.time.TimeUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
@@ -14,7 +16,7 @@ public class QueueActionBarUpdateTask extends BukkitRunnable {
 
     private final WizardPractice wizard;
 
-    private Map<GameMapType, Long> lastFoundGameTime;
+    private final Map<GameMapType, Long> lastFoundGameTime;
 
     public QueueActionBarUpdateTask(WizardPractice wizardPractice){
         this.wizard = wizardPractice;
@@ -23,7 +25,7 @@ public class QueueActionBarUpdateTask extends BukkitRunnable {
     }
 
     public void startActionBarUpdate(){
-        this.runTaskTimerAsynchronously(this.wizard, 20, 35);
+        this.runTaskTimerAsynchronously(this.wizard, 20, 40);
     }
 
     @Override
@@ -32,23 +34,26 @@ public class QueueActionBarUpdateTask extends BukkitRunnable {
             Optional<QueueToDuel> queueToDuelOpt = wizard.getMatchmaker().getQueueByTeam(team);
 
             queueToDuelOpt.ifPresent(toDuel -> {
-                team.sendActionBar("&aTrwa wyszukiwanie gry. Twój numer w kolejce: "
-                        + (toDuel.getTeamsInQueue().indexOf(team) + 1)
-                        + " Szacowany czas: "
-                        + TimeUtil.getDurationBreakdown(this.getLastFoundGameTime(queueToDuel.getGameMapType())));
+                long estimatedWaitTime = 7500;
+                long teamWaitTime = System.currentTimeMillis() - team.getWaitingTime(queueToDuel.getGameMapType());
+
+                if (this.lastFoundGameTime.get(queueToDuel.getGameMapType()) != null) {
+                    estimatedWaitTime = this.lastFoundGameTime.get(queueToDuel.getGameMapType()) / toDuel.getTeamsInQueue().size();
+                }
+
+                if(teamWaitTime > estimatedWaitTime){
+                    estimatedWaitTime = teamWaitTime + 1100;
+                }
+
+                team.sendActionBar(String.format("&eTrwa wyszukiwanie gry. | &cTwój numer w kolejce: %d | Szacowany czas: %s | Aktualny czas oczekiwania: %s",
+                        toDuel.getTeamsInQueue().indexOf(team) + 1,
+                        TimeUtil.getDurationBreakdown(estimatedWaitTime),
+                        TimeUtil.getDurationBreakdown(teamWaitTime)));
             });
         }));
     }
 
     public void setLastFoundGame(GameMapType gameMapType, long time){
-        this.lastFoundGameTime.replace(gameMapType, time);
-    }
-
-    public long getLastFoundGameTime(GameMapType gameMapType) {
-        if(this.lastFoundGameTime.get(gameMapType) == null){
-            return 10000;
-        }
-
-        return lastFoundGameTime.get(gameMapType);
+        this.lastFoundGameTime.put(gameMapType, time);
     }
 }

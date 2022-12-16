@@ -20,25 +20,24 @@ public class RankingFactoryImpl implements RankingFactory {
     public void update(User user, RankingType rankingType) {
         AbstractRanking<?> ranking = user.getUserRanking(rankingType);
 
-        rankings.replaceAll(existingRanking -> {
-            if (existingRanking != null) {
-                return existingRanking.getUser().equals(ranking.getUser()) ? ranking : existingRanking;
-            } else {
-                return null;
+        if (ranking != null && ranking.getType().equals(rankingType)) {
+            rankings.replaceAll(existingRanking -> {
+                if (existingRanking != null) {
+                    return existingRanking.getUser().equals(ranking.getUser()) ? ranking : existingRanking;
+                } else {
+                    return null;
+                }
+            });
+
+            if (!rankings.contains(ranking)) {
+                rankings.add(ranking);
             }
-        });
 
-        if (!rankings.contains(ranking)) {
-            rankings.add(ranking);
+            rankings.sort(new AbstractRanking.RankingComparator());
+
+            rankings.forEach(rank -> rank.setPosition(rankings.indexOf(rank) + 1));
         }
-
-        rankings.sort(new AbstractRanking.RankingComparator());
-
-        rankings.forEach(rank -> rank.setPosition(rankings.indexOf(rank) + 1));
     }
-
-
-
 
     @Override
     public List<User> getTopUsers(int n, RankingType rankingType) {
@@ -53,10 +52,30 @@ public class RankingFactoryImpl implements RankingFactory {
 
 
 
-
     @Override
-    public List<User> getUsersInRange(int start, int end){
-        throw new UnsupportedOperationException("Not supported yet");
+    public List<User> getUsersInRange(RankingType rankingType, int start, int end) {
+        List<AbstractRanking<?>> filteredRankings = rankings.stream()
+                .filter(rankingType::isMatchingType).toList();
+
+        int firstIndex = -1;
+        int lastIndex = -1;
+        for (int i = 0; i < filteredRankings.size(); i++) {
+            if ((Integer) filteredRankings.get(i).getRanking() >= start && firstIndex == -1) {
+                firstIndex = i;
+            }
+            if ((Integer) filteredRankings.get(i).getRanking() <= end) {
+                lastIndex = i;
+            }
+        }
+
+        if (firstIndex != -1 && lastIndex != -1) {
+            List<User> usersInRange = new ArrayList<>();
+            for (int i = firstIndex; i <= lastIndex; i++) {
+                usersInRange.add(filteredRankings.get(i).getUser());
+            }
+            return usersInRange;
+        }
+        return Collections.emptyList();
     }
 
     @Override

@@ -10,12 +10,12 @@ import me.taison.wizardpractice.game.matchmakingsystem.Matchmaker;
 import me.taison.wizardpractice.game.matchmakingsystem.duel.DuelImpl;
 import me.taison.wizardpractice.game.matchmakingsystem.queue.QueueToDuel;
 import me.taison.wizardpractice.gui.gametypeselector.GameMapType;
-import me.taison.wizardpractice.utilities.random.RandomUtils;
+import me.taison.wizardpractice.utilities.time.TimeUtil;
+import org.bukkit.Bukkit;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class MatchmakerImpl implements Matchmaker {
@@ -70,7 +70,8 @@ public class MatchmakerImpl implements Matchmaker {
                 Duel duel = new DuelImpl(this, matchedTeams, queue.getGameMapType(), selectedArena.orElse(null));
                 duels.add(duel);
 
-                WizardPractice.getSingleton().getQueueActionBarUpdateTask().setLastFoundGame(queue.getGameMapType(), System.currentTimeMillis() + matchedTeams.get(0).getWaitingTime(queue.getGameMapType()));
+                Bukkit.broadcastMessage("Czas oczekiwania teamu: " + teams.get(0).getLeader().getName() + " to " + TimeUtil.getDurationBreakdown(System.currentTimeMillis() - matchedTeams.get(0).getWaitingTime(queue.getGameMapType())));
+                WizardPractice.getSingleton().getQueueActionBarUpdateTask().setLastFoundGame(queue.getGameMapType(), System.currentTimeMillis() - matchedTeams.get(0).getWaitingTime(queue.getGameMapType()));
             }
         }
 

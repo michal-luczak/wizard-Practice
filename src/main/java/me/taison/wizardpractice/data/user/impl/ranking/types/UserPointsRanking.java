@@ -2,13 +2,16 @@ package me.taison.wizardpractice.data.user.impl.ranking.types;
 
 import me.taison.wizardpractice.data.user.User;
 import me.taison.wizardpractice.data.user.impl.ranking.AbstractRanking;
+import me.taison.wizardpractice.data.user.impl.ranking.RankingType;
 
 public class UserPointsRanking extends AbstractRanking<Integer> {
 
     private int points;
 
-    public UserPointsRanking(User user) {
-        super(user);
+    public UserPointsRanking(User user, RankingType rankingType) {
+        super(user, rankingType);
+
+        this.points = 500; //Domyslna ilosc punktow.
     }
 
     @Override

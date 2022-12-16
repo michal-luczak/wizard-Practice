@@ -11,7 +11,8 @@ public interface RankingFactory {
 
     User getUserByIndex(int index);
 
-    List<User> getUsersInRange(int minScore, int maxScore);
+    //Metoda do turniejowego wyboru gry lub powiedzmy w przyszlosci jak bedzie gralo bardzo duzo osob to zeby dobieralo odpowiednich przeciwnikow.
+    List<User> getUsersInRange(RankingType rankingType, int minScore, int maxScore);
 
     void update(User user, RankingType rankingType);
 

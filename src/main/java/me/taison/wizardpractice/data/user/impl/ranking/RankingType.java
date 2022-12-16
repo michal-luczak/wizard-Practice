@@ -6,15 +6,16 @@ import me.taison.wizardpractice.data.user.impl.ranking.types.UserKillsRanking;
 import me.taison.wizardpractice.data.user.impl.ranking.types.UserPointsRanking;
 
 public enum RankingType {
+
     DEFEATED_PLAYERS,
     POINTS,
     DEATHS;
 
     public AbstractRanking<?> getFor(User user){
         return switch (this) {
-            case DEFEATED_PLAYERS -> new UserKillsRanking(user);
-            case POINTS -> new UserPointsRanking(user);
-            case DEATHS -> new UserDeathRanking(user);
+            case DEFEATED_PLAYERS -> new UserKillsRanking(user, this);
+            case POINTS -> new UserPointsRanking(user, this);
+            case DEATHS -> new UserDeathRanking(user, this);
         };
     }
     public boolean isMatchingType(AbstractRanking<?> ranking) {

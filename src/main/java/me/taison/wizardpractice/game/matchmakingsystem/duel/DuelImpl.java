@@ -215,7 +215,7 @@ public final class DuelImpl implements Duel {
                 if (user.getLastDamager() != null && (System.currentTimeMillis() - user.getLastDamage()) < TimeUnit.SECONDS.toMillis(15)) {
                     this.teams.forEach(team -> team.sendMessage("&c" + user.getName() + " zostal zabity przez " + user.getLastDamager().getName()));
 
-                    EloAlgorithm.updateRanking(user.getLastDamager(), user);
+                    int[] share = EloAlgorithm.updateRanking(user.getLastDamager(), user);
 
                     user.getLastDamager().sendTitle("&a⚔ " + user.getName(), "+" + EloAlgorithm.calculateRanking(user.getLastDamager(), user)[0] +" PKT", 0, 0, 60);
                 }
@@ -231,6 +231,9 @@ public final class DuelImpl implements Duel {
         ((UserDeathRanking) victim.getUserRanking(RankingType.DEATHS)).addDeath();
 
         ((UserKillsRanking) killer.getUserRanking(RankingType.DEFEATED_PLAYERS)).addKill();
+
+        WizardPractice.getSingleton().getRankingFactory().update(victim, RankingType.DEATHS);
+        WizardPractice.getSingleton().getRankingFactory().update(killer, RankingType.DEFEATED_PLAYERS);
 
         if(this.getAliveTeamByUser(victim).isPresent()){
             Team aliveTeam = this.getAliveTeamByUser(victim).get();
@@ -249,7 +252,7 @@ public final class DuelImpl implements Duel {
 
             } else if(aliveTeamUsers.size() == 1) {
 
-                EloAlgorithm.updateRanking(killer, victim);
+                int[] share = EloAlgorithm.updateRanking(killer, victim);
 
                 this.teams.forEach(team -> {
                     team.sendMessage("&c" + killer.getName() + " zabija gracza " + victim.getName());

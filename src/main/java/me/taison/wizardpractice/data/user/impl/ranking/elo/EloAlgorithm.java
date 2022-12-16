@@ -1,5 +1,6 @@
 package me.taison.wizardpractice.data.user.impl.ranking.elo;
 
+import me.taison.wizardpractice.WizardPractice;
 import me.taison.wizardpractice.data.user.User;
 import me.taison.wizardpractice.data.user.impl.ranking.RankingType;
 import me.taison.wizardpractice.data.user.impl.ranking.types.UserPointsRanking;
@@ -10,12 +11,18 @@ public class EloAlgorithm {
     private final static int DIVIDER = 400;
     private final static int POWER = 10;
 
-    public static void updateRanking(User killer, User victim) {
+    public static int[] updateRanking(User killer, User victim) {
+
+        int[] ranking = calculateRanking(killer, victim);
 
         // Updating the Elo Ratings
-        ((UserPointsRanking) killer.getUserRanking(RankingType.POINTS)).addPoints(calculateRanking(killer, victim)[0]);
-        ((UserPointsRanking) victim.getUserRanking(RankingType.POINTS)).subPoints(calculateRanking(killer, victim)[0]);
+        ((UserPointsRanking) killer.getUserRanking(RankingType.POINTS)).addPoints(ranking[0]);
+        ((UserPointsRanking) victim.getUserRanking(RankingType.POINTS)).subPoints(ranking[0]);
 
+        WizardPractice.getSingleton().getRankingFactory().update(victim, RankingType.POINTS);
+        WizardPractice.getSingleton().getRankingFactory().update(killer, RankingType.POINTS);
+
+        return ranking;
     }
 
     public static int[] calculateRanking(User potentialKiller, User potentialVictim) {

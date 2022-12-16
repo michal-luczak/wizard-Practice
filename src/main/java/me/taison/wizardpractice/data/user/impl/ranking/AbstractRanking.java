@@ -11,8 +11,12 @@ public abstract class AbstractRanking<T extends Comparable<T>> {
 
     private T ranking;
 
-    public AbstractRanking(User user) {
+    private RankingType rankingType;
+
+    public AbstractRanking(User user, RankingType rankingType) {
         this.user = user;
+
+        this.rankingType = rankingType;
     }
 
     public abstract T getRanking();
@@ -27,6 +31,10 @@ public abstract class AbstractRanking<T extends Comparable<T>> {
 
     public User getUser() {
         return user;
+    }
+
+    public RankingType getType() {
+        return this.rankingType;
     }
 
     public static class RankingComparator implements Comparator<AbstractRanking<?>> {
