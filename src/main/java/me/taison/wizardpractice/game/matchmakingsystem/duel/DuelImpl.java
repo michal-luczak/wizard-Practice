@@ -4,10 +4,13 @@ import me.taison.wizardpractice.WizardPractice;
 import me.taison.wizardpractice.data.user.Team;
 import me.taison.wizardpractice.data.user.User;
 import me.taison.wizardpractice.data.user.impl.CustomInventorySettings;
+import me.taison.wizardpractice.data.user.impl.ranking.RankingType;
+import me.taison.wizardpractice.data.user.impl.ranking.types.UserDeathRanking;
+import me.taison.wizardpractice.data.user.impl.ranking.types.UserKillsRanking;
 import me.taison.wizardpractice.game.arena.Arena;
 import me.taison.wizardpractice.game.arena.ArenaState;
 import me.taison.wizardpractice.game.matchmakingsystem.Duel;
-import me.taison.wizardpractice.game.matchmakingsystem.EloAlgorithm;
+import me.taison.wizardpractice.data.user.impl.ranking.elo.EloAlgorithm;
 import me.taison.wizardpractice.game.matchmakingsystem.Matchmaker;
 import me.taison.wizardpractice.gui.gametypeselector.GameMapType;
 import me.taison.wizardpractice.utilities.chat.StringUtils;
@@ -16,7 +19,6 @@ import net.kyori.adventure.text.Component;
 import org.apache.commons.lang3.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -225,6 +227,10 @@ public final class DuelImpl implements Duel {
     @Override
     public void handleDeath(User killer, User victim) {
         victim.getAsPlayer().spigot().respawn();
+
+        ((UserDeathRanking) victim.getUserRanking(RankingType.DEATHS)).addDeath();
+
+        ((UserKillsRanking) killer.getUserRanking(RankingType.DEFEATED_PLAYERS)).addKill();
 
         if(this.getAliveTeamByUser(victim).isPresent()){
             Team aliveTeam = this.getAliveTeamByUser(victim).get();

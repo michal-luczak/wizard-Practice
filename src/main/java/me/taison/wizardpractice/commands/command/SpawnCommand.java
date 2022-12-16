@@ -1,7 +1,10 @@
 package me.taison.wizardpractice.commands.command;
 
+import me.taison.wizardpractice.WizardPractice;
 import me.taison.wizardpractice.commands.ICommandInfo;
 import me.taison.wizardpractice.utilities.AbstractCommand;
+import me.taison.wizardpractice.utilities.chat.StringUtils;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -14,6 +17,8 @@ public class SpawnCommand extends AbstractCommand {
     public void onExecute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
 
-        player.teleport(new Location(Bukkit.getWorlds().get(0), 0, 90, 0));
+        player.teleport(WizardPractice.getSingleton().getSpawnLocation());
+
+        player.sendMessage(Component.text(StringUtils.color("&aPrzeteleportowano.")));
     }
 }

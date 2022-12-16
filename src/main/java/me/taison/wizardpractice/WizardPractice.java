@@ -11,22 +11,15 @@ import me.taison.wizardpractice.game.matchmakingsystem.matchmaker.MatchmakerImpl
 import me.taison.wizardpractice.game.task.QueueActionBarUpdateTask;
 import me.taison.wizardpractice.service.Service;
 import me.taison.wizardpractice.utilities.AbstractCommand;
-import me.taison.wizardpractice.utilities.chat.StringUtils;
-import me.taison.wizardpractice.utilities.items.ItemBuilder;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.GameRule;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerKickEvent;
-import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.reflections.Reflections;
 
-import java.awt.event.FocusEvent;
 import java.lang.reflect.InvocationTargetException;
 
 public final class WizardPractice extends JavaPlugin {
@@ -114,7 +107,7 @@ public final class WizardPractice extends JavaPlugin {
         this.teamFactory = new TeamFactoryImpl(this);
         this.arenaFactory = new ArenaFactoryImpl(this);
 
-        this.rankingFactory = new RankingFactoryImpl(this);
+        this.rankingFactory = new RankingFactoryImpl();
     }
 
     private void initializeArenas(){

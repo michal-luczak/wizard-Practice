@@ -1,69 +1,67 @@
 package me.taison.wizardpractice.data.factory.impl;
 
-import me.taison.wizardpractice.WizardPractice;
 import me.taison.wizardpractice.data.factory.RankingFactory;
 import me.taison.wizardpractice.data.user.User;
-import me.taison.wizardpractice.data.user.impl.UserRanking;
+import me.taison.wizardpractice.data.user.impl.ranking.AbstractRanking;
+import me.taison.wizardpractice.data.user.impl.ranking.RankingType;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class RankingFactoryImpl implements RankingFactory {
 
-    private final List<UserRanking> rankings = new ArrayList<>();
+    private final List<AbstractRanking<?>> rankings;
 
-    private final WizardPractice wizardPractice;
+    public RankingFactoryImpl() {
+        this.rankings = new ArrayList<>();
 
-    public RankingFactoryImpl(WizardPractice wizardPractice) {
-        this.wizardPractice = wizardPractice;
     }
 
-    @Override
-    public void update(User user) {
-        UserRanking ranking = user.getUserRanking();
+    public void update(User user, RankingType rankingType) {
+        AbstractRanking<?> ranking = user.getUserRanking(rankingType);
 
-        rankings.replaceAll(existingRanking ->
-                existingRanking.getUser().equals(ranking.getUser()) ? ranking : existingRanking
-        );
+        rankings.replaceAll(existingRanking -> {
+            if (existingRanking != null) {
+                return existingRanking.getUser().equals(ranking.getUser()) ? ranking : existingRanking;
+            } else {
+                return null;
+            }
+        });
 
         if (!rankings.contains(ranking)) {
             rankings.add(ranking);
         }
 
-        rankings.sort(Comparator.comparingInt(UserRanking::getPoints).reversed());
+        rankings.sort(new AbstractRanking.RankingComparator());
 
         rankings.forEach(rank -> rank.setPosition(rankings.indexOf(rank) + 1));
     }
 
 
-    @Override
-    public List<User> getTopUsers(int n) {
-        List<User> topUsers = new ArrayList<>();
-        for (int i = 0; i < Math.min(n, rankings.size()); i++) {
-            UserRanking ranking = rankings.get(i);
 
-            topUsers.add(ranking.getUser());
-        }
-        return topUsers;
+
+    @Override
+    public List<User> getTopUsers(int n, RankingType rankingType) {
+        List<AbstractRanking<?>> filteredRankings = rankings.stream()
+                .filter(rankingType::isMatchingType).toList();
+
+        return filteredRankings.stream()
+                .limit(n)
+                .map(AbstractRanking::getUser)
+                .collect(Collectors.toList());
     }
 
 
+
+
     @Override
-    public List<User> getUsersInRange(int minScore, int maxScore) {
-        List<User> usersInRange = new ArrayList<>();
-        for (UserRanking ranking : rankings) {
-            if (ranking.getRanking(UserRanking.RankingType.POINTS) >= minScore && ranking.getRanking(UserRanking.RankingType.POINTS) <= maxScore) {
-                usersInRange.add(ranking.getUser());
-            }
-        }
-        return usersInRange;
+    public List<User> getUsersInRange(int start, int end){
+        throw new UnsupportedOperationException("Not supported yet");
     }
 
     @Override
-    public int getPosition(User user) {
-        return this.rankings.indexOf(user.getUserRanking()) + 1;
+    public int getPosition(User user, RankingType rankingType) {
+        return this.rankings.indexOf(user.getUserRanking(rankingType)) + 1;
     }
 
     @Override

@@ -3,6 +3,8 @@ package me.taison.wizardpractice.data.user.impl;
 import me.taison.wizardpractice.WizardPractice;
 import me.taison.wizardpractice.data.user.Team;
 import me.taison.wizardpractice.data.user.User;
+import me.taison.wizardpractice.data.user.impl.ranking.AbstractRanking;
+import me.taison.wizardpractice.data.user.impl.ranking.RankingType;
 import me.taison.wizardpractice.gui.gametypeselector.GameMapType;
 import me.taison.wizardpractice.utilities.chat.StringUtils;
 import net.kyori.adventure.text.Component;
@@ -11,10 +13,7 @@ import org.bukkit.entity.Player;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public class UserImpl implements User {
 
@@ -29,13 +28,15 @@ public class UserImpl implements User {
 
     private Map<GameMapType, CustomInventorySettings> customInventorySettingsMap;
 
-    private UserRanking userRanking;
+    private Map<RankingType, AbstractRanking<?>> rankings;
 
     public UserImpl(UUID uniqueIdentifier, String name){
         this.uniqueIdentifier = uniqueIdentifier;
         this.name = name;
 
         this.customInventorySettingsMap = new HashMap<>();
+
+        this.rankings = new HashMap<>();
     }
 
     public UserImpl(ResultSet resultSet) throws SQLException {
@@ -49,16 +50,17 @@ public class UserImpl implements User {
     }
 
     @Override
-    public UserRanking getUserRanking() {
-        if (this.userRanking != null) {
-            return this.userRanking;
+    public AbstractRanking<?> getUserRanking(RankingType forRankingType) {
+        if (this.rankings != null && this.rankings.get(forRankingType) != null) {
+            return this.rankings.get(forRankingType);
         }
 
-        this.userRanking = new UserRanking(this);
+        AbstractRanking<?> abstractRanking = forRankingType.getFor(this);
+        this.rankings.put(forRankingType, abstractRanking);
 
-        WizardPractice.getSingleton().getRankingFactory().update(this);
+        //WizardPractice.getSingleton().getRankingFactory().update(this, forRankingType); todo
 
-        return this.userRanking;
+        return abstractRanking;
     }
 
     @Override

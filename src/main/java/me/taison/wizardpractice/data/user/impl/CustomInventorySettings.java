@@ -11,7 +11,7 @@ import java.util.stream.IntStream;
 
 public class CustomInventorySettings {
 
-    private User user;
+    private final User user;
 
     private Map<Integer, ItemStack> itemStackMap;
     private Map<Integer, ItemStack> armorMap;
