@@ -2,6 +2,8 @@ name: WizardPractice
 version: '${project.version}'
 main: me.taison.wizardpractice.WizardPractice
 api-version: 1.16
+depend:
+  - DecentHolograms
 commands:
   spawn:
   lobby:

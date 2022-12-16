@@ -8,10 +8,7 @@ public abstract class AbstractRanking<T extends Comparable<T>> {
 
     private final User user;
     private int position;
-
-    private T ranking;
-
-    private RankingType rankingType;
+    private final RankingType rankingType;
 
     public AbstractRanking(User user, RankingType rankingType) {
         this.user = user;

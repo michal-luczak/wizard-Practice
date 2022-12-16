@@ -9,6 +9,7 @@ import me.taison.wizardpractice.game.arena.impl.ArenaImpl;
 import me.taison.wizardpractice.game.matchmakingsystem.Matchmaker;
 import me.taison.wizardpractice.game.matchmakingsystem.matchmaker.MatchmakerImpl;
 import me.taison.wizardpractice.game.task.QueueActionBarUpdateTask;
+import me.taison.wizardpractice.game.task.RankingHologramUpdateTask;
 import me.taison.wizardpractice.service.Service;
 import me.taison.wizardpractice.utilities.AbstractCommand;
 import net.kyori.adventure.text.Component;
@@ -36,6 +37,8 @@ public final class WizardPractice extends JavaPlugin {
 
     private RankingFactory rankingFactory;
 
+    private HologramFactory hologramFactory;
+
     private IDatabase database;
 
     private Matchmaker matchmaker;
@@ -43,6 +46,8 @@ public final class WizardPractice extends JavaPlugin {
     private Location SPAWN_LOCATION;
 
     private QueueActionBarUpdateTask queueActionBarUpdateTask;
+
+    private RankingHologramUpdateTask rankingHologramUpdateTask;
 
     @Override
     public void onLoad(){
@@ -108,6 +113,8 @@ public final class WizardPractice extends JavaPlugin {
         this.arenaFactory = new ArenaFactoryImpl(this);
 
         this.rankingFactory = new RankingFactoryImpl();
+
+        this.hologramFactory = new HologramFactoryImpl(this);
     }
 
     private void initializeArenas(){
@@ -132,6 +139,9 @@ public final class WizardPractice extends JavaPlugin {
     private void initializeTasks(){
         this.queueActionBarUpdateTask = new QueueActionBarUpdateTask(this);
         this.queueActionBarUpdateTask.startActionBarUpdate();
+
+        this.rankingHologramUpdateTask = new RankingHologramUpdateTask(this);
+        this.rankingHologramUpdateTask.startRankingHologramUpdate();
     }
 
     @Override
@@ -178,5 +188,13 @@ public final class WizardPractice extends JavaPlugin {
 
     public RankingFactory getRankingFactory() {
         return rankingFactory;
+    }
+
+    public HologramFactory getHologramFactory() {
+        return this.hologramFactory;
+    }
+
+    public RankingHologramUpdateTask getRankingHologramUpdateTask() {
+        return rankingHologramUpdateTask;
     }
 }

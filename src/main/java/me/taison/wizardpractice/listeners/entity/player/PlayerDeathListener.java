@@ -2,6 +2,8 @@ package me.taison.wizardpractice.listeners.entity.player;
 
 import me.taison.wizardpractice.WizardPractice;
 import me.taison.wizardpractice.data.user.User;
+import me.taison.wizardpractice.data.user.impl.ranking.RankingType;
+import me.taison.wizardpractice.data.user.impl.ranking.types.UserDeathRanking;
 import me.taison.wizardpractice.game.matchmakingsystem.Duel;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

@@ -20,23 +20,32 @@ public class RankingFactoryImpl implements RankingFactory {
     public void update(User user, RankingType rankingType) {
         AbstractRanking<?> ranking = user.getUserRanking(rankingType);
 
-        if (ranking != null && ranking.getType().equals(rankingType)) {
-            rankings.replaceAll(existingRanking -> {
-                if (existingRanking != null) {
-                    return existingRanking.getUser().equals(ranking.getUser()) ? ranking : existingRanking;
-                } else {
-                    return null;
-                }
-            });
-
-            if (!rankings.contains(ranking)) {
-                rankings.add(ranking);
-            }
-
-            rankings.sort(new AbstractRanking.RankingComparator());
-
-            rankings.forEach(rank -> rank.setPosition(rankings.indexOf(rank) + 1));
+        if (ranking == null || !ranking.getType().equals(rankingType)) {
+            return;
         }
+
+        int index = rankings.indexOf(ranking);
+        if (index == -1) {
+            index = 0;
+            while (index < rankings.size() && new AbstractRanking.RankingComparator().compare(ranking, rankings.get(index)) > 0) {
+                index++;
+            }
+            rankings.add(index, ranking);
+        } else {
+            rankings.set(index, ranking);
+        }
+
+        this.updatePositions();
+    }
+
+    private void updatePositions() {
+        rankings.sort(new AbstractRanking.RankingComparator());
+        rankings.forEach(rank -> rank.setPosition(rankings.indexOf(rank) + 1));
+    }
+
+    @Override
+    public void addRanking(AbstractRanking<?> abstractRanking) {
+        this.rankings.add(abstractRanking);
     }
 
     @Override

@@ -228,9 +228,8 @@ public final class DuelImpl implements Duel {
     public void handleDeath(User killer, User victim) {
         victim.getAsPlayer().spigot().respawn();
 
-        ((UserDeathRanking) victim.getUserRanking(RankingType.DEATHS)).addDeath();
-
         ((UserKillsRanking) killer.getUserRanking(RankingType.DEFEATED_PLAYERS)).addKill();
+        ((UserDeathRanking) victim.getUserRanking(RankingType.DEATHS)).addDeath();
 
         WizardPractice.getSingleton().getRankingFactory().update(victim, RankingType.DEATHS);
         WizardPractice.getSingleton().getRankingFactory().update(killer, RankingType.DEFEATED_PLAYERS);

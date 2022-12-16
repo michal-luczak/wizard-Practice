@@ -37,6 +37,16 @@ public class UserImpl implements User {
         this.customInventorySettingsMap = new HashMap<>();
 
         this.rankings = new HashMap<>();
+
+        EnumSet.allOf(RankingType.class).forEach(rankingType -> {
+            AbstractRanking<?> abstractRanking = rankingType.getFor(this);
+
+            this.rankings.put(rankingType, abstractRanking);
+
+            WizardPractice.getSingleton().getRankingFactory().addRanking(abstractRanking);
+
+            WizardPractice.getSingleton().getRankingFactory().update(this, rankingType);
+        });
     }
 
     public UserImpl(ResultSet resultSet) throws SQLException {
@@ -54,13 +64,7 @@ public class UserImpl implements User {
         if (this.rankings != null && this.rankings.get(forRankingType) != null) {
             return this.rankings.get(forRankingType);
         }
-
-        AbstractRanking<?> abstractRanking = forRankingType.getFor(this);
-        this.rankings.put(forRankingType, abstractRanking);
-
-        WizardPractice.getSingleton().getRankingFactory().update(this, forRankingType);
-
-        return abstractRanking;
+        return null;
     }
 
     @Override
@@ -127,5 +131,4 @@ public class UserImpl implements User {
         }
         this.team = team;
     }
-
 }
