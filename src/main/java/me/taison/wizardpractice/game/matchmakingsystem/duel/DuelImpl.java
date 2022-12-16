@@ -7,6 +7,7 @@ import me.taison.wizardpractice.data.user.impl.CustomInventorySettings;
 import me.taison.wizardpractice.game.arena.Arena;
 import me.taison.wizardpractice.game.arena.ArenaState;
 import me.taison.wizardpractice.game.matchmakingsystem.Duel;
+import me.taison.wizardpractice.game.matchmakingsystem.EloAlgorithm;
 import me.taison.wizardpractice.game.matchmakingsystem.Matchmaker;
 import me.taison.wizardpractice.gui.gametypeselector.GameMapType;
 import me.taison.wizardpractice.utilities.chat.StringUtils;
@@ -75,21 +76,11 @@ public final class DuelImpl implements Duel {
         this.duel.startCounting();
     }
     public void stopDuel() {
-        this.arena.restartArena();
+        this.arena.restartArena(placedBlocks);
 
         this.teleportTeamsToSpawn();
 
         this.duel.cancel();
-
-        this.clearBlocks();
-    }
-
-    private void clearBlocks(){
-        this.placedBlocks.forEach(location -> {
-            location.getWorld().getBlockAt(location).setType(Material.AIR);
-        });
-
-        this.placedBlocks.clear();
     }
 
     private void teleportTeamsToArena() {
@@ -222,7 +213,9 @@ public final class DuelImpl implements Duel {
                 if (user.getLastDamager() != null && (System.currentTimeMillis() - user.getLastDamage()) < TimeUnit.SECONDS.toMillis(15)) {
                     this.teams.forEach(team -> team.sendMessage("&c" + user.getName() + " zostal zabity przez " + user.getLastDamager().getName()));
 
-                    user.getLastDamager().sendTitle("&a⚔ " + user.getName(), "+100 PKT", 0, 0, 60);
+                    EloAlgorithm.updateRanking(user.getLastDamager(), user);
+
+                    user.getLastDamager().sendTitle("&a⚔ " + user.getName(), "+" + EloAlgorithm.calculateRanking(user.getLastDamager(), user)[0] +" PKT", 0, 0, 60);
                 }
 
             }
@@ -239,12 +232,19 @@ public final class DuelImpl implements Duel {
             List<User> aliveTeamUsers = this.getAliveUsersByTeam(aliveTeam);
 
             if(aliveTeamUsers.size() > 1){
+
                 this.getAliveUsersByTeam(aliveTeam).remove(victim);
 
-                killer.sendTitle("&a⚔ " + victim.getName(), "+100 PKT", 0, 0, 60); //TODO Ranking w przyszlosci
+                killer.sendTitle("&a⚔ " + victim.getName(), "+" + EloAlgorithm.calculateRanking(killer, victim)[0] + " PKT", 0, 0, 60);
+
+                EloAlgorithm.updateRanking(killer, victim);
 
                 this.teams.forEach(team -> team.sendMessage("&c" + killer.getName() + " zabija gracza " + victim.getName()));
+
             } else if(aliveTeamUsers.size() == 1) {
+
+                EloAlgorithm.updateRanking(killer, victim);
+
                 this.teams.forEach(team -> {
                     team.sendMessage("&c" + killer.getName() + " zabija gracza " + victim.getName());
                     team.sendMessage("&c" + killer.getName() + " wyeliminował drużynę " + victim.getTeam().getLeader().getName());

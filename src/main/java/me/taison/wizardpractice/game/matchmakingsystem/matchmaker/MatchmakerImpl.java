@@ -103,7 +103,6 @@ public class MatchmakerImpl implements Matchmaker {
     //      FINISH DUEL      \\
     @Override
     public void finishDuel(Duel duel) {
-        System.out.println(1);
         duel.stopDuel();
         runningDuel.removeIf(duel1 -> duel1.equals(duel));
         beginDuelRequest();

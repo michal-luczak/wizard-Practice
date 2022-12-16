@@ -1,4 +1,4 @@
-package me.taison.wizardpractice.listeners;
+package me.taison.wizardpractice.listeners.inventory;
 
 import me.taison.wizardpractice.WizardPractice;
 import me.taison.wizardpractice.data.factory.UserFactory;

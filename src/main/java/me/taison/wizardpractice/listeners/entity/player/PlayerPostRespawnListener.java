@@ -1,4 +1,4 @@
-package me.taison.wizardpractice.listeners;
+package me.taison.wizardpractice.listeners.entity.player;
 
 import com.destroystokyo.paper.event.player.PlayerPostRespawnEvent;
 import me.taison.wizardpractice.WizardPractice;

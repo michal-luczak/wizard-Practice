@@ -31,9 +31,7 @@ public interface Arena {
     /*
      * This method is called when arena needs to be restarted.
      */
-    default void restartArena() {
-        this.setState(ArenaState.RESTARTING);
-    }
+    void restartArena(List<Location> placedBlocks);
 
     String getName();
 

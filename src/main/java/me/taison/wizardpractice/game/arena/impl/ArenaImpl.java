@@ -4,6 +4,7 @@ import me.taison.wizardpractice.game.arena.Arena;
 import me.taison.wizardpractice.game.arena.ArenaState;
 import me.taison.wizardpractice.game.matchmakingsystem.Matchmaker;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 
 import java.util.ArrayList;
@@ -28,9 +29,14 @@ public class ArenaImpl implements Arena {
 
 
     @Override
-    public void restartArena() {
+    public void restartArena(List<Location> placedBlocks) {
         setArenaState(ArenaState.RESTARTING);
-        //TODO restartowanie areny
+
+        placedBlocks.forEach(location -> {
+            location.getWorld().getBlockAt(location).setType(Material.AIR);
+        });
+        placedBlocks.clear();
+
         setArenaState(ArenaState.FREE);
     }
 

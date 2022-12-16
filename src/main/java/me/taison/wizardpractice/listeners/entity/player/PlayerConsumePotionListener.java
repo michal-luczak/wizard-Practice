@@ -1,4 +1,4 @@
-package me.taison.wizardpractice.listeners;
+package me.taison.wizardpractice.listeners.entity.player;
 
 import me.taison.wizardpractice.utilities.items.VariousItems;
 import org.bukkit.Material;

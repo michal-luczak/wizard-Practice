@@ -1,4 +1,4 @@
-package me.taison.wizardpractice.listeners;
+package me.taison.wizardpractice.listeners.entity.player;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

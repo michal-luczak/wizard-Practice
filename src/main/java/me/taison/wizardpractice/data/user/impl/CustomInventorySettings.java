@@ -40,7 +40,7 @@ public class CustomInventorySettings {
 
     public void giveCustomInventory(){
         ItemStack[] contents = IntStream.range(0, 54).mapToObj(i -> this.itemStackMap.get(i)).toArray(ItemStack[]::new);
-        ItemStack[] armor = IntStream.range(0, 54).mapToObj(i -> this.armorMap.get(i)).toArray(ItemStack[]::new);
+        ItemStack[] armor = IntStream.range(0, 4).mapToObj(i -> this.armorMap.get(i)).toArray(ItemStack[]::new);
 
         this.user.getAsPlayer().getInventory().setContents(contents);
         this.user.getAsPlayer().getInventory().setArmorContents(armor);
