@@ -19,11 +19,14 @@ import java.util.*;
 
 public class DefaultTablist {
 
+    //Trzeba dorobic jakis manager tablisty nwm TablistFactory, trzeba tam header footer defaultowa tabliste zapisywac
+    //Tutaj dopiero to przerabiac z racji ze to jest obiekt kazdego usera, to bez sensu wszystko sto razy powielać
+
     private final User user;
 
     private List<String> tabList;
 
-    private final String header = "&9WIZARDMC.EU. \n &eZnajdujesz sie na PRACTICE \n &eTo sa testy tego trybu";
+    private final String header = "&3&lWIZARDMC.EU. \n &eZnajdujesz sie na PRACTICE \n &eTo sa testy tego trybu";
     private final String footer = "&aAktualnie trwaja testy trybu. \n &aJak znajdziesz blad stworz ticket na discordzie.";
 
     private final EnumGamemode DEFAULT_GAME_MODE = EnumGamemode.a;

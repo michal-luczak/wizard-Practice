@@ -43,7 +43,7 @@ public class QueueActionBarUpdateTask extends BukkitRunnable {
                     estimatedWaitTime = teamWaitTime + 1100;
                 }
 
-                team.sendActionBar(String.format("&eTrwa wyszukiwanie gry. | &cTwój numer w kolejce: %d | Szacowany czas: %s | Aktualny czas oczekiwania: %s",
+                team.sendActionBar(String.format("&eTrwa wyszukiwanie gry. &e&l| &eTwój numer w kolejce: %d &e&l| &eSzacowany czas: %s &e&l| &eAktualny czas oczekiwania: %s",
                         toDuel.getTeamsInQueue().indexOf(team) + 1,
                         TimeUtil.getDurationBreakdown(estimatedWaitTime),
                         TimeUtil.getDurationBreakdown(teamWaitTime)));
