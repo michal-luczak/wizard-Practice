@@ -34,6 +34,8 @@ public class PlayerJoinListener implements Listener {
         user.setTeam(team);
         team.setLeader(user);
 
+        user.getTablist().send();
+
         e.joinMessage(Component.text(StringUtils.color("&a[+] " + e.getPlayer().getName())));
 
         e.getPlayer().teleport(WizardPractice.getSingleton().getSpawnLocation());

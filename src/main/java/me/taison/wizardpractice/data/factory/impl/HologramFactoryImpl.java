@@ -46,8 +46,11 @@ public class HologramFactoryImpl implements HologramFactory {
     }
 
     @Override
-    public void updateHologram(String hologramName) {
+    public void updateHologram(String hologramName, List<String> lines) {
         //TODO normalne statyczne lub inne hologramy na pozniej ?
+        Hologram hologram = DHAPI.getHologram(hologramName);
+
+        DHAPI.setHologramLines(hologram, lines);
     }
 
     @Override

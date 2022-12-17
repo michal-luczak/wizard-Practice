@@ -54,8 +54,8 @@ public class TopPlayerCommand extends AbstractCommand {
 
         return switch (rankingType) {
             case "punkty" -> RankingType.POINTS;
-            case "smierci" -> RankingType.DEATHS;
-            case "zabicia" -> RankingType.DEFEATED_PLAYERS;
+            case "smierci" -> RankingType.DEATH;
+            case "zabicia" -> RankingType.KILLS;
             default -> null;
         };
     }

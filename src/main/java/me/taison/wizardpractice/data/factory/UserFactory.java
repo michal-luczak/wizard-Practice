@@ -2,6 +2,7 @@ package me.taison.wizardpractice.data.factory;
 
 import me.taison.wizardpractice.data.user.User;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -14,6 +15,8 @@ public interface UserFactory {
     void registerUser(User user);
 
     void unregisterUser(User boxUser);
+
+    List<User> findAll();
 
     void saveBoxUsers();
 

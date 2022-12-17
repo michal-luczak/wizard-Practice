@@ -12,7 +12,7 @@ public interface HologramFactory {
 
     void addHologram(String name, Location location);
 
-    void updateHologram(String hologramName);
+    void updateHologram(String hologramName, List<String> hologramLines);
 
     void updateHologram(RankingType rankingType);
 

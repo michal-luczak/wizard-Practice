@@ -12,9 +12,9 @@ import org.bukkit.inventory.ItemStack;
 
 public enum RankingType {
 
-    DEFEATED_PLAYERS("&aPokonani gracze", new Location(Bukkit.getWorld("world"), -8.5, 129, -60.5), new ItemStack(Material.DIAMOND_SWORD)),
+    KILLS("&aPokonani gracze", new Location(Bukkit.getWorld("world"), -8.5, 129, -60.5), new ItemStack(Material.DIAMOND_SWORD)),
     POINTS("&aNajwiecej punktów", new Location(Bukkit.getWorld("world"), -2.5, 129, -63.5), new ItemStack(Material.WRITABLE_BOOK)),
-    DEATHS("&aNajwiecej śmierci.", new Location(Bukkit.getWorld("world"), 3.5, 129, -60.5), new ItemStack(Material.POINTED_DRIPSTONE));
+    DEATH("&aNajwiecej śmierci.", new Location(Bukkit.getWorld("world"), 3.5, 129, -60.5), new ItemStack(Material.POINTED_DRIPSTONE));
 
     private final String name;
 
@@ -43,15 +43,15 @@ public enum RankingType {
 
     public AbstractRanking<?> getFor(User user){
         return switch (this) {
-            case DEFEATED_PLAYERS -> new UserKillsRanking(user, this);
+            case KILLS -> new UserKillsRanking(user, this);
             case POINTS -> new UserPointsRanking(user, this);
-            case DEATHS -> new UserDeathRanking(user, this);
+            case DEATH -> new UserDeathRanking(user, this);
         };
     }
     public boolean isMatchingType(AbstractRanking<?> ranking) {
         return switch (this) {
-            case DEFEATED_PLAYERS -> ranking instanceof UserKillsRanking;
-            case DEATHS -> ranking instanceof UserDeathRanking;
+            case KILLS -> ranking instanceof UserKillsRanking;
+            case DEATH -> ranking instanceof UserDeathRanking;
             case POINTS -> ranking instanceof UserPointsRanking;
         };
     }

@@ -22,10 +22,10 @@ public class TeamCommand extends AbstractCommand {
         Player player = (Player) sender;
 
         if (args.length == 0) {
-            player.sendMessage(StringUtils.color("&a/zapros <nick> - zaprasza gracza do teamu"));
-            player.sendMessage(StringUtils.color("&a/dolacz <nick> - dołącza do teamu (jeżeli posiadasz zaproszenie)"));
-            player.sendMessage(StringUtils.color("&a/wyrzuc <nick> - wyrzuca gracza z teamu."));
-            player.sendMessage(StringUtils.color("&a/usun - czyści twoją drużynę"));
+            player.sendMessage(StringUtils.color("&a/druzyna zapros <nick> - zaprasza gracza do teamu"));
+            player.sendMessage(StringUtils.color("&a/druzyna dolacz <nick> - dołącza do teamu (jeżeli posiadasz zaproszenie)"));
+            player.sendMessage(StringUtils.color("&a/druzyna wyrzuc <nick> - wyrzuca gracza z teamu."));
+            player.sendMessage(StringUtils.color("&a/druzyna wyczysc - czyści twoją drużynę"));
             return;
         }
 
@@ -114,7 +114,7 @@ public class TeamCommand extends AbstractCommand {
                 }
                 user.getTeam().kickPlayer(user);
             }));
-        } else if (args[0].equals("usun")) {
+        } else if (args[0].equals("wyczysc")) {
             userFactory.getByUniqueId(player.getUniqueId()).ifPresent(playerUser -> {
                 if (!playerUser.getTeam().getLeader().equals(playerUser)) {
                     player.sendMessage(StringUtils.color("&cNie mozesz zarzadzac druzyna nie bedac liderem."));

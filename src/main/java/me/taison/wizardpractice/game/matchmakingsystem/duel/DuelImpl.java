@@ -228,11 +228,11 @@ public final class DuelImpl implements Duel {
     public void handleDeath(User killer, User victim) {
         victim.getAsPlayer().spigot().respawn();
 
-        ((UserKillsRanking) killer.getUserRanking(RankingType.DEFEATED_PLAYERS)).addKill();
-        ((UserDeathRanking) victim.getUserRanking(RankingType.DEATHS)).addDeath();
+        ((UserKillsRanking) killer.getUserRanking(RankingType.KILLS)).addKill();
+        ((UserDeathRanking) victim.getUserRanking(RankingType.DEATH)).addDeath();
 
-        WizardPractice.getSingleton().getRankingFactory().update(victim, RankingType.DEATHS);
-        WizardPractice.getSingleton().getRankingFactory().update(killer, RankingType.DEFEATED_PLAYERS);
+        WizardPractice.getSingleton().getRankingFactory().update(victim, RankingType.DEATH);
+        WizardPractice.getSingleton().getRankingFactory().update(killer, RankingType.KILLS);
 
         if(this.getAliveTeamByUser(victim).isPresent()){
             Team aliveTeam = this.getAliveTeamByUser(victim).get();

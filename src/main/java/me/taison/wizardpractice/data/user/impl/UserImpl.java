@@ -5,6 +5,7 @@ import me.taison.wizardpractice.data.user.Team;
 import me.taison.wizardpractice.data.user.User;
 import me.taison.wizardpractice.data.user.impl.ranking.AbstractRanking;
 import me.taison.wizardpractice.data.user.impl.ranking.RankingType;
+import me.taison.wizardpractice.game.tablist.DefaultTablist;
 import me.taison.wizardpractice.gui.gametypeselector.GameMapType;
 import me.taison.wizardpractice.utilities.chat.StringUtils;
 import net.kyori.adventure.text.Component;
@@ -29,6 +30,8 @@ public class UserImpl implements User {
     private Map<GameMapType, CustomInventorySettings> customInventorySettingsMap;
 
     private Map<RankingType, AbstractRanking<?>> rankings;
+
+    private DefaultTablist defaultTablist;
 
     public UserImpl(UUID uniqueIdentifier, String name){
         this.uniqueIdentifier = uniqueIdentifier;
@@ -130,5 +133,13 @@ public class UserImpl implements User {
             return;
         }
         this.team = team;
+    }
+
+    @Override
+    public DefaultTablist getTablist(){
+       if(this.defaultTablist == null){
+           this.defaultTablist = new DefaultTablist(this);
+       }
+       return this.defaultTablist;
     }
 }

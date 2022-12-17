@@ -4,10 +4,7 @@ import me.taison.wizardpractice.WizardPractice;
 import me.taison.wizardpractice.data.user.User;
 import me.taison.wizardpractice.data.factory.UserFactory;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public class UserFactoryImpl implements UserFactory {
 
@@ -38,6 +35,11 @@ public class UserFactoryImpl implements UserFactory {
     @Override
     public void unregisterUser(User boxUser){
         this.practiceUserMap.remove(boxUser.getUniqueIdentifier());
+    }
+
+    @Override
+    public List<User> findAll() {
+        return this.practiceUserMap.values().stream().toList();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package me.taison.wizardpractice;
 
+import me.taison.wizardpractice.addons.impl.MagicChest;
 import me.taison.wizardpractice.data.factory.*;
 import me.taison.wizardpractice.data.factory.impl.*;
 import me.taison.wizardpractice.data.storage.IDatabase;
@@ -10,6 +11,7 @@ import me.taison.wizardpractice.game.matchmakingsystem.Matchmaker;
 import me.taison.wizardpractice.game.matchmakingsystem.matchmaker.MatchmakerImpl;
 import me.taison.wizardpractice.game.task.QueueActionBarUpdateTask;
 import me.taison.wizardpractice.game.task.RankingHologramUpdateTask;
+import me.taison.wizardpractice.game.task.TablistUpdateTask;
 import me.taison.wizardpractice.service.Service;
 import me.taison.wizardpractice.utilities.AbstractCommand;
 import net.kyori.adventure.text.Component;
@@ -48,6 +50,8 @@ public final class WizardPractice extends JavaPlugin {
     private QueueActionBarUpdateTask queueActionBarUpdateTask;
 
     private RankingHologramUpdateTask rankingHologramUpdateTask;
+
+    private TablistUpdateTask tablistUpdateTask;
 
     @Override
     public void onLoad(){
@@ -115,6 +119,9 @@ public final class WizardPractice extends JavaPlugin {
         this.rankingFactory = new RankingFactoryImpl();
 
         this.hologramFactory = new HologramFactoryImpl(this);
+
+        //Jakis glupi test nudzi mi sie
+        MagicChest magicChest = new MagicChest(null, 0, "xd");
     }
 
     private void initializeArenas(){
@@ -142,6 +149,9 @@ public final class WizardPractice extends JavaPlugin {
 
         this.rankingHologramUpdateTask = new RankingHologramUpdateTask(this);
         this.rankingHologramUpdateTask.startRankingHologramUpdate();
+
+        this.tablistUpdateTask = new TablistUpdateTask(this);
+        this.tablistUpdateTask.startTablistUpdate();
     }
 
     @Override

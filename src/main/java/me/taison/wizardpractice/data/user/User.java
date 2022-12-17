@@ -3,6 +3,7 @@ package me.taison.wizardpractice.data.user;
 import me.taison.wizardpractice.data.user.impl.ranking.AbstractRanking;
 import me.taison.wizardpractice.data.user.impl.CustomInventorySettings;
 import me.taison.wizardpractice.data.user.impl.ranking.RankingType;
+import me.taison.wizardpractice.game.tablist.DefaultTablist;
 import me.taison.wizardpractice.gui.gametypeselector.GameMapType;
 import org.bukkit.entity.Player;
 
@@ -18,6 +19,8 @@ public interface User {
     Optional<CustomInventorySettings> getCustomInventorySettings(GameMapType forGameType);
 
     AbstractRanking<?> getUserRanking(RankingType rankingType);
+
+    DefaultTablist getTablist();
 
     long getLastDamage();
 
