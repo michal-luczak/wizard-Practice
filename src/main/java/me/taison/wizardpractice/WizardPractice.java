@@ -156,7 +156,7 @@ public final class WizardPractice extends JavaPlugin {
         this.tablistUpdateTask.startTablistUpdate();
     }
 
-    private void initializeDatabase(){
+    private void initializeDatabase() {
         //Config later...
         this.database = new MySQLStorageImpl(this);
         this.database.open();
