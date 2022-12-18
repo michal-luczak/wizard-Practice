@@ -5,16 +5,21 @@ import com.mojang.authlib.GameProfile;
 import me.taison.wizardpractice.WizardPractice;
 import me.taison.wizardpractice.data.user.User;
 import me.taison.wizardpractice.data.user.impl.ranking.RankingType;
+import me.taison.wizardpractice.utilities.random.RandomUtils;
 import net.minecraft.network.chat.IChatBaseComponent;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.PacketPlayOutPlayerInfo;
 import net.minecraft.network.protocol.game.PacketPlayOutPlayerListHeaderFooter;
 import net.minecraft.world.level.EnumGamemode;
 import org.apache.commons.lang3.StringUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_19_R1.util.CraftChatMessage;
 import org.bukkit.entity.Player;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class DefaultTablist {
@@ -97,11 +102,11 @@ public class DefaultTablist {
                 "",
                 "  &e&lINFORMACJE O TOBIE",
                 "",
-                "&7Zabójstwa: {kills}",
-                "&7Smierci: {deaths}",
-                "&7Twoj nick: {nick}",
-                "",
-                "",
+                "&7Zabójstwa: &e{kills}",
+                "&7Smierci: &e{deaths}",
+                "&7Twoj nick: &e{nick}",
+                "&7Aktualny czas: &e{time}",
+                "&7Ilość graczy online: &e{online}",
                 "",
                 "",
                 "",
@@ -139,14 +144,14 @@ public class DefaultTablist {
     public void send(){
         Player player = this.user.getAsPlayer();
 
-        this.prepareCells();
+        List<String> preparedTablist = this.prepareCells();
 
         List<Packet<?>> packets = Lists.newArrayList();
         List<PacketPlayOutPlayerInfo.PlayerInfoData> addPlayerList = Lists.newArrayList();
         List<PacketPlayOutPlayerInfo.PlayerInfoData> updatePlayerList = Lists.newArrayList();
 
         try {
-            for (int i = 0; i < this.tabList.size(); i++) {
+            for (int i = 0; i < preparedTablist.size(); i++) {
                 if (this.profileCache[i] == null) {
                     this.profileCache[i] = new GameProfile(
                             UUID.fromString(String.format("00000000-0000-%s-0000-000000000000", StringUtils.leftPad(String.valueOf(i), 2, '0'))),
@@ -154,7 +159,7 @@ public class DefaultTablist {
                     );
                 }
 
-                String text = tabList.get(i);
+                String text = preparedTablist.get(i);
                 GameProfile gameProfile = this.profileCache[i];
                 IChatBaseComponent component = CraftChatMessage.fromStringOrNull(me.taison.wizardpractice.utilities.chat.StringUtils.color(text), false);
 
@@ -213,11 +218,15 @@ public class DefaultTablist {
         }
     }
 
-    private void prepareCells() {
+    private List<String> prepareCells() {
+        List<String> tabList = new ArrayList<>(this.tabList);
+
         tabList.replaceAll(entry -> entry
                 .replace("{kills}", String.valueOf(user.getUserRanking(RankingType.KILLS).getRanking()))
                 .replace("{deaths}", String.valueOf(user.getUserRanking(RankingType.DEATH).getRanking()))
                 .replace("{nick}", user.getName())
+                .replace("{time}", LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")))
+                .replace("{online}", String.valueOf(Bukkit.getOnlinePlayers().size()))
         );
 
         rankingNames.forEach((rankingType, rankingName) -> {
@@ -233,10 +242,11 @@ public class DefaultTablist {
                 });
             }
         });
+        return tabList;
     }
 
     private String formatUserEntry(User user, int rank, RankingType rankingType) {
-        return String.format("&7%d. %s &6(%d)", rank, user.getName(), (Integer) user.getUserRanking(rankingType).getRanking());
+        return String.format("&7%d. &e%s &6(%d)", rank, user.getName(), (Integer) user.getUserRanking(rankingType).getRanking());
     }
 
 }

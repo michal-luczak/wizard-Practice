@@ -146,7 +146,6 @@ public final class WizardPractice extends JavaPlugin {
 
         this.arenaFactory.register(frostArena);
         this.arenaFactory.register(candyArena);
-
     }
 
     private void initializeTasks(){
