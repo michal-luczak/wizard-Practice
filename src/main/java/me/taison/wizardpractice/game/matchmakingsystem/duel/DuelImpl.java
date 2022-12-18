@@ -18,6 +18,7 @@ import me.taison.wizardpractice.utilities.items.VariousItems;
 import net.kyori.adventure.text.Component;
 import org.apache.commons.lang3.Validate;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -108,6 +109,7 @@ public final class DuelImpl implements Duel {
                     user.getAsPlayer().getInventory().setItem(4, VariousItems.FEATHER_ITEM);
                 }
                 user.getAsPlayer().setHealth(20);
+                user.getAsPlayer().setGameMode(GameMode.SURVIVAL);
             });
         });
     }
@@ -311,4 +313,7 @@ public final class DuelImpl implements Duel {
         }
     }
 
+    public Arena getArena() {
+        return arena;
+    }
 }

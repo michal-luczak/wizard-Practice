@@ -24,6 +24,8 @@ public interface Duel {
 
     List<Team> getTeams();
 
+    Arena getArena();
+
     /*
      * This method is called when a player dies.
      *

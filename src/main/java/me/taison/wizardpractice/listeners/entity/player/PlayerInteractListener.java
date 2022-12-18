@@ -5,6 +5,7 @@ import me.taison.wizardpractice.data.factory.UserFactory;
 import me.taison.wizardpractice.data.user.Team;
 import me.taison.wizardpractice.gui.gametypeselector.GameSelectorGui;
 import me.taison.wizardpractice.utilities.items.VariousItems;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,6 +16,11 @@ public class PlayerInteractListener implements Listener {
     @EventHandler
     public void handle(PlayerInteractEvent event) {
         if (event.getItem() == null) {
+            return;
+        }
+
+        if (event.getPlayer().getGameMode() == GameMode.SPECTATOR) {
+            event.setCancelled(true);
             return;
         }
 
