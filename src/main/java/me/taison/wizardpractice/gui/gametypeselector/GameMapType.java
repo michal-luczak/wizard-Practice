@@ -118,7 +118,7 @@ public enum GameMapType {
 
 
 
-    CRYSTAL_PVP_DIAMOND_MULTI_TEAM(9, "&aCrystal pvp diamond XvXvX", Arrays.asList("&cRodzaj gry: Diamentowe sety z kryształami", " ", "&7Graczy w kolejce: %queuedPlayer", "&7Graczy grających: %currentPlaying"),
+    CRYSTAL_PVP_DIAMOND_MULTI_TEAM(18, "&aCrystal pvp diamond XvXvX", Arrays.asList("&cRodzaj gry: Diamentowe sety z kryształami", " ", "&7Graczy w kolejce: %queuedPlayer", "&7Graczy grających: %currentPlaying"),
             new ItemBuilder(Material.END_CRYSTAL, 1).addEnchant(Enchantment.KNOCKBACK, 1).toItemStack(),
             new ItemStack[]{
                     new ItemBuilder(Material.DIAMOND_BOOTS, 1)
@@ -145,7 +145,7 @@ public enum GameMapType {
                     new ItemBuilder(Material.GOLDEN_APPLE, 16).toItemStack()
             }, 3),
 
-    POTION_MULTI_TEAM(11, "&aPotion XvXvX", Arrays.asList("&cRodzaj gry: Diamentowe sety na potki.", " ", "&7Graczy w kolejce: %queuedPlayer", "&7Graczy grających: %currentPlaying"),
+    POTION_MULTI_TEAM(20, "&aPotion XvXvX", Arrays.asList("&cRodzaj gry: Diamentowe sety na potki.", " ", "&7Graczy w kolejce: %queuedPlayer", "&7Graczy grających: %currentPlaying"),
             new ItemBuilder(Material.POTION, 1).toItemStack(),
             new ItemStack[]{
                     new ItemBuilder(Material.DIAMOND_BOOTS, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 3).toItemStack(),
@@ -160,7 +160,7 @@ public enum GameMapType {
                     getPotion(PotionType.INSTANT_HEAL, 29, false),
             }, 3),
 
-    CRYSTAL_PVP_NETHERITE_MULTI_TEAM(13, "&aCrystal pvp netherite XvXvX", Arrays.asList("&cRodzaj gry: Netheritowe sety z kryształami.", " ", "&7Graczy w kolejce: %queuedPlayer", "&7Graczy grających: %currentPlaying"),
+    CRYSTAL_PVP_NETHERITE_MULTI_TEAM(22, "&aCrystal pvp netherite XvXvX", Arrays.asList("&cRodzaj gry: Netheritowe sety z kryształami.", " ", "&7Graczy w kolejce: %queuedPlayer", "&7Graczy grających: %currentPlaying"),
             new ItemBuilder(Material.END_CRYSTAL, 1).toItemStack(),
             new ItemStack[]{
                     new ItemBuilder(Material.NETHERITE_BOOTS, 1)
@@ -187,7 +187,7 @@ public enum GameMapType {
                     new ItemBuilder(Material.GOLDEN_APPLE, 16).toItemStack()
             }, 3),
 
-    ELYTRA_MULTI_TEAM(15, "&aElytra XvXvX", Arrays.asList("&cRodzaj gry: Diamentowe sety z elytrą.", " ", "&7Graczy w kolejce: %queuedPlayer", "&7Graczy grających: %currentPlaying"),
+    ELYTRA_MULTI_TEAM(24, "&aElytra XvXvX", Arrays.asList("&cRodzaj gry: Diamentowe sety z elytrą.", " ", "&7Graczy w kolejce: %queuedPlayer", "&7Graczy grających: %currentPlaying"),
             new ItemBuilder(Material.ELYTRA, 1).toItemStack(),
             new ItemStack[]{
                     new ItemBuilder(Material.DIAMOND_BOOTS, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4).toItemStack(),
@@ -200,7 +200,7 @@ public enum GameMapType {
                     new ItemBuilder(Material.FIREWORK_ROCKET, 128).toItemStack()
             }, 3),
 
-    NORMAL_MULTI_TEAM(17, "&aNormal XvXvX", Arrays.asList("&cRodzaj gry: Żelazne sety.", " ", "&7Graczy w kolejce: %queuedPlayer", "&7Graczy grających: %currentPlaying"),
+    NORMAL_MULTI_TEAM(26, "&aNormal XvXvX", Arrays.asList("&cRodzaj gry: Żelazne sety.", " ", "&7Graczy w kolejce: %queuedPlayer", "&7Graczy grających: %currentPlaying"),
             new ItemBuilder(Material.DIAMOND_SWORD, 1).toItemStack(),
             new ItemStack[]{
                     new ItemBuilder(Material.IRON_BOOTS, 1).toItemStack(),
