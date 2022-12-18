@@ -37,9 +37,6 @@ public class PlayerQuitListener implements Listener {
 
         userFactory.getByUniqueId(event.getPlayer().getUniqueId()).ifPresent(user -> {
             teamFactory.unregister(user.getTeam());
-
-            userFactory.unregisterUser(user);
-
         });
 
         event.quitMessage(Component.text(StringUtils.color("&c[-] " + event.getPlayer().getName())));

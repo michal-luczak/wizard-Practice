@@ -1,6 +1,7 @@
 package me.taison.wizardpractice.game.task;
 
 import me.taison.wizardpractice.WizardPractice;
+import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class TablistUpdateTask extends BukkitRunnable {
@@ -17,6 +18,10 @@ public class TablistUpdateTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        wizardPractice.getUserFactory().findAll().forEach(user -> user.getTablist().send());
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            wizardPractice.getUserFactory().getByUniqueId(player.getUniqueId()).ifPresent(user -> {
+                user.getTablist().send();
+            });
+        });
     }
 }

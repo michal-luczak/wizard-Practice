@@ -18,8 +18,4 @@ public interface UserFactory {
 
     List<User> findAll();
 
-    void saveBoxUsers();
-
-    void loadBoxUsers();
-
 }

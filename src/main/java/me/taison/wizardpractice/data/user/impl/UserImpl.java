@@ -5,6 +5,9 @@ import me.taison.wizardpractice.data.user.Team;
 import me.taison.wizardpractice.data.user.User;
 import me.taison.wizardpractice.data.user.impl.ranking.AbstractRanking;
 import me.taison.wizardpractice.data.user.impl.ranking.RankingType;
+import me.taison.wizardpractice.data.user.impl.ranking.types.UserDeathRanking;
+import me.taison.wizardpractice.data.user.impl.ranking.types.UserKillsRanking;
+import me.taison.wizardpractice.data.user.impl.ranking.types.UserPointsRanking;
 import me.taison.wizardpractice.game.tablist.DefaultTablist;
 import me.taison.wizardpractice.gui.gametypeselector.GameMapType;
 import me.taison.wizardpractice.utilities.chat.StringUtils;
@@ -22,14 +25,14 @@ public class UserImpl implements User {
 
     private final String name;
 
+    private final Map<GameMapType, CustomInventorySettings> customInventorySettingsMap;
+
+    private final Map<RankingType, AbstractRanking<?>> rankings;
+
     private User lastDamager;
     private long lastDamage;
 
     private Team team;
-
-    private Map<GameMapType, CustomInventorySettings> customInventorySettingsMap;
-
-    private Map<RankingType, AbstractRanking<?>> rankings;
 
     private DefaultTablist defaultTablist;
 
@@ -53,8 +56,28 @@ public class UserImpl implements User {
     }
 
     public UserImpl(ResultSet resultSet) throws SQLException {
+        this.customInventorySettingsMap = new HashMap<>();
+
+        this.rankings = new HashMap<>();
+
         this.uniqueIdentifier = UUID.fromString(resultSet.getString("uuid"));
-        this.name = resultSet.getString("name");
+        this.name = resultSet.getString("nickname");
+
+        AbstractRanking<?> pointsRanking = new UserPointsRanking(this, RankingType.POINTS);
+        AbstractRanking<?> killsRanking = new UserKillsRanking(this, RankingType.KILLS);
+        AbstractRanking<?> deathRanking = new UserDeathRanking(this, RankingType.DEATH);
+
+        ((UserPointsRanking) pointsRanking).setPoints(resultSet.getInt("points"));
+        ((UserKillsRanking) killsRanking).setKills(resultSet.getInt("kills"));
+        ((UserDeathRanking) deathRanking).setDeaths(resultSet.getInt("deaths"));
+
+        this.rankings.put(RankingType.POINTS, pointsRanking);
+        this.rankings.put(RankingType.KILLS, killsRanking);
+        this.rankings.put(RankingType.DEATH, deathRanking);
+
+        WizardPractice.getSingleton().getRankingFactory().addRanking(pointsRanking);
+        WizardPractice.getSingleton().getRankingFactory().addRanking(killsRanking);
+        WizardPractice.getSingleton().getRankingFactory().addRanking(deathRanking);
     }
 
     @Override

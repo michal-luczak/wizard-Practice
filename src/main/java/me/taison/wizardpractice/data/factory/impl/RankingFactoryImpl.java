@@ -46,6 +46,8 @@ public class RankingFactoryImpl implements RankingFactory {
     @Override
     public void addRanking(AbstractRanking<?> abstractRanking) {
         this.rankings.add(abstractRanking);
+
+        this.update(abstractRanking.getUser(), abstractRanking.getType());
     }
 
     @Override

@@ -19,16 +19,6 @@ public class UserFactoryImpl implements UserFactory {
     }
 
     @Override
-    public void loadBoxUsers(){
-        //TODO boxPVP.getUserDatabase.load();
-    }
-
-    @Override
-    public void saveBoxUsers(){
-        //TODO boxPVP.getUserDatabase.save();
-    }
-
-    @Override
     public void registerUser(User user){
         this.practiceUserMap.putIfAbsent(user.getUniqueIdentifier(), user);
     }

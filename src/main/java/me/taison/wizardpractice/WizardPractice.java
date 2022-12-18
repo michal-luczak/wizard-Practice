@@ -3,8 +3,8 @@ package me.taison.wizardpractice;
 import me.taison.wizardpractice.addons.impl.MagicChest;
 import me.taison.wizardpractice.data.factory.*;
 import me.taison.wizardpractice.data.factory.impl.*;
-import me.taison.wizardpractice.data.storage.IDatabase;
-import me.taison.wizardpractice.data.storage.MySQLStorage;
+import me.taison.wizardpractice.data.storage.database.MySQLStorage;
+import me.taison.wizardpractice.data.storage.database.impl.MySQLStorageImpl;
 import me.taison.wizardpractice.game.arena.Arena;
 import me.taison.wizardpractice.game.arena.impl.ArenaImpl;
 import me.taison.wizardpractice.game.matchmakingsystem.Matchmaker;
@@ -12,7 +12,6 @@ import me.taison.wizardpractice.game.matchmakingsystem.matchmaker.MatchmakerImpl
 import me.taison.wizardpractice.game.task.QueueActionBarUpdateTask;
 import me.taison.wizardpractice.game.task.RankingHologramUpdateTask;
 import me.taison.wizardpractice.game.task.TablistUpdateTask;
-import me.taison.wizardpractice.npc.NPC;
 import me.taison.wizardpractice.service.Service;
 import me.taison.wizardpractice.utilities.AbstractCommand;
 import net.kyori.adventure.text.Component;
@@ -42,7 +41,7 @@ public final class WizardPractice extends JavaPlugin {
 
     private HologramFactory hologramFactory;
 
-    private IDatabase database;
+    private MySQLStorage database;
 
     private Matchmaker matchmaker;
 
@@ -66,16 +65,14 @@ public final class WizardPractice extends JavaPlugin {
         getLogger().info("Practice plugin loading...");
 
         this.initializeFactories();
-        this.initializeListeners();
-        this.initializeCommands();
+        this.initializeDatabase();
         this.initializeArenas();
         this.initializeTasks();
         this.initializeNPCs();
+        this.initializeListeners();
+        this.initializeCommands();
 
         this.matchmaker = new MatchmakerImpl(arenaFactory);
-
-        this.database = new MySQLStorage();
-        database.open();
 
         //freeze time and weather
         getServer().getWorlds().forEach(world -> world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false));
@@ -159,6 +156,12 @@ public final class WizardPractice extends JavaPlugin {
         this.tablistUpdateTask.startTablistUpdate();
     }
 
+    private void initializeDatabase(){
+        //Config later...
+        this.database = new MySQLStorageImpl(this);
+        this.database.open();
+    }
+
     private void initializeNPCs() {
         //TODO respenie npc
     }
@@ -169,10 +172,10 @@ public final class WizardPractice extends JavaPlugin {
 
         Bukkit.getOnlinePlayers().forEach(player -> player.kick(Component.text("Restart practice, wejdz za chwilkę"), PlayerKickEvent.Cause.PLUGIN));
 
-        this.userFactory.saveBoxUsers();
         this.addonFactory.deinitializeAddons();
 
-        database.close();
+        this.database.close();
+
         Service.shutdown();
 
         getLogger().info("Practice plugin disabled successfully. Goodbye!");

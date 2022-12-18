@@ -10,6 +10,7 @@ import me.taison.wizardpractice.data.user.impl.UserImpl;
 import me.taison.wizardpractice.utilities.chat.StringUtils;
 import me.taison.wizardpractice.utilities.items.VariousItems;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -25,16 +26,23 @@ public class PlayerJoinListener implements Listener {
         UserFactory userFactory = WizardPractice.getSingleton().getUserFactory();
         TeamFactory teamFactory = WizardPractice.getSingleton().getTeamFactory();
 
-        User user = new UserImpl(e.getPlayer().getUniqueId(), e.getPlayer().getName());
-        Team team = new TeamImpl(user);
+        if(!e.getPlayer().hasPlayedBefore()){
+            Bukkit.broadcast(Component.text(StringUtils.color("&6Witamy pierwszy raz gracza " + e.getPlayer().getName() + " na naszym trybie!")));
 
-        userFactory.registerUser(user);
-        teamFactory.register(team);
+            User user = new UserImpl(e.getPlayer().getUniqueId(), e.getPlayer().getName());
+            userFactory.registerUser(user);
+        }
 
-        user.setTeam(team);
-        team.setLeader(user);
+        userFactory.getByUniqueId(e.getPlayer().getUniqueId()).ifPresent(user -> {
+            Team team = new TeamImpl(user);
 
-        user.getTablist().send();
+            teamFactory.register(team);
+
+            user.setTeam(team);
+            team.setLeader(user);
+
+            user.getTablist().send();
+        });
 
         e.joinMessage(Component.text(StringUtils.color("&a[+] " + e.getPlayer().getName())));
 
