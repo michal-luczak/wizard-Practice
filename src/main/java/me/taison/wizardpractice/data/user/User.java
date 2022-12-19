@@ -1,5 +1,7 @@
 package me.taison.wizardpractice.data.user;
 
+import me.taison.wizardpractice.data.storage.database.persistable.PersistableLoadable;
+import me.taison.wizardpractice.data.storage.database.persistable.PersistableSaveable;
 import me.taison.wizardpractice.data.user.impl.ranking.AbstractRanking;
 import me.taison.wizardpractice.data.user.impl.CustomInventorySettings;
 import me.taison.wizardpractice.data.user.impl.ranking.RankingType;
@@ -7,10 +9,11 @@ import me.taison.wizardpractice.game.tablist.DefaultTablist;
 import me.taison.wizardpractice.gui.gametypeselector.GameMapType;
 import org.bukkit.entity.Player;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface User {
+public interface User extends PersistableSaveable, PersistableLoadable {
 
     UUID getUniqueIdentifier();
 
@@ -19,6 +22,8 @@ public interface User {
     Optional<CustomInventorySettings> getCustomInventorySettings(GameMapType forGameType);
 
     AbstractRanking<?> getUserRanking(RankingType rankingType);
+
+    Map<RankingType, AbstractRanking<?>> getRankings();
 
     DefaultTablist getTablist();
 

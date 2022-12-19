@@ -54,30 +54,29 @@ public final class ItemStackUtils {
 
     }
 
-    public static void removeItem(Player p, ItemStack i, int a, boolean checkname, boolean ignoreenchanted) {
-        if (p == null || i == null || a == 0) {
+    public static void removeItem(Player player, ItemStack itemStack, int amount, boolean checkName, boolean ignoreEnchanted) {
+        if (player == null || itemStack == null || amount == 0) {
             return;
         }
-        ItemStack[] contents = p.getInventory().getContents();
+
+        ItemStack[] contents = player.getInventory().getContents();
         for (int j = contents.length - 1; j >= 0; --j) {
-            i.getType();
-            if (contents[j] != null && i.getType() == contents[j].getType()) {
-                if (i.getDurability() == contents[j].getDurability()) {
-                    if (i.getItemMeta() != null) {
-                        i.getItemMeta().getDisplayName();
+            if (contents[j] != null && itemStack.getType() == contents[j].getType()) {
+                if (itemStack.getDurability() == contents[j].getDurability()) {
+                    if (itemStack.getItemMeta() != null) {
+                        itemStack.getItemMeta().getDisplayName();
                         if (contents[j].getItemMeta() == null) {
                             continue;
                         }
-                        contents[j].getItemMeta().getDisplayName();
                     }
-                    if ((!checkname || contents[j].getItemMeta() == null || i.getItemMeta() == null || i.getItemMeta().getDisplayName().equals(contents[j].getItemMeta().getDisplayName())) && (!ignoreenchanted || i.getItemMeta() == null || i.getItemMeta().getEnchants().size() <= 0)) {
-                        if (a < contents[j].getAmount()) {
-                            contents[j].setAmount(contents[j].getAmount() - a);
-                            p.updateInventory();
+                    if ((!checkName || contents[j].getItemMeta() == null || itemStack.getItemMeta() == null || itemStack.getItemMeta().getDisplayName().equals(contents[j].getItemMeta().getDisplayName())) && (!ignoreEnchanted || itemStack.getItemMeta() == null || itemStack.getItemMeta().getEnchants().size() <= 0)) {
+                        if (amount < contents[j].getAmount()) {
+                            contents[j].setAmount(contents[j].getAmount() - amount);
+                            player.updateInventory();
                             return;
                         }
-                        a -= contents[j].getAmount();
-                        p.getInventory().setItem(j, null);
+                        amount -= contents[j].getAmount();
+                        player.getInventory().setItem(j, null);
                     }
                 }
             }

@@ -10,7 +10,7 @@ import java.util.List;
 
 public class AddonFactoryImpl implements AddonFactory {
 
-    private List<AddonController> addonControllers;
+    private final List<AddonController> addonControllers;
     private final WizardPractice wizardPractice;
 
     public AddonFactoryImpl(WizardPractice wizardPractice){

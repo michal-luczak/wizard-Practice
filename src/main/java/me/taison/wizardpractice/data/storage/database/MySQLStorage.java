@@ -5,7 +5,7 @@ import me.taison.wizardpractice.data.user.User;
 
 public interface MySQLStorage extends Database {
 
-    void loadUsers();
+    void loadAll();
 
     void saveUser(User user);
 

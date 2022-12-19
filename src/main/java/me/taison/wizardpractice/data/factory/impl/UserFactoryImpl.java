@@ -8,7 +8,7 @@ import java.util.*;
 
 public class UserFactoryImpl implements UserFactory {
 
-    private Map<UUID, User> practiceUserMap;
+    private final Map<UUID, User> practiceUserMap;
 
     private final WizardPractice wizardPractice;
 

@@ -21,13 +21,13 @@ import java.util.*;
 
 public class UserImpl implements User {
 
-    private final UUID uniqueIdentifier;
+    private UUID uniqueIdentifier;
 
-    private final String name;
+    private String name;
 
-    private final Map<GameMapType, CustomInventorySettings> customInventorySettingsMap;
+    private Map<GameMapType, CustomInventorySettings> customInventorySettingsMap;
 
-    private final Map<RankingType, AbstractRanking<?>> rankings;
+    private Map<RankingType, AbstractRanking<?>> rankings;
 
     private User lastDamager;
     private long lastDamage;
@@ -43,41 +43,6 @@ public class UserImpl implements User {
         this.customInventorySettingsMap = new HashMap<>();
 
         this.rankings = new HashMap<>();
-
-        EnumSet.allOf(RankingType.class).forEach(rankingType -> {
-            AbstractRanking<?> abstractRanking = rankingType.getFor(this);
-
-            this.rankings.put(rankingType, abstractRanking);
-
-            WizardPractice.getSingleton().getRankingFactory().addRanking(abstractRanking);
-
-            WizardPractice.getSingleton().getRankingFactory().update(this, rankingType);
-        });
-    }
-
-    public UserImpl(ResultSet resultSet) throws SQLException {
-        this.customInventorySettingsMap = new HashMap<>();
-
-        this.rankings = new HashMap<>();
-
-        this.uniqueIdentifier = UUID.fromString(resultSet.getString("uuid"));
-        this.name = resultSet.getString("nickname");
-
-        AbstractRanking<?> pointsRanking = new UserPointsRanking(this, RankingType.POINTS);
-        AbstractRanking<?> killsRanking = new UserKillsRanking(this, RankingType.KILLS);
-        AbstractRanking<?> deathRanking = new UserDeathRanking(this, RankingType.DEATH);
-
-        ((UserPointsRanking) pointsRanking).setPoints(resultSet.getInt("points"));
-        ((UserKillsRanking) killsRanking).setKills(resultSet.getInt("kills"));
-        ((UserDeathRanking) deathRanking).setDeaths(resultSet.getInt("deaths"));
-
-        this.rankings.put(RankingType.POINTS, pointsRanking);
-        this.rankings.put(RankingType.KILLS, killsRanking);
-        this.rankings.put(RankingType.DEATH, deathRanking);
-
-        WizardPractice.getSingleton().getRankingFactory().addRanking(pointsRanking);
-        WizardPractice.getSingleton().getRankingFactory().addRanking(killsRanking);
-        WizardPractice.getSingleton().getRankingFactory().addRanking(deathRanking);
     }
 
     @Override
@@ -91,6 +56,11 @@ public class UserImpl implements User {
             return this.rankings.get(forRankingType);
         }
         return null;
+    }
+
+    @Override
+    public Map<RankingType, AbstractRanking<?>> getRankings() {
+        return this.rankings;
     }
 
     @Override
@@ -164,5 +134,56 @@ public class UserImpl implements User {
            this.defaultTablist = new DefaultTablist(this);
        }
        return this.defaultTablist;
+    }
+
+    @Override
+    public String getTableName() {
+        return "users";
+    }
+
+    @Override
+    public String getPrimaryKeyColumnName() {
+        return "uuid";
+    }
+
+    @Override
+    public Object getPrimaryKey() {
+        return this.uniqueIdentifier.toString();
+    }
+
+    @Override
+    public void fromResultSet(ResultSet resultSet) throws SQLException {
+        //test \/
+        UserPointsRanking pointsRanking = new UserPointsRanking(this, RankingType.POINTS);
+        UserKillsRanking killsRanking = new UserKillsRanking(this, RankingType.KILLS);
+        UserDeathRanking deathRanking = new UserDeathRanking(this, RankingType.DEATH);
+
+        pointsRanking.setPoints(resultSet.getInt("points"));
+        killsRanking.setKills(resultSet.getInt("kills"));
+        deathRanking.setDeaths(resultSet.getInt("deaths"));
+
+        this.rankings.putIfAbsent(RankingType.POINTS, pointsRanking);
+        this.rankings.putIfAbsent(RankingType.KILLS, killsRanking);
+        this.rankings.putIfAbsent(RankingType.DEATH, deathRanking);
+
+        WizardPractice.getSingleton().getRankingFactory().addRanking(pointsRanking);
+        WizardPractice.getSingleton().getRankingFactory().addRanking(killsRanking);
+        WizardPractice.getSingleton().getRankingFactory().addRanking(deathRanking);
+    }
+
+    @Override
+    public String[] getColumnNames() {
+        return new String[] {"uuid", "nickname", "points", "kills", "deaths"};
+    }
+
+    @Override
+    public Object[] getColumnValues() {
+        return new Object[] {
+                this.uniqueIdentifier.toString(),
+                this.name,
+                this.getUserRanking(RankingType.POINTS).getRanking(),
+                this.getUserRanking(RankingType.KILLS).getRanking(),
+                this.getUserRanking(RankingType.DEATH).getRanking()
+        };
     }
 }

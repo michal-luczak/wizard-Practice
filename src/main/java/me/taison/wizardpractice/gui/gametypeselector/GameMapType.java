@@ -213,6 +213,7 @@ public enum GameMapType {
                     new ItemBuilder(Material.GOLDEN_APPLE, 8).toItemStack()
             }, 3);
 
+
     private final int slotId;
 
     private final String name;

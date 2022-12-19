@@ -4,6 +4,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import me.taison.wizardpractice.WizardPractice;
 import me.taison.wizardpractice.data.storage.AbstractDatabase;
 import me.taison.wizardpractice.data.storage.database.MySQLStorage;
+import me.taison.wizardpractice.data.storage.util.Queries;
 import me.taison.wizardpractice.data.user.User;
 import me.taison.wizardpractice.data.user.impl.UserImpl;
 import me.taison.wizardpractice.data.user.impl.ranking.RankingType;
@@ -12,6 +13,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.UUID;
 
 import static me.taison.wizardpractice.data.storage.util.Queries.*;
 
@@ -55,7 +57,7 @@ public class MySQLStorageImpl extends AbstractDatabase implements MySQLStorage {
 
         this.initTables();
 
-        this.loadUsers();
+        this.loadAll();
 
         wizardPractice.getLogger().info("Connection with database has been initialized.");
     }
@@ -81,11 +83,12 @@ public class MySQLStorageImpl extends AbstractDatabase implements MySQLStorage {
 
 
     @Override
-    public void loadUsers() {
+    public void loadAll() {
         try (Connection connection = this.dataSource.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USERS)) {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while(resultSet.next()) {
-                    User user = new UserImpl(resultSet);
+                    User user = new UserImpl(UUID.fromString(resultSet.getString("uuid")), resultSet.getString("nickname"));
+                    user.fromResultSet(resultSet);
 
                     wizardPractice.getUserFactory().registerUser(user);
                 }
@@ -97,16 +100,18 @@ public class MySQLStorageImpl extends AbstractDatabase implements MySQLStorage {
 
     @Override
     public void saveUser(User user) {
-        try (Connection connection = this.dataSource.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(USER_INSERT_QUERY)) {
-            preparedStatement.setString(1, user.getUniqueIdentifier().toString());
-            preparedStatement.setString(2, user.getName());
+        String tableName = user.getTableName();
 
+        String[] columnNames = user.getColumnNames();
 
-            preparedStatement.setInt(3, (Integer) user.getUserRanking(RankingType.POINTS).getRanking());
-            preparedStatement.setInt(4, (Integer) user.getUserRanking(RankingType.KILLS).getRanking());
-            preparedStatement.setInt(5, (Integer) user.getUserRanking(RankingType.DEATH).getRanking());
+        Object[] columnValues = user.getColumnValues();
 
-            preparedStatement.execute();
+        try (Connection connection = this.dataSource.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(Queries.getInsertQuery(tableName, columnNames))) {
+            for (int i = 0; i < columnValues.length; i++) {
+                preparedStatement.setObject(i + 1, columnValues[i]);
+            }
+
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
