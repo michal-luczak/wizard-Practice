@@ -74,6 +74,11 @@ public class GameSelectorGuiItem extends GuiItem {
             return;
         }
 
+        if (matchmaker.getDuelByTeam(team).isPresent()) {
+            player.sendMessage(StringUtils.color("&cTwoja drużyna jest dalej w grze!"));
+            return;
+        }
+
         matchmaker.getQueueByTeam(team).ifPresent(queue -> queue.removeTeamFromQueue(team));
         matchmaker.addTeamToQueue(team, gameMapType);
         if (player.getInventory().contains(Material.FEATHER)) {

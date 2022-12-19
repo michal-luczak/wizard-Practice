@@ -12,6 +12,7 @@ import me.taison.wizardpractice.game.matchmakingsystem.matchmaker.MatchmakerImpl
 import me.taison.wizardpractice.game.task.QueueActionBarUpdateTask;
 import me.taison.wizardpractice.game.task.RankingHologramUpdateTask;
 import me.taison.wizardpractice.game.task.TablistUpdateTask;
+import me.taison.wizardpractice.npc.NPC;
 import me.taison.wizardpractice.service.Service;
 import me.taison.wizardpractice.utilities.AbstractCommand;
 import net.kyori.adventure.text.Component;
@@ -53,7 +54,7 @@ public final class WizardPractice extends JavaPlugin {
 
     private TablistUpdateTask tablistUpdateTask;
 
-    private NpcFactory npcFactory;
+    private NPCFactory npcFactory;
 
     @Override
     public void onLoad(){
@@ -121,7 +122,7 @@ public final class WizardPractice extends JavaPlugin {
 
         this.hologramFactory = new HologramFactoryImpl(this);
 
-        this.npcFactory = new NpcFactoryImpl();
+        this.npcFactory = new NPCFactoryImpl();
 
         //Jakis glupi test nudzi mi sie
         MagicChest magicChest = new MagicChest(null, 0, "xd");
@@ -163,7 +164,17 @@ public final class WizardPractice extends JavaPlugin {
     }
 
     private void initializeNPCs() {
-        //TODO respenie npc
+        this.npcFactory = new NPCFactoryImpl();
+
+        NPC npc = new NPC.NpcBuilder()
+//                .setGameMapType()
+//                .setName()
+//                .setLocation()
+//                .setSignature()
+//                .setTexture()
+                .build();
+
+        this.npcFactory.addNPC(npc);
     }
 
     @Override
@@ -220,7 +231,7 @@ public final class WizardPractice extends JavaPlugin {
         return rankingHologramUpdateTask;
     }
 
-    public NpcFactory getNpcFactory() {
+    public NPCFactory getNpcFactory() {
         return npcFactory;
     }
 }

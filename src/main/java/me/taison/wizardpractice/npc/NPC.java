@@ -2,27 +2,36 @@ package me.taison.wizardpractice.npc;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import me.taison.wizardpractice.WizardPractice;
 import me.taison.wizardpractice.gui.gametypeselector.GameMapType;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityMetadata;
 import net.minecraft.network.protocol.game.PacketPlayOutNamedEntitySpawn;
 import net.minecraft.network.protocol.game.PacketPlayOutPlayerInfo;
 import net.minecraft.network.syncher.DataWatcherRegistry;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.EntityPlayer;
+import net.minecraft.server.level.WorldServer;
 import net.minecraft.server.network.PlayerConnection;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_19_R1.CraftServer;
+import org.bukkit.craftbukkit.v1_19_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.UUID;
 
 public class NPC {
 
-    private final UUID uuid;
+    private final int id;
     private final String name;
     private final String texture;
     private final String signature;
     private final Location location;
     private final GameMapType gameMapType;
+
+    private EntityPlayer entityNPC;
 
     private NPC(final NpcBuilder builder) {
 
@@ -31,31 +40,34 @@ public class NPC {
         this.signature = builder.signature;
         this.location = builder.location;
         this.gameMapType = builder.gameMapType;
-        this.uuid = UUID.randomUUID();
+
+        MinecraftServer server = ((CraftServer) Bukkit.getServer()).getServer();
+        WorldServer world = ((CraftWorld) Bukkit.getServer().getWorld("world")).getHandle();
+
+        GameProfile gameProfile = new GameProfile(UUID.randomUUID(), name);
+        gameProfile.getProperties().put("textures", new Property("textures", texture, signature));
+
+        EntityPlayer entityNPC = new EntityPlayer(server, world, gameProfile, null);
+        this.id = entityNPC.getBukkitEntity().getEntityId();
+
+        entityNPC.forceSetPositionRotation(location.getBlockX(), location.getBlockY(), location.getBlockZ(), location.getYaw(), location.getPitch());
+        entityNPC.ai().a(DataWatcherRegistry.a.a(16), (byte)127);
     }
 
     public void spawnNPC(Player playerToSendPacket) {
 
-        EntityPlayer entityPlayer = ((CraftPlayer) playerToSendPacket).getHandle();
-        GameProfile gameProfile = new GameProfile(uuid, name);
-        gameProfile.getProperties().put("textures", new Property("textures", texture, signature));
-
-        EntityPlayer npc = new EntityPlayer(entityPlayer.c, entityPlayer.s.getMinecraftWorld(), gameProfile, null);
-
-        npc.forceSetPositionRotation(location.getBlockX(), location.getBlockY(), location.getBlockZ(), 0, 0);
-        npc.ai().a(DataWatcherRegistry.a.a(16), (byte)127);
-
         PlayerConnection connection = ((CraftPlayer) playerToSendPacket).getHandle().b;
 
-        connection.a(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.a, npc));
-        connection.a(new PacketPlayOutNamedEntitySpawn(npc));
-        connection.a(new PacketPlayOutEntityMetadata(npc.getBukkitEntity().getEntityId(), npc.ai(), true));
+        connection.a(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.a, entityNPC));
+        connection.a(new PacketPlayOutNamedEntitySpawn(entityNPC));
 
-        //TODO dokończyć i sprawdzić czy w ogóle działa XD
-    }
-
-    public void despawnNPC() {
-        //TODO despawnNPC
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                connection.a(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.e, entityNPC));
+                connection.a(new PacketPlayOutEntityMetadata(entityNPC.getBukkitEntity().getEntityId(), entityNPC.ai(), true));
+            }
+        }.runTaskLater(WizardPractice.getPlugin(WizardPractice.class), 12L);
     }
 
 
@@ -81,9 +93,18 @@ public class NPC {
         return gameMapType;
     }
 
-    public UUID getUniqueId() {
-        return uuid;
+    public int getUniqueId() {
+        return id;
     }
+
+    public int getEntityId() {
+        return id;
+    }
+
+    public EntityPlayer getEntityNPC() {
+        return entityNPC;
+    }
+
 
 
 
@@ -125,6 +146,4 @@ public class NPC {
             return new NPC(this);
         }
     }
-
-
 }
