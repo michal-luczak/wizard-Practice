@@ -10,7 +10,9 @@ import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Stream;
 
 public enum GameMapType {
 
@@ -18,24 +20,24 @@ public enum GameMapType {
             new ItemBuilder(Material.END_CRYSTAL, 1).addEnchant(Enchantment.KNOCKBACK, 1).toItemStack(),
             new ItemStack[]{
                     new ItemBuilder(Material.DIAMOND_BOOTS, 1)
-                            .addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4)
+                            .addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 3)
                             .addEnchant(Enchantment.DURABILITY, 3)
                             .toItemStack(),
                     new ItemBuilder(Material.DIAMOND_LEGGINGS, 1)
-                            .addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4)
+                            .addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 3)
                             .addEnchant(Enchantment.DURABILITY, 3)
                             .toItemStack(),
                     new ItemBuilder(Material.DIAMOND_CHESTPLATE, 1)
-                            .addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4)
+                            .addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 3)
                             .addEnchant(Enchantment.DURABILITY, 3)
                             .toItemStack(),
                     new ItemBuilder(Material.DIAMOND_HELMET, 1)
-                            .addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4)
+                            .addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 3)
                             .addEnchant(Enchantment.DURABILITY, 3)
                             .toItemStack()
             },
             new ItemStack[]{
-                    new ItemBuilder(Material.DIAMOND_SWORD, 1).addEnchant(Enchantment.DAMAGE_ALL, 5).toItemStack(),
+                    new ItemBuilder(Material.DIAMOND_SWORD, 1).addEnchant(Enchantment.DAMAGE_ALL, 2).toItemStack(),
                     new ItemBuilder(Material.END_CRYSTAL, 16).toItemStack(),
                     new ItemBuilder(Material.OBSIDIAN, 32).toItemStack(),
                     new ItemBuilder(Material.GOLDEN_APPLE, 16).toItemStack()
@@ -49,35 +51,34 @@ public enum GameMapType {
                     new ItemBuilder(Material.DIAMOND_CHESTPLATE, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 3).toItemStack(),
                     new ItemBuilder(Material.DIAMOND_HELMET, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 3).toItemStack()
             },
-            new ItemStack[]{
-                    new ItemBuilder(Material.DIAMOND_SWORD, 1).addEnchant(Enchantment.DAMAGE_ALL, 3).toItemStack(),
-                    getPotion(PotionType.STRENGTH, 3, false),
-                    getPotion(PotionType.SPEED, 3, true),
-                    getPotion(PotionType.INSTANT_HEAL, 29, false),
-            }, 2),
+            Stream.of(new ItemBuilder(Material.DIAMOND_SWORD, 1).addEnchant(Enchantment.DAMAGE_ALL, 2).toItemStack(),
+                    getPotions(PotionType.STRENGTH, 3, false, false),
+                    getPotions(PotionType.SPEED, 3, true, false),
+                    getPotions(PotionType.INSTANT_HEAL, 29, false, true)).toArray(ItemStack[]::new)
+            , 2),
 
     CRYSTAL_PVP_NETHERITE(13, "&aCrystal pvp netherite", Arrays.asList("&cRodzaj gry: Netheritowe sety z kryształami.", " ", "&7Graczy w kolejce: %queuedPlayer", "&7Graczy grających: %currentPlaying"),
             new ItemBuilder(Material.END_CRYSTAL, 1).toItemStack(),
             new ItemStack[]{
                     new ItemBuilder(Material.NETHERITE_BOOTS, 1)
-                            .addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4)
+                            .addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 3)
                             .addEnchant(Enchantment.DURABILITY, 3)
                             .toItemStack(),
                     new ItemBuilder(Material.NETHERITE_LEGGINGS, 1)
-                            .addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4)
+                            .addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 3)
                             .addEnchant(Enchantment.DURABILITY, 3)
                             .toItemStack(),
                     new ItemBuilder(Material.NETHERITE_CHESTPLATE, 1)
                             .addEnchant(Enchantment.DURABILITY, 3)
-                            .addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4)
+                            .addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 3)
                             .toItemStack(),
                     new ItemBuilder(Material.NETHERITE_HELMET, 1)
                             .addEnchant(Enchantment.DURABILITY, 3)
-                            .addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4)
+                            .addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 3)
                             .toItemStack()
             },
             new ItemStack[]{
-                    new ItemBuilder(Material.NETHERITE_SWORD, 1).addEnchant(Enchantment.DAMAGE_ALL, 5).toItemStack(),
+                    new ItemBuilder(Material.NETHERITE_SWORD, 1).addEnchant(Enchantment.DAMAGE_ALL, 2).toItemStack(),
                     new ItemBuilder(Material.END_CRYSTAL, 16).toItemStack(),
                     new ItemBuilder(Material.OBSIDIAN, 32).toItemStack(),
                     new ItemBuilder(Material.GOLDEN_APPLE, 16).toItemStack()
@@ -93,7 +94,8 @@ public enum GameMapType {
             },
             new ItemStack[]{
                     new ItemBuilder(Material.DIAMOND_SWORD, 1).addEnchant(Enchantment.DAMAGE_ALL, 4).toItemStack(),
-                    new ItemBuilder(Material.FIREWORK_ROCKET, 128).toItemStack()
+                    new ItemBuilder(Material.FIREWORK_ROCKET, 64).toItemStack(),
+                    new ItemBuilder(Material.FIREWORK_ROCKET, 64).toItemStack()
             }, 2),
 
     NORMAL(17, "&aNormal", Arrays.asList("&cRodzaj gry: Żelazne sety.", " ", "&7Graczy w kolejce: %queuedPlayer", "&7Graczy grających: %currentPlaying"),
@@ -122,24 +124,24 @@ public enum GameMapType {
             new ItemBuilder(Material.END_CRYSTAL, 1).addEnchant(Enchantment.KNOCKBACK, 1).toItemStack(),
             new ItemStack[]{
                     new ItemBuilder(Material.DIAMOND_BOOTS, 1)
-                            .addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4)
+                            .addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 3)
                             .addEnchant(Enchantment.DURABILITY, 3)
                             .toItemStack(),
                     new ItemBuilder(Material.DIAMOND_LEGGINGS, 1)
-                            .addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4)
+                            .addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 3)
                             .addEnchant(Enchantment.DURABILITY, 3)
                             .toItemStack(),
                     new ItemBuilder(Material.DIAMOND_CHESTPLATE, 1)
-                            .addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4)
+                            .addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 3)
                             .addEnchant(Enchantment.DURABILITY, 3)
                             .toItemStack(),
                     new ItemBuilder(Material.DIAMOND_HELMET, 1)
-                            .addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4)
+                            .addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 3)
                             .addEnchant(Enchantment.DURABILITY, 3)
                             .toItemStack()
             },
             new ItemStack[]{
-                    new ItemBuilder(Material.DIAMOND_SWORD, 1).addEnchant(Enchantment.DAMAGE_ALL, 5).toItemStack(),
+                    new ItemBuilder(Material.DIAMOND_SWORD, 1).addEnchant(Enchantment.DAMAGE_ALL, 2).toItemStack(),
                     new ItemBuilder(Material.END_CRYSTAL, 16).toItemStack(),
                     new ItemBuilder(Material.OBSIDIAN, 32).toItemStack(),
                     new ItemBuilder(Material.GOLDEN_APPLE, 16).toItemStack()
@@ -153,35 +155,34 @@ public enum GameMapType {
                     new ItemBuilder(Material.DIAMOND_CHESTPLATE, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 3).toItemStack(),
                     new ItemBuilder(Material.DIAMOND_HELMET, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 3).toItemStack()
             },
-            new ItemStack[]{
-                    new ItemBuilder(Material.DIAMOND_SWORD, 1).addEnchant(Enchantment.DAMAGE_ALL, 3).toItemStack(),
-                    getPotion(PotionType.STRENGTH, 3, false),
-                    getPotion(PotionType.SPEED, 3, true),
-                    getPotion(PotionType.INSTANT_HEAL, 29, false),
-            }, 3),
+            Stream.of(new ItemBuilder(Material.DIAMOND_SWORD, 1).addEnchant(Enchantment.DAMAGE_ALL, 2).toItemStack(),
+                    getPotions(PotionType.STRENGTH, 3, false, false),
+                    getPotions(PotionType.SPEED, 3, true, false),
+                    getPotions(PotionType.INSTANT_HEAL, 29, false, true)).toArray(ItemStack[]::new)
+            , 3),
 
     CRYSTAL_PVP_NETHERITE_MULTI_TEAM(22, "&aCrystal pvp netherite XvXvX", Arrays.asList("&cRodzaj gry: Netheritowe sety z kryształami.", " ", "&7Graczy w kolejce: %queuedPlayer", "&7Graczy grających: %currentPlaying"),
             new ItemBuilder(Material.END_CRYSTAL, 1).toItemStack(),
             new ItemStack[]{
                     new ItemBuilder(Material.NETHERITE_BOOTS, 1)
-                            .addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4)
+                            .addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 3)
                             .addEnchant(Enchantment.DURABILITY, 3)
                             .toItemStack(),
                     new ItemBuilder(Material.NETHERITE_LEGGINGS, 1)
-                            .addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4)
+                            .addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 3)
                             .addEnchant(Enchantment.DURABILITY, 3)
                             .toItemStack(),
                     new ItemBuilder(Material.NETHERITE_CHESTPLATE, 1)
                             .addEnchant(Enchantment.DURABILITY, 3)
-                            .addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4)
+                            .addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 3)
                             .toItemStack(),
                     new ItemBuilder(Material.NETHERITE_HELMET, 1)
                             .addEnchant(Enchantment.DURABILITY, 3)
-                            .addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4)
+                            .addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 3)
                             .toItemStack()
             },
             new ItemStack[]{
-                    new ItemBuilder(Material.NETHERITE_SWORD, 1).addEnchant(Enchantment.DAMAGE_ALL, 5).toItemStack(),
+                    new ItemBuilder(Material.NETHERITE_SWORD, 1).addEnchant(Enchantment.DAMAGE_ALL, 2).toItemStack(),
                     new ItemBuilder(Material.END_CRYSTAL, 16).toItemStack(),
                     new ItemBuilder(Material.OBSIDIAN, 32).toItemStack(),
                     new ItemBuilder(Material.GOLDEN_APPLE, 16).toItemStack()
@@ -197,7 +198,8 @@ public enum GameMapType {
             },
             new ItemStack[]{
                     new ItemBuilder(Material.DIAMOND_SWORD, 1).addEnchant(Enchantment.DAMAGE_ALL, 4).toItemStack(),
-                    new ItemBuilder(Material.FIREWORK_ROCKET, 128).toItemStack()
+                    new ItemBuilder(Material.FIREWORK_ROCKET, 64).toItemStack(),
+                    new ItemBuilder(Material.FIREWORK_ROCKET, 64).toItemStack()
             }, 3),
 
     NORMAL_MULTI_TEAM(26, "&aNormal XvXvX", Arrays.asList("&cRodzaj gry: Żelazne sety.", " ", "&7Graczy w kolejce: %queuedPlayer", "&7Graczy grających: %currentPlaying"),
@@ -238,14 +240,24 @@ public enum GameMapType {
         this.slots = slots;
     }
 
-    private static ItemStack getPotion(PotionType potionType, int amount, boolean lvl) {
-        ItemStack item = new ItemStack(Material.POTION, amount);
-        PotionMeta meta = (PotionMeta) item.getItemMeta();
+    private static ItemStack[] getPotions(PotionType potionType, int amount, boolean lvl, boolean isThrowable) {
+        List<ItemStack> items = new LinkedList<>();
 
-        meta.setBasePotionData(new PotionData(potionType, false, lvl));
-        item.setItemMeta(meta);
+        for (int i=0; i<amount; i++) {
+            ItemStack item;
+            if (isThrowable)
+                item = new ItemStack(Material.SPLASH_POTION);
+            else
+                item = new ItemStack(Material.POTION);
 
-        return item;
+            PotionMeta meta = (PotionMeta) item.getItemMeta();
+            meta.setBasePotionData(new PotionData(potionType, false, lvl));
+            item.setItemMeta(meta);
+
+            items.add(item);
+        }
+
+        return items.toArray(ItemStack[]::new);
     }
 
     public int getSlotId() {

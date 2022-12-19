@@ -5,7 +5,6 @@ import me.taison.wizardpractice.npc.NPC;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
-import java.util.UUID;
 
 public interface NPCFactory {
 

@@ -1,10 +1,8 @@
 package me.taison.wizardpractice.game.matchmakingsystem.queue;
 
 import me.taison.wizardpractice.data.user.Team;
-import me.taison.wizardpractice.data.user.impl.TeamImpl;
 import me.taison.wizardpractice.gui.gametypeselector.GameMapType;
 
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class QueueToDuel {

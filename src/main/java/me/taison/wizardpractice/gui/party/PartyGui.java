@@ -2,8 +2,6 @@ package me.taison.wizardpractice.gui.party;
 
 import me.taison.wizardpractice.gui.EmptySlotFillerGuiItem;
 import me.taison.wizardpractice.gui.GuiMenu;
-import me.taison.wizardpractice.gui.gametypeselector.GameMapType;
-import me.taison.wizardpractice.gui.gametypeselector.GameSelectorGuiItem;
 import me.taison.wizardpractice.utilities.chat.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
