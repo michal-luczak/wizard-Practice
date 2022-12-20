@@ -51,10 +51,10 @@ public enum GameMapType {
                     new ItemBuilder(Material.DIAMOND_CHESTPLATE, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 3).toItemStack(),
                     new ItemBuilder(Material.DIAMOND_HELMET, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 3).toItemStack()
             },
-            Stream.of(new ItemBuilder(Material.DIAMOND_SWORD, 1).addEnchant(Enchantment.DAMAGE_ALL, 2).toItemStack(),
-                    getPotions(PotionType.STRENGTH, 3, false, false),
-                    getPotions(PotionType.SPEED, 3, true, false),
-                    getPotions(PotionType.INSTANT_HEAL, 29, false, true)).toArray(ItemStack[]::new)
+            new InventoryBuilder()
+                    .addItems(getPotions(PotionType.STRENGTH, 3, false, false))
+                    .addItems(getPotions(PotionType.SPEED, 3, true, false))
+                    .addItems(getPotions(PotionType.INSTANT_HEAL, 29, false, true)).build()
             , 2),
 
     CRYSTAL_PVP_NETHERITE(13, "&aCrystal pvp netherite", Arrays.asList("&cRodzaj gry: Netheritowe sety z kryształami.", " ", "&7Graczy w kolejce: %queuedPlayer", "&7Graczy grających: %currentPlaying"),
@@ -155,10 +155,10 @@ public enum GameMapType {
                     new ItemBuilder(Material.DIAMOND_CHESTPLATE, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 3).toItemStack(),
                     new ItemBuilder(Material.DIAMOND_HELMET, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 3).toItemStack()
             },
-            Stream.of(new ItemBuilder(Material.DIAMOND_SWORD, 1).addEnchant(Enchantment.DAMAGE_ALL, 2).toItemStack(),
-                    getPotions(PotionType.STRENGTH, 3, false, false),
-                    getPotions(PotionType.SPEED, 3, true, false),
-                    getPotions(PotionType.INSTANT_HEAL, 29, false, true)).toArray(ItemStack[]::new)
+            new InventoryBuilder()
+                            .addItems(getPotions(PotionType.STRENGTH, 3, false, false))
+                            .addItems(getPotions(PotionType.SPEED, 3, true, false))
+                            .addItems(getPotions(PotionType.INSTANT_HEAL, 29, false, true)).build()
             , 3),
 
     CRYSTAL_PVP_NETHERITE_MULTI_TEAM(22, "&aCrystal pvp netherite XvXvX", Arrays.asList("&cRodzaj gry: Netheritowe sety z kryształami.", " ", "&7Graczy w kolejce: %queuedPlayer", "&7Graczy grających: %currentPlaying"),
@@ -286,5 +286,26 @@ public enum GameMapType {
 
     public int getSlots() {
         return slots;
+    }
+
+
+    private static class InventoryBuilder {
+
+        private List<ItemStack> items;
+
+
+        private InventoryBuilder addItem(ItemStack item) {
+            items.add(item);
+            return this;
+        }
+
+        private InventoryBuilder addItems(ItemStack[] itemStacks) {
+            items.addAll(Arrays.asList(itemStacks));
+            return this;
+        }
+
+        private ItemStack[] build() {
+            return items.toArray(ItemStack[]::new);
+        }
     }
 }
