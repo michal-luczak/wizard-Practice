@@ -160,21 +160,28 @@ public final class WizardPractice extends JavaPlugin {
     private void initializeDatabase() {
         //Config later...
         this.database = new MySQLStorageImpl(this);
-        this.database.open();
+
+        try{
+            this.database.open();
+        } catch (Exception e){
+            getLogger().severe("Database connection error: " + e.getMessage() + " shutting down server!");
+
+            this.getServer().shutdown();
+        }
     }
 
     private void initializeNPCs() {
         this.npcFactory = new NPCFactoryImpl();
 
-        NPC npc = new NPC.NpcBuilder()
+        //NPC npc = new NPC.NpcBuilder()
 //                .setGameMapType()
 //                .setName()
 //                .setLocation()
 //                .setSignature()
 //                .setTexture()
-                .build();
+          //      .build();
 
-        this.npcFactory.addNPC(npc);
+      //  this.npcFactory.addNPC(npc);
     }
 
     @Override

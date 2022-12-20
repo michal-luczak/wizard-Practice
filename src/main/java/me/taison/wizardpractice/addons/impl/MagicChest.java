@@ -2,19 +2,16 @@ package me.taison.wizardpractice.addons.impl;
 
 import me.taison.wizardpractice.WizardPractice;
 import me.taison.wizardpractice.utilities.chat.StringUtils;
-import net.kyori.adventure.text.Component;
+
 import org.bukkit.*;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 
-import java.lang.reflect.WildcardType;
 import java.util.Collections;
 import java.util.Objects;
-import java.util.Random;
 
 public class MagicChest extends BukkitRunnable {
 

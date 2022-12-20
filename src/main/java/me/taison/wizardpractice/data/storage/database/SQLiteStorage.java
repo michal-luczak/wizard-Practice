@@ -5,9 +5,7 @@ import me.taison.wizardpractice.data.user.User;
 
 public interface SQLiteStorage extends Database {
 
-    void loadUsers();
-
-    void saveUsers();
+    void loadAll();
 
     void saveUser(User user);
 

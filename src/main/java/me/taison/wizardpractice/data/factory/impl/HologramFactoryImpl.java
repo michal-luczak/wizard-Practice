@@ -8,9 +8,8 @@ import me.taison.wizardpractice.data.user.User;
 import me.taison.wizardpractice.data.user.impl.ranking.AbstractRanking;
 import me.taison.wizardpractice.data.user.impl.ranking.RankingType;
 import me.taison.wizardpractice.utilities.chat.StringUtils;
-import org.bukkit.Bukkit;
+import org.apache.commons.lang3.Validate;
 import org.bukkit.Location;
-import org.bukkit.World;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -47,8 +46,9 @@ public class HologramFactoryImpl implements HologramFactory {
 
     @Override
     public void updateHologram(String hologramName, List<String> lines) {
-        //TODO normalne statyczne lub inne hologramy na pozniej ?
         Hologram hologram = DHAPI.getHologram(hologramName);
+
+        Validate.notNull(hologram, "hologram cannot be null!");
 
         DHAPI.setHologramLines(hologram, lines);
     }
@@ -56,6 +56,8 @@ public class HologramFactoryImpl implements HologramFactory {
     @Override
     public void updateHologram(RankingType rankingType) {
         Hologram hologram = DHAPI.getHologram(rankingType.name());
+
+        Validate.notNull(hologram, "hologram cannot be null!");
 
         DHAPI.setHologramLines(hologram, this.getTextFor(rankingType));
     }

@@ -7,7 +7,6 @@ import me.taison.wizardpractice.data.storage.database.MySQLStorage;
 import me.taison.wizardpractice.data.storage.util.Queries;
 import me.taison.wizardpractice.data.user.User;
 import me.taison.wizardpractice.data.user.impl.UserImpl;
-import me.taison.wizardpractice.data.user.impl.ranking.RankingType;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -37,7 +36,7 @@ public class MySQLStorageImpl extends AbstractDatabase implements MySQLStorage {
         String databasePort = "3306";
         String databaseUser = "root";
         String databaseName = "lastcraft";
-        String databasePassword = "";
+        String databasePassword = "tajson_i_luxdevpl_wizard_practice_haslo_xd";
 
         this.dataSource = new HikariDataSource();
 
