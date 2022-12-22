@@ -47,10 +47,8 @@ public class QueueActionBarUpdateTask extends BukkitRunnable {
                     estimatedWaitTime = teamWaitTime + 1100;
                 }
 
-                if(teamWaitTime > TimeUnit.MINUTES.toMillis(1)){
-                    if(RandomUtils.getChance(5)){
-                        Bukkit.broadcastMessage(StringUtils.color("&eTeam - " + team.getLeader().getName() + " poszukuje przeciwnika/ów do trybu: " + toDuel.getGameMapType().getName()));
-                    }
+                if(teamWaitTime / 1000 % 30 == 0){
+                    Bukkit.broadcastMessage(StringUtils.color("&eTeam - " + team.getLeader().getName() + " poszukuje przeciwnika/ów do trybu: " + toDuel.getGameMapType().getName()));
                 }
 
                 team.sendActionBar(String.format("&eTrwa wyszukiwanie gry. &e&l| &eTwój numer w kolejce: %d &e&l| &eSzacowany czas: %s &e&l| &eAktualny czas oczekiwania: %s",

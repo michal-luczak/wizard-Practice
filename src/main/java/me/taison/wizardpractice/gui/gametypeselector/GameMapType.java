@@ -53,9 +53,9 @@ public enum GameMapType {
                     new ItemBuilder(Material.DIAMOND_HELMET, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 3).toItemStack()
             },
             new InventoryBuilder()
+                    .addItem(new ItemBuilder(Material.DIAMOND_SWORD).addEnchant(Enchantment.DAMAGE_ALL, 1).toItemStack())
                     .addItems(getPotions(PotionType.STRENGTH, 3, false, false))
                     .addItems(getPotions(PotionType.SPEED, 3, true, false))
-                    .addItem(new ItemBuilder(Material.DIAMOND_SWORD).addEnchant(Enchantment.DAMAGE_ALL, 1).toItemStack())
                     .addItems(getPotions(PotionType.INSTANT_HEAL, 29, false, true)).build()
             , 2),
 
@@ -150,9 +150,9 @@ public enum GameMapType {
                     new ItemBuilder(Material.DIAMOND_HELMET, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 3).toItemStack()
             },
             new InventoryBuilder()
+                            .addItem(new ItemBuilder(Material.DIAMOND_SWORD).addEnchant(Enchantment.DAMAGE_ALL, 1).toItemStack())
                             .addItems(getPotions(PotionType.STRENGTH, 3, false, false))
                             .addItems(getPotions(PotionType.SPEED, 3, true, false))
-                            .addItem(new ItemBuilder(Material.DIAMOND_SWORD).addEnchant(Enchantment.DAMAGE_ALL, 1).toItemStack())
                             .addItems(getPotions(PotionType.INSTANT_HEAL, 29, false, true)).build()
             , 3),
 

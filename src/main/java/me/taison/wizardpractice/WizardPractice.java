@@ -133,8 +133,8 @@ public final class WizardPractice extends JavaPlugin {
     private void initializeArenas(){
         Arena arena1 = new ArenaImpl("Brazowa arena")
                 .setWorld(Bukkit.getWorld("world"))
-                .addSpawnLocation(235.5, 90, 1.5, 0, -90)
-                .addSpawnLocation(167.5, 90, -0.5, 90, 0)
+                .addSpawnLocation(235.5, 90, 1.5, 90, 0)
+                .addSpawnLocation(167.5, 90, -0.5, -90, 0)
                 .build();
 
         Arena arena2 = new ArenaImpl("Defaultowa arena")

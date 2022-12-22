@@ -2,6 +2,7 @@ package me.taison.wizardpractice.commands.command;
 
 import me.taison.wizardpractice.WizardPractice;
 import me.taison.wizardpractice.commands.ICommandInfo;
+import me.taison.wizardpractice.data.user.User;
 import me.taison.wizardpractice.utilities.AbstractCommand;
 import me.taison.wizardpractice.utilities.chat.StringUtils;
 import net.kyori.adventure.text.Component;
@@ -10,6 +11,8 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Optional;
+
 @ICommandInfo(command = "spawn", permission = "spawn")
 public class SpawnCommand extends AbstractCommand {
 
@@ -17,8 +20,18 @@ public class SpawnCommand extends AbstractCommand {
     public void onExecute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
 
-        player.teleport(WizardPractice.getSingleton().getSpawnLocation());
+        Optional<User> user = WizardPractice.getSingleton().getUserFactory().getByUniqueId(player.getUniqueId());
 
-        player.sendMessage(Component.text(StringUtils.color("&aPrzeteleportowano.")));
+        if(user.isEmpty()){
+            return;
+        }
+
+        WizardPractice.getSingleton().getMatchmaker().getDuelByUser(user.get()).ifPresentOrElse(duel -> {
+            player.sendMessage(StringUtils.color("&cPodczas areny nie mozna sie teleportować!"));
+        }, () -> {
+            player.teleport(WizardPractice.getSingleton().getSpawnLocation());
+
+            player.sendMessage(Component.text(StringUtils.color("&aPrzeteleportowano.")));
+        });
     }
 }
