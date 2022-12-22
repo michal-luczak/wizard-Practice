@@ -4,6 +4,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import me.taison.wizardpractice.WizardPractice;
 import me.taison.wizardpractice.gui.gametypeselector.GameMapType;
+import me.taison.wizardpractice.utilities.chat.StringUtils;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityMetadata;
 import net.minecraft.network.protocol.game.PacketPlayOutNamedEntitySpawn;
 import net.minecraft.network.protocol.game.PacketPlayOutPlayerInfo;
@@ -44,7 +45,7 @@ public class NPC {
         MinecraftServer server = ((CraftServer) Bukkit.getServer()).getServer();
         WorldServer world = ((CraftWorld) Bukkit.getServer().getWorld("world")).getHandle();
 
-        GameProfile gameProfile = new GameProfile(UUID.randomUUID(), name);
+        GameProfile gameProfile = new GameProfile(UUID.randomUUID(), StringUtils.color(name));
         gameProfile.getProperties().put("textures", new Property("textures", texture, signature));
 
         EntityPlayer entityNPC = new EntityPlayer(server, world, gameProfile, null);
