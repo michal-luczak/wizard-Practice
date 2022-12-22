@@ -7,6 +7,7 @@ import me.taison.wizardpractice.data.user.Team;
 import me.taison.wizardpractice.data.user.User;
 import me.taison.wizardpractice.data.user.impl.TeamImpl;
 import me.taison.wizardpractice.data.user.impl.UserImpl;
+import me.taison.wizardpractice.npc.packetReader.PacketReader;
 import me.taison.wizardpractice.utilities.chat.StringUtils;
 import me.taison.wizardpractice.utilities.items.VariousItems;
 import net.kyori.adventure.text.Component;
@@ -49,6 +50,9 @@ public class PlayerJoinListener implements Listener {
         e.getPlayer().teleport(WizardPractice.getSingleton().getSpawnLocation());
 
         WizardPractice.getSingleton().getNpcFactory().spawnNPCs(e.getPlayer());
+
+        PacketReader packetReader = new PacketReader(e.getPlayer());
+        packetReader.inject();
     }
 
 }

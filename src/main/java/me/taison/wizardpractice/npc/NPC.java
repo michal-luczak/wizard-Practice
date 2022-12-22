@@ -48,7 +48,7 @@ public class NPC {
         GameProfile gameProfile = new GameProfile(UUID.randomUUID(), StringUtils.color(name));
         gameProfile.getProperties().put("textures", new Property("textures", texture, signature));
 
-        EntityPlayer entityNPC = new EntityPlayer(server, world, gameProfile, null);
+        entityNPC = new EntityPlayer(server, world, gameProfile, null);
         this.id = entityNPC.getBukkitEntity().getEntityId();
 
         entityNPC.forceSetPositionRotation(location.getBlockX(), location.getBlockY(), location.getBlockZ(), location.getYaw(), location.getPitch());
