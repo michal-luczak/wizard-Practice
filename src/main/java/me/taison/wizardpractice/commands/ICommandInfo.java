@@ -10,7 +10,7 @@ import java.util.List;
 @Target(ElementType.TYPE)
 public @interface ICommandInfo {
     String command();
-    String permission() default "";
+    String permission();
 
     boolean requirePlayer() default true;
 }

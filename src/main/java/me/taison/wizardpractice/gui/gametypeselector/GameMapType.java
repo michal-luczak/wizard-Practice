@@ -9,6 +9,7 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -54,6 +55,7 @@ public enum GameMapType {
             new InventoryBuilder()
                     .addItems(getPotions(PotionType.STRENGTH, 3, false, false))
                     .addItems(getPotions(PotionType.SPEED, 3, true, false))
+                    .addItem(new ItemBuilder(Material.DIAMOND_SWORD).addEnchant(Enchantment.DAMAGE_ALL, 1).toItemStack())
                     .addItems(getPotions(PotionType.INSTANT_HEAL, 29, false, true)).build()
             , 2),
 
@@ -101,23 +103,15 @@ public enum GameMapType {
     NORMAL(17, "&aNormal", Arrays.asList("&cRodzaj gry: Żelazne sety.", " ", "&7Graczy w kolejce: %queuedPlayer", "&7Graczy grających: %currentPlaying"),
             new ItemBuilder(Material.DIAMOND_SWORD, 1).toItemStack(),
             new ItemStack[]{
-                    new ItemBuilder(Material.IRON_BOOTS, 1).toItemStack(),
-                    new ItemBuilder(Material.IRON_LEGGINGS, 1).toItemStack(),
-                    new ItemBuilder(Material.IRON_CHESTPLATE, 1).toItemStack(),
-                    new ItemBuilder(Material.IRON_HELMET, 1).toItemStack()
+                    new ItemBuilder(Material.IRON_BOOTS, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2).toItemStack(),
+                    new ItemBuilder(Material.IRON_LEGGINGS, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2).toItemStack(),
+                    new ItemBuilder(Material.IRON_CHESTPLATE, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2).toItemStack(),
+                    new ItemBuilder(Material.IRON_HELMET, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2).toItemStack()
             },
             new ItemStack[]{
                     new ItemBuilder(Material.IRON_SWORD, 1).toItemStack(),
                     new ItemBuilder(Material.GOLDEN_APPLE, 8).toItemStack()
             }, 2),
-
-
-
-
-
-
-
-
 
 
     CRYSTAL_PVP_DIAMOND_MULTI_TEAM(18, "&aCrystal pvp diamond XvXvX", Arrays.asList("&cRodzaj gry: Diamentowe sety z kryształami", " ", "&7Graczy w kolejce: %queuedPlayer", "&7Graczy grających: %currentPlaying"),
@@ -158,6 +152,7 @@ public enum GameMapType {
             new InventoryBuilder()
                             .addItems(getPotions(PotionType.STRENGTH, 3, false, false))
                             .addItems(getPotions(PotionType.SPEED, 3, true, false))
+                            .addItem(new ItemBuilder(Material.DIAMOND_SWORD).addEnchant(Enchantment.DAMAGE_ALL, 1).toItemStack())
                             .addItems(getPotions(PotionType.INSTANT_HEAL, 29, false, true)).build()
             , 3),
 
@@ -205,10 +200,10 @@ public enum GameMapType {
     NORMAL_MULTI_TEAM(26, "&aNormal XvXvX", Arrays.asList("&cRodzaj gry: Żelazne sety.", " ", "&7Graczy w kolejce: %queuedPlayer", "&7Graczy grających: %currentPlaying"),
             new ItemBuilder(Material.DIAMOND_SWORD, 1).toItemStack(),
             new ItemStack[]{
-                    new ItemBuilder(Material.IRON_BOOTS, 1).toItemStack(),
-                    new ItemBuilder(Material.IRON_LEGGINGS, 1).toItemStack(),
-                    new ItemBuilder(Material.IRON_CHESTPLATE, 1).toItemStack(),
-                    new ItemBuilder(Material.IRON_HELMET, 1).toItemStack()
+                    new ItemBuilder(Material.IRON_BOOTS, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2).toItemStack(),
+                    new ItemBuilder(Material.IRON_LEGGINGS, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2).toItemStack(),
+                    new ItemBuilder(Material.IRON_CHESTPLATE, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2).toItemStack(),
+                    new ItemBuilder(Material.IRON_HELMET, 1).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2).toItemStack()
             },
             new ItemStack[]{
                     new ItemBuilder(Material.IRON_SWORD, 1).toItemStack(),
@@ -291,8 +286,7 @@ public enum GameMapType {
 
     private static class InventoryBuilder {
 
-        private List<ItemStack> items;
-
+        private final List<ItemStack> items = new ArrayList<>();
 
         private InventoryBuilder addItem(ItemStack item) {
             items.add(item);

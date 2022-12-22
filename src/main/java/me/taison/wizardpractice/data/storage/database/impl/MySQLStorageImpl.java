@@ -36,7 +36,7 @@ public class MySQLStorageImpl extends AbstractDatabase implements MySQLStorage {
         String databasePort = "3306";
         String databaseUser = "root";
         String databaseName = "lastcraft";
-        String databasePassword = "tajson_i_luxdevpl_wizard_practice_haslo_xd";
+        String databasePassword = "";
 
         this.dataSource = new HikariDataSource();
 
@@ -86,7 +86,7 @@ public class MySQLStorageImpl extends AbstractDatabase implements MySQLStorage {
         try (Connection connection = this.dataSource.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USERS)) {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while(resultSet.next()) {
-                    User user = new UserImpl(UUID.fromString(resultSet.getString("uuid")), resultSet.getString("nickname"));
+                    User user = new UserImpl(UUID.fromString(resultSet.getString("uuid")), resultSet.getString("nickname"), false);
                     user.fromResultSet(resultSet);
 
                     wizardPractice.getUserFactory().registerUser(user);

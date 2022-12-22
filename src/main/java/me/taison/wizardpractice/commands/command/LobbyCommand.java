@@ -10,7 +10,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-@ICommandInfo(command = "lobby")
+@ICommandInfo(command = "lobby", permission = "lobby")
 public class LobbyCommand extends AbstractCommand {
 
     @Override

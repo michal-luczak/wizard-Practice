@@ -12,8 +12,8 @@ public class AsyncPlayerChatListener implements Listener {
     //TODO change to newer version. This is depracated.
     @EventHandler
     public void handle(AsyncPlayerChatEvent e){
-        String message = e.getPlayer().isOp() ? StringUtils.color(e.getMessage()) : e.getMessage();
+        //String message = e.getPlayer().isOp() ? StringUtils.color(e.getMessage()) : e.getMessage();
 
-        e.setFormat(StringUtils.color("&7"+ e.getPlayer().getDisplayName() + ": ") + message);
+        //e.setFormat(StringUtils.color("&7"+ e.getPlayer().getDisplayName() + ": ") + message);
     }
 }

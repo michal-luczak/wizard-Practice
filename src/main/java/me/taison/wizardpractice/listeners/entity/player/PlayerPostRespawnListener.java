@@ -22,8 +22,7 @@ public class PlayerPostRespawnListener implements Listener {
 
         Matchmaker matchmaker = WizardPractice.getSingleton().getMatchmaker();
 
-        User user = WizardPractice.getSingleton().getUserFactory().getByUniqueId(event.getPlayer().getUniqueId()).orElseThrow();
-
+        User user = WizardPractice.getSingleton().getUserFactory().getByUniqueId(event.getPlayer().getUniqueId()).get();
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -38,7 +37,7 @@ public class PlayerPostRespawnListener implements Listener {
                 event.getPlayer().setGameMode(GameMode.SPECTATOR);
                 event.getPlayer().teleport(matchmaker.getDuelByUser(user).get().getArena().getSpawnLocations().get(0));
             }
-        }.runTaskLater(WizardPractice.getPlugin(WizardPractice.class), 1L);
+        }.runTaskLater(WizardPractice.getPlugin(WizardPractice.class), 5L);
 
     }
 

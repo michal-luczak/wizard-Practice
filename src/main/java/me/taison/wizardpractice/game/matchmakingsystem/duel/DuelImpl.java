@@ -59,6 +59,8 @@ public final class DuelImpl implements Duel {
 
         this.teams.forEach(team -> {
             this.aliveTeamMap.put(team, team.getTeam());
+
+            team.getTeam().forEach(user -> user.getAsPlayer().setNoDamageTicks(60));
         });
 
         this.gameMapType = gameMapType;

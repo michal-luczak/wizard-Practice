@@ -36,13 +36,25 @@ public class UserImpl implements User {
 
     private DefaultTablist defaultTablist;
 
-    public UserImpl(UUID uniqueIdentifier, String name){
+    public UserImpl(UUID uniqueIdentifier, String name, boolean firstJoin){
         this.uniqueIdentifier = uniqueIdentifier;
         this.name = name;
 
         this.customInventorySettingsMap = new HashMap<>();
 
         this.rankings = new HashMap<>();
+
+        if(firstJoin){
+            EnumSet.allOf(RankingType.class).forEach(rankingType -> {
+                AbstractRanking<?> abstractRanking = rankingType.getFor(this);
+
+                this.rankings.put(rankingType, abstractRanking);
+
+                WizardPractice.getSingleton().getRankingFactory().addRanking(abstractRanking);
+
+                WizardPractice.getSingleton().getRankingFactory().update(this, rankingType);
+            });
+        }
     }
 
     @Override

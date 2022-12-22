@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-@ICommandInfo(command = "top")
+@ICommandInfo(command = "top", permission = "top")
 public class TopPlayerCommand extends AbstractCommand {
 
     @Override

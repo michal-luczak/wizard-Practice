@@ -30,7 +30,7 @@ public class PlayerJoinListener implements Listener {
         if(!e.getPlayer().hasPlayedBefore()){
             Bukkit.broadcast(Component.text(StringUtils.color("&6Witamy pierwszy raz gracza " + e.getPlayer().getName() + " na naszym trybie!")));
 
-            User user = new UserImpl(e.getPlayer().getUniqueId(), e.getPlayer().getName());
+            User user = new UserImpl(e.getPlayer().getUniqueId(), e.getPlayer().getName(), true);
             userFactory.registerUser(user);
         }
 
@@ -43,16 +43,17 @@ public class PlayerJoinListener implements Listener {
             team.setLeader(user);
 
             user.getTablist().send();
+            System.out.println("wyslano tabliste");
         });
 
         e.joinMessage(Component.text(StringUtils.color("&a[+] " + e.getPlayer().getName())));
 
         e.getPlayer().teleport(WizardPractice.getSingleton().getSpawnLocation());
 
-        WizardPractice.getSingleton().getNpcFactory().spawnNPCs(e.getPlayer());
+        //WizardPractice.getSingleton().getNpcFactory().spawnNPCs(e.getPlayer());
 
-        PacketReader packetReader = new PacketReader(e.getPlayer());
-        packetReader.inject();
+        //PacketReader packetReader = new PacketReader(e.getPlayer());
+        //packetReader.inject();
     }
 
 }

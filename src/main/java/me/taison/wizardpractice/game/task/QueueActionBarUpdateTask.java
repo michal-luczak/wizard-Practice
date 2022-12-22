@@ -3,12 +3,16 @@ package me.taison.wizardpractice.game.task;
 import me.taison.wizardpractice.WizardPractice;
 import me.taison.wizardpractice.game.matchmakingsystem.queue.QueueToDuel;
 import me.taison.wizardpractice.gui.gametypeselector.GameMapType;
+import me.taison.wizardpractice.utilities.chat.StringUtils;
+import me.taison.wizardpractice.utilities.random.RandomUtils;
 import me.taison.wizardpractice.utilities.time.TimeUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 public class QueueActionBarUpdateTask extends BukkitRunnable {
 
@@ -41,6 +45,12 @@ public class QueueActionBarUpdateTask extends BukkitRunnable {
 
                 if(teamWaitTime > estimatedWaitTime){
                     estimatedWaitTime = teamWaitTime + 1100;
+                }
+
+                if(teamWaitTime > TimeUnit.MINUTES.toMillis(1)){
+                    if(RandomUtils.getChance(5)){
+                        Bukkit.broadcastMessage(StringUtils.color("&eTeam - " + team.getLeader().getName() + " poszukuje przeciwnika/ów do trybu: " + toDuel.getGameMapType().getName()));
+                    }
                 }
 
                 team.sendActionBar(String.format("&eTrwa wyszukiwanie gry. &e&l| &eTwój numer w kolejce: %d &e&l| &eSzacowany czas: %s &e&l| &eAktualny czas oczekiwania: %s",

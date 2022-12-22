@@ -3,6 +3,7 @@ package me.taison.wizardpractice.listeners.entity;
 import me.taison.wizardpractice.WizardPractice;
 import me.taison.wizardpractice.data.user.User;
 import me.taison.wizardpractice.utilities.world.WorldUtils;
+import org.bukkit.entity.EnderCrystal;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,6 +16,8 @@ public class EntityExplodeListener implements Listener {
 
     @EventHandler
     public void handle(EntityExplodeEvent event) {
+        event.setCancelled(true);
+
         if(event.getEntity() instanceof Fireball fireball){
             Player shooter = (Player) fireball.getShooter();
 

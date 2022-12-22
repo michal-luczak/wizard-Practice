@@ -10,7 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-@ICommandInfo(command = "spawn")
+@ICommandInfo(command = "spawn", permission = "spawn")
 public class SpawnCommand extends AbstractCommand {
 
     @Override

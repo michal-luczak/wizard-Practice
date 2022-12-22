@@ -34,7 +34,7 @@ public class NPC {
 
     private EntityPlayer entityNPC;
 
-    private NPC(final NpcBuilder builder) {
+    private NPC(NpcBuilder builder) {
 
         this.name = builder.name;
         this.texture = builder.texture;
@@ -105,10 +105,6 @@ public class NPC {
     public EntityPlayer getEntityNPC() {
         return entityNPC;
     }
-
-
-
-
 
     public static class NpcBuilder {
 

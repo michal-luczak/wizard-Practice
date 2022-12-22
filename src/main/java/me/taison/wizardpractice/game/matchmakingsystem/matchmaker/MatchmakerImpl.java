@@ -70,7 +70,6 @@ public class MatchmakerImpl implements Matchmaker {
                 Duel duel = new DuelImpl(this, matchedTeams, queue.getGameMapType(), selectedArena.orElse(null));
                 duels.add(duel);
 
-                Bukkit.broadcastMessage("Czas oczekiwania teamu: " + teams.get(0).getLeader().getName() + " to " + TimeUtil.getDurationBreakdown(System.currentTimeMillis() - matchedTeams.get(0).getWaitingTime(queue.getGameMapType())));
                 WizardPractice.getSingleton().getQueueActionBarUpdateTask().setLastFoundGame(queue.getGameMapType(), System.currentTimeMillis() - matchedTeams.get(0).getWaitingTime(queue.getGameMapType()));
             }
         }
